@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.CompraClienteMercadoPago" schema="joni" table="compra_cliente_mercado_pago">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="nombre" type="string" column="NOMBRE"/>
+        <property name="cuit" type="string" column="CUIT"/>
+        <property name="importe" type="double" column="IMPORTE"/>
+        <property name="procesado" type="boolean" column="PROCESADO"/>
+    </class>
+</hibernate-mapping>

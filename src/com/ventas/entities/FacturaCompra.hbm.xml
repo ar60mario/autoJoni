@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.FacturaCompra" schema="joni" table="factura_compra">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="string" column="FECHA"/>
+        <property name="ganancia" type="string" column="GANANCIA"/>
+        <property name="gravado" type="string" column="GRAVADO"/>
+        <property name="iva" type="integer" column="IVA"/>
+        <property name="iibb" type="string" column="II_BB"/>
+        <property name="impuesto1" type="string" column="IMPUESTO_1"/>
+        <property name="impuesto2" type="string" column="IMPUESTO_2"/>
+        <property name="impuesto3" type="string" column="IMPUESTO_3"/>
+        <property name="proveedor" type="string" column="PROVEEDOR"/>
+        <property name="gravadoUtilizado" type="string" column="GRAVADO_UTILIZADO"/>
+        <property name="ivaUtilizado" type="float" column="IVA_UTILIZADO"/>
+        <property name="impuestoUtilizado" type="boolean" column="IMPUESTO_UTILIZADO"/>
+        <property name="procesado" type="boolean" column="PROCESADO"/>
+        
+        <many-to-one name="producto"
+                    class="com.ventas.entities.Producto"
+                     lazy="false">
+                     <column name="ID_PRODUCTO" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>
