@@ -5,6 +5,10 @@
  */
 package com.ventas.frame;
 
+import com.ventas.main.MainFrame;
+import com.ventas.util.UtilFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author argia
@@ -16,6 +20,9 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
      */
     public AbmFacturasComprasFrame() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(100, 100, 255));
+        this.setLocationRelativeTo(null);
+        limpiarCampos();
     }
 
     /**
@@ -30,9 +37,14 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        fechaTxt = new javax.swing.JTextField();
+        deTxt = new javax.swing.JTextField();
         nuevaBtn = new javax.swing.JButton();
         filtrarProveedorBtn = new javax.swing.JButton();
+        importarExcelBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        alTxt = new javax.swing.JTextField();
+        soloPendientesBtn = new javax.swing.JButton();
+        volverBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,12 +75,58 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
 
         jLabel1.setText("FECHA:");
 
-        fechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fechaTxt.setText("FECHA");
+        deTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        deTxt.setText("FECHA");
+        deTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                deTxtKeyPressed(evt);
+            }
+        });
 
         nuevaBtn.setText("NUEVA");
+        nuevaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevaBtnActionPerformed(evt);
+            }
+        });
 
         filtrarProveedorBtn.setText("FILTRAR PROVEEDOR");
+        filtrarProveedorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filtrarProveedorBtnActionPerformed(evt);
+            }
+        });
+
+        importarExcelBtn.setText("IMPORTAR EXCEL");
+        importarExcelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importarExcelBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("HASTA:");
+
+        alTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        alTxt.setText("HASTA");
+        alTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                alTxtKeyPressed(evt);
+            }
+        });
+
+        soloPendientesBtn.setText("SOLO PENDIENTES");
+        soloPendientesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                soloPendientesBtnActionPerformed(evt);
+            }
+        });
+
+        volverBtn.setText("VOLVER");
+        volverBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -79,16 +137,24 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(nuevaBtn)
-                                .addGap(18, 18, 18)
-                                .addComponent(filtrarProveedorBtn)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(nuevaBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(filtrarProveedorBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(importarExcelBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(soloPendientesBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(volverBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -97,18 +163,81 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(deTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevaBtn)
-                    .addComponent(filtrarProveedorBtn))
+                    .addComponent(filtrarProveedorBtn)
+                    .addComponent(importarExcelBtn)
+                    .addComponent(soloPendientesBtn)
+                    .addComponent(volverBtn))
                 .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void importarExcelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarExcelBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importarExcelBtnActionPerformed
+
+    private void filtrarProveedorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtrarProveedorBtnActionPerformed
+        int row = tabla.getSelectedRow();
+        if(row < 0){
+            
+        }
+        
+    }//GEN-LAST:event_filtrarProveedorBtnActionPerformed
+
+    private void nuevaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaBtnActionPerformed
+        nuevaFacturaCompra();
+    }//GEN-LAST:event_nuevaBtnActionPerformed
+
+    private void deTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deTxtKeyPressed
+        if(evt.getKeyCode()==10){
+            String fe = deTxt.getText();
+            int largo = fe.length();
+            if (largo == 10) {
+                alTxt.requestFocus();
+            } else {
+                if (largo > 10) {
+                    JOptionPane.showMessageDialog(this, "ERROR EN LARGO DE FECHA");
+                    return;
+                }
+            }
+            fe = UtilFrame.fecha(fe);
+            deTxt.setText(fe);
+        }
+    }//GEN-LAST:event_deTxtKeyPressed
+
+    private void alTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_alTxtKeyPressed
+        if(evt.getKeyCode()==10){
+            String fe = alTxt.getText();
+            int largo = fe.length();
+            if (largo == 10) {
+                buscar();
+            } else {
+                if (largo > 10) {
+                    JOptionPane.showMessageDialog(this, "ERROR EN LARGO DE FECHA");
+                    return;
+                }
+            }
+            fe = UtilFrame.fecha(fe);
+            alTxt.setText(fe);
+        }
+    }//GEN-LAST:event_alTxtKeyPressed
+
+    private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
+        volver();
+    }//GEN-LAST:event_volverBtnActionPerformed
+
+    private void soloPendientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloPendientesBtnActionPerformed
+        soloPendientes();
+    }//GEN-LAST:event_soloPendientesBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,11 +275,41 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField fechaTxt;
+    private javax.swing.JTextField alTxt;
+    private javax.swing.JTextField deTxt;
     private javax.swing.JButton filtrarProveedorBtn;
+    private javax.swing.JButton importarExcelBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton nuevaBtn;
+    private javax.swing.JButton soloPendientesBtn;
     private javax.swing.JTable tabla;
+    private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
+
+    private void nuevaFacturaCompra() {
+        NuevaFacturaCompraFrame nfcf = new NuevaFacturaCompraFrame();
+        nfcf.setVisible(true);
+        this.dispose();
+    }
+
+    private void volver() {
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
+    }
+
+    private void soloPendientes() {
+        
+    }
+
+    private void limpiarCampos() {
+        deTxt.setText("");
+        alTxt.setText("");
+    }
+
+    private void buscar() {
+        
+    }
 }

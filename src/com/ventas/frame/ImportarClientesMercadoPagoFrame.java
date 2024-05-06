@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import com.ventas.util.LectorDeExcel;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 import jxl.read.biff.BiffException;
 
@@ -25,6 +27,8 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
     
     private File archivoImportado = null;
     private List<CompraClienteMercadoPago> compras;
+    private DecimalFormat df = new DecimalFormat("#0.00");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Creates new form ImportarProducto
@@ -63,17 +67,23 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "NOMBRE", "CUIT", "IMPORTE"
+                "FECHA", "NOMBRE", "CUIT", "MONTO"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaProductoImportado);
         if (tablaProductoImportado.getColumnModel().getColumnCount() > 0) {
-            tablaProductoImportado.getColumnModel().getColumn(0).setResizable(false);
             tablaProductoImportado.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tablaProductoImportado.getColumnModel().getColumn(1).setResizable(false);
             tablaProductoImportado.getColumnModel().getColumn(1).setPreferredWidth(300);
-            tablaProductoImportado.getColumnModel().getColumn(2).setResizable(false);
-            tablaProductoImportado.getColumnModel().getColumn(2).setPreferredWidth(40);
+            tablaProductoImportado.getColumnModel().getColumn(2).setPreferredWidth(30);
+            tablaProductoImportado.getColumnModel().getColumn(3).setPreferredWidth(40);
         }
 
         aceptarBtn.setText("Aceptar");
@@ -94,23 +104,22 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(aceptarBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cancelarBtn)
-                .addGap(140, 140, 140))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(aceptarBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelarBtn)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptarBtn)
                     .addComponent(cancelarBtn))
@@ -121,9 +130,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
-        MainFrame mf = new MainFrame();
-        mf.setVisible(true);
-        this.dispose();
+        cancelar();
     }//GEN-LAST:event_cancelarBtnActionPerformed
 
     private void aceptarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarBtnActionPerformed
@@ -208,11 +215,11 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) tablaProductoImportado.getModel();
         if(compras != null && !compras.isEmpty()){
             for(CompraClienteMercadoPago compra : compras){
-                Object[] fila = new Object[3];
-                
-                fila[0] = compra.getNombre();
-                fila[1] = compra.getCuit();
-                fila[2] = compra.getImporte();
+                Object[] fila = new Object[4];
+                fila[0] = sdf.format(compra.getFecha());
+                fila[1] = compra.getNombre();
+                fila[2] = compra.getCuit();
+                fila[3] = df.format(compra.getImporte());
                 
                 modelo.addRow(fila);
             }
@@ -242,5 +249,11 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    private void cancelar() {
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
     }
 }

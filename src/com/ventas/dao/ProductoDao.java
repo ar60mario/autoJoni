@@ -38,6 +38,16 @@ public class ProductoDao extends GenericDao {
         List<Producto> productos = (List<Producto>) criteria.list();
         return productos;
     }
+    
+    public List<Producto> getAllProductosByRubro(Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.eq("rubro", rubro));
+        criteria.add(Restrictions.eq("inactivo", false));
+        criteria.add(Restrictions.eq("panificado", false));
+        List<Producto> productos = (List<Producto>) criteria.list();
+        return productos;
+    }
 
     public Producto getPanificadoByCodigo(Integer codigo) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

@@ -31,6 +31,17 @@ public class ProductoBo {
         return losProductos;
     }
 
+    public List<Producto> getAllProductosByRubro(Rubro rubro) throws Exception {
+        ProductoDao dao = new ProductoDao();
+        List<Producto> losProductos = new ArrayList<Producto>();
+        try {
+            losProductos = dao.getAllProductosByRubro(rubro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return losProductos;
+    }
+    
     public Producto guardarProducto(Producto producto) throws Exception {
         try {
             dao.save(producto);

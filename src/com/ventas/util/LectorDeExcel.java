@@ -60,8 +60,8 @@ public class LectorDeExcel {
                 } else {
                     iv.setCliente(null);
                 }
-                iv.setCae(Long.valueOf(hoja.getCell(5,i).getContents()));
-                iv.setFechaCae(sdf.parse(hoja.getCell(6,i).getContents()));
+                iv.setCae(Long.valueOf(hoja.getCell(5, i).getContents()));
+                iv.setFechaCae(sdf.parse(hoja.getCell(6, i).getContents()));
                 iv.setTotal(Double.valueOf(hoja.getCell(7, i).getContents()));
                 iv.setImpuesto(Double.valueOf(hoja.getCell(8, i).getContents()));
                 iv.setGravado(Double.valueOf(hoja.getCell(9, i).getContents()));
@@ -169,9 +169,10 @@ public class LectorDeExcel {
         }
         return listaProductos;
     }
-    
+
     public static List<CompraClienteMercadoPago> leerExcelCompraClientesMP(File file) throws IOException, BiffException, Exception {
         Workbook archivoExcel = Workbook.getWorkbook(file);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         int cantidadFilas = archivoExcel.getSheet(0).getRows();
         Sheet hoja = archivoExcel.getSheet(0);
         List<CompraClienteMercadoPago> listaClientes = new ArrayList<>();
@@ -179,16 +180,40 @@ public class LectorDeExcel {
         for (int i = 1; i < cantidadFilas; i++) {
             try {
                 CompraClienteMercadoPago compra = new CompraClienteMercadoPago();
-                compra.setCuit(hoja.getCell(0, i).getContents());
-                compra.setNombre(hoja.getCell(1, i).getContents());
-                compra.setImporte(Double.valueOf(hoja.getCell(2, i).getContents().replaceAll("\\,", "\\.")));
-                compra.setProcesado(false);
-                listaClientes.add(compra);
+                String fecha = hoja.getCell(0, i).getContents();
+                int largoF = fecha.length();
+                if (largoF != 8) {
+                    JOptionPane.showMessageDialog(null, "ERROR EN FORMATO FECHA");
+                    salir = true;
+                } else {
+                    String fecha1 = fecha.substring(0, 6);
+                    String fecha2 = "20";
+                    String fecha3 = fecha.substring(6, 7);
+                    String fecha4 = fecha1+fecha2+fecha3;
+                    compra.setFecha(sdf.parse(fecha4));
+                    compra.setNombre(hoja.getCell(1, i).getContents());
+                    String cui = hoja.getCell(2, i).getContents();
+                    int largo = cui.length();
+                    if (largo != 11) {
+                        JOptionPane.showMessageDialog(null, "ERROR EN LAGO CUIT");
+                        salir = true;
+                    } else {
+                        //cuiCli.substring(0, 2) + cuiCli.substring(3, 11) + cuiCli.substring(12, 13);
+                        String pri = cui.substring(0, 2);
+                        String med = cui.substring(2, 10);
+                        String fin = cui.substring(10, 11);
+//                System.out.println("X"+pri + "-" + med + "-" + fin+"X");
+//                System.exit(0);
+                        compra.setCuit(pri + "-" + med + "-" + fin);
+                        compra.setImporte(Double.valueOf(hoja.getCell(3, i).getContents().replaceAll("\\,", "\\.")));
+                        compra.setProcesado(false);
+                        listaClientes.add(compra);
+                    }
+                }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error en linea: " + String.valueOf(i + 1));
                 salir = true;
                 throw new Exception(ex);
-                
             }
             if (salir) {
                 break;

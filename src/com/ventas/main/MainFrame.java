@@ -17,6 +17,7 @@ import com.ventas.frame.FacturaWebFrame;
 import com.ventas.frame.FacturaWebPanificadosFrame;
 import com.ventas.frame.FacturarFrame;
 import com.ventas.frame.FacturarPanificadosFrame;
+import com.ventas.frame.FacturasMercadoPagoFrame;
 import com.ventas.frame.ImportarClientesMercadoPagoFrame;
 import com.ventas.frame.ImportarProductoFrame;
 import com.ventas.frame.InformeStockFrame;
@@ -764,7 +765,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void facturaMercadoPago() {
-        
+        FacturasMercadoPagoFrame fmpf = new FacturasMercadoPagoFrame();
+        fmpf.setVisible(true);
+        this.dispose();
     }
 
     private void comprasPorImporte() {

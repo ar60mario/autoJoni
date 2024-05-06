@@ -7,6 +7,7 @@
         <id name="id" column="ID">
             <generator class="identity"/>
         </id>
+        <property name="fecha" type="date" column="FECHA"/>
         <property name="nombre" type="string" column="NOMBRE"/>
         <property name="cuit" type="string" column="CUIT"/>
         <property name="importe" type="double" column="IMPORTE"/>

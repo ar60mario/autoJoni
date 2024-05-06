@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.main;
 
 import com.ventas.util.Constantes;
@@ -20,7 +15,7 @@ public class VersionFrame extends javax.swing.JFrame {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
-        versionTxt.setText("2024-MAYO-002_a");
+        versionTxt.setText("2024-MAYO-006_a");
         versionTxt.setEditable(false);
         jLabel1.setText(Constantes.razon_social_titular);
     }

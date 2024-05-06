@@ -36,6 +36,22 @@ public class ProductoService {
         return productoLista;
     }
 
+    public List<Producto> getAllProductosByRubro(Rubro rubro) throws Exception {
+        List<Producto> productoLista = new ArrayList();
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            ProductoBo bo = new ProductoBo();
+            productoLista = bo.getAllProductosByRubro(rubro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+
+        return productoLista;
+    }
+    
     public void guardarProducto(Producto producto) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
