@@ -2,7 +2,8 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="0"/>
+    <Property name="title" type="java.lang.String" value="NUEVA FACTURA COMPRA X IMPORTE"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -48,24 +49,51 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="combo" min="-2" pref="217" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                      <Component id="gananciaTxt" min="-2" pref="72" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="netoGravadoTxt" max="32767" attributes="0"/>
-                                          <Component id="ivaTxt" max="32767" attributes="0"/>
-                                          <Component id="iibbTxt" pref="112" max="32767" attributes="0"/>
-                                          <Component id="impuesto_1Txt" max="32767" attributes="0"/>
-                                          <Component id="impuesto_2Txt" max="32767" attributes="0"/>
-                                          <Component id="impuesto_3Txt" max="32767" attributes="0"/>
-                                          <Component id="proveedorTxt" max="32767" attributes="0"/>
-                                          <Component id="fechaTxt" max="32767" attributes="0"/>
+                                  <Component id="combo" alignment="0" min="-2" pref="217" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="gananciaTxt" min="-2" pref="72" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="netoGravadoTxt" max="32767" attributes="0"/>
+                                              <Component id="ivaTxt" max="32767" attributes="0"/>
+                                              <Component id="iibbTxt" pref="112" max="32767" attributes="0"/>
+                                              <Component id="impuesto_1Txt" max="32767" attributes="0"/>
+                                              <Component id="impuesto_2Txt" max="32767" attributes="0"/>
+                                              <Component id="impuesto_3Txt" max="32767" attributes="0"/>
+                                              <Component id="proveedorTxt" max="32767" attributes="0"/>
+                                              <Component id="fechaTxt" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="gravadoVentaTxt" max="32767" attributes="0"/>
+                                                  <Component id="ivaVentaTxt" max="32767" attributes="0"/>
+                                                  <Component id="impuestoVentaTxt" pref="106" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="totalVentaTxt" alignment="1" min="-2" pref="108" max="-2" attributes="0"/>
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="totalTxt" min="-2" pref="108" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="0" pref="59" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="55" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -84,16 +112,19 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="gananciaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="netoGravadoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="gravadoVentaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ivaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ivaVentaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -104,6 +135,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="impuesto_1Txt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="impuestoVentaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -125,7 +157,13 @@
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="combo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="79" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalVentaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="87" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="grabarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="volverBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -301,6 +339,46 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel11">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="TOTAL FACTURA:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="totalTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="TOTAL"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel12">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CALCULADO"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="gravadoVentaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="N.GRAV. VTA."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="ivaVentaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="IVA VTA."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="totalVentaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="TOTAL VTA."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="impuestoVentaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="IMPUESTO VTA"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

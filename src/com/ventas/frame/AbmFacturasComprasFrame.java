@@ -5,15 +5,29 @@
  */
 package com.ventas.frame;
 
+import com.ventas.entities.FacturaCompra;
 import com.ventas.main.MainFrame;
+import com.ventas.services.FacturaCompraService;
 import com.ventas.util.UtilFrame;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author argia
  */
 public class AbmFacturasComprasFrame extends javax.swing.JFrame {
+
+    private List<FacturaCompra> facturas;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private DecimalFormat df = new DecimalFormat("#0.00");
 
     /**
      * Creates new form AbmFacturasComprasFrame
@@ -46,7 +60,8 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
         soloPendientesBtn = new javax.swing.JButton();
         volverBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("ABM FACTURAS DE COMPRA X IMPORTES");
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -55,15 +70,7 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
             new String [] {
                 "FECHA", "PROVEEDOR", "TOTAL", "PROCESADA"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
             tabla.getColumnModel().getColumn(0).setResizable(false);
@@ -187,10 +194,10 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
 
     private void filtrarProveedorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtrarProveedorBtnActionPerformed
         int row = tabla.getSelectedRow();
-        if(row < 0){
-            
+        if (row < 0) {
+
         }
-        
+
     }//GEN-LAST:event_filtrarProveedorBtnActionPerformed
 
     private void nuevaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaBtnActionPerformed
@@ -198,7 +205,7 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_nuevaBtnActionPerformed
 
     private void deTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deTxtKeyPressed
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             String fe = deTxt.getText();
             int largo = fe.length();
             if (largo == 10) {
@@ -215,7 +222,7 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_deTxtKeyPressed
 
     private void alTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_alTxtKeyPressed
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             String fe = alTxt.getText();
             int largo = fe.length();
             if (largo == 10) {
@@ -301,7 +308,7 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     }
 
     private void soloPendientes() {
-        
+
     }
 
     private void limpiarCampos() {
@@ -310,6 +317,38 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     }
 
     private void buscar() {
-        
+        facturas = null;
+        Date de = new Date();
+        Date al = new Date();
+        try {
+            de = sdf.parse(deTxt.getText());
+            al = sdf.parse(alTxt.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        try {
+            facturas = new FacturaCompraService().getAllFacturas();
+        } catch (Exception ex) {
+            Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        UtilFrame.limpiarTabla(tabla);
+        if (facturas != null && !facturas.isEmpty()) {
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            for (FacturaCompra facturaCompra : facturas) {
+                Object o[] = new Object[4];
+                o[0] = sdf.format(facturaCompra.getFecha());
+                o[1] = facturaCompra.getProveedor();
+                
+                o[2] = df.format(facturaCompra.getTotal());
+                if(facturaCompra.getProcesado()){
+                    o[3]="SIN PROCESAR";
+                } else {
+                    o[3]="  PROCESADA";
+                }
+                tbl.addRow(o);
+            }
+            tabla.setModel(tbl);
+        }
     }
 }

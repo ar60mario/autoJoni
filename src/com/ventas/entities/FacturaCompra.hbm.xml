@@ -7,20 +7,24 @@
         <id name="id" column="ID">
             <generator class="identity"/>
         </id>
-        <property name="fecha" type="string" column="FECHA"/>
-        <property name="ganancia" type="string" column="GANANCIA"/>
-        <property name="gravado" type="string" column="GRAVADO"/>
-        <property name="iva" type="integer" column="IVA"/>
-        <property name="iibb" type="string" column="II_BB"/>
-        <property name="impuesto1" type="string" column="IMPUESTO_1"/>
-        <property name="impuesto2" type="string" column="IMPUESTO_2"/>
-        <property name="impuesto3" type="string" column="IMPUESTO_3"/>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="ganancia" type="float" column="GANANCIA"/>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="gravadoVenta" type="double" column="GRAVADO_VENTA"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="ivaVenta" type="double" column="IVA_VENTA"/>
+        <property name="iibb" type="double" column="II_BB"/>
+        <property name="impuesto1" type="double" column="IMPUESTO_1"/>
+        <property name="impuesto2" type="double" column="IMPUESTO_2"/>
+        <property name="impuesto3" type="double" column="IMPUESTO_3"/>
+        <property name="impuestoVenta" type="double" column="IMPUESTO_VENTA"/>
         <property name="proveedor" type="string" column="PROVEEDOR"/>
-        <property name="gravadoUtilizado" type="string" column="GRAVADO_UTILIZADO"/>
-        <property name="ivaUtilizado" type="float" column="IVA_UTILIZADO"/>
-        <property name="impuestoUtilizado" type="boolean" column="IMPUESTO_UTILIZADO"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <property name="totalVenta" type="double" column="TOTAL_VENTA"/>
+        <property name="gravadoUtilizado" type="double" column="GRAVADO_UTILIZADO"/>
+        <property name="ivaUtilizado" type="double" column="IVA_UTILIZADO"/>
+        <property name="impuestoUtilizado" type="double" column="IMPUESTO_UTILIZADO"/>
         <property name="procesado" type="boolean" column="PROCESADO"/>
-        
         <many-to-one name="producto"
                     class="com.ventas.entities.Producto"
                      lazy="false">
