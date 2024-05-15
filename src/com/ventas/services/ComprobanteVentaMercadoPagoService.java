@@ -1,15 +1,20 @@
 package com.ventas.services;
 
-import com.ventas.bo.CompraClienteMercadoPagoBo;
+import com.ventas.bo.CompraBo;
+import com.ventas.bo.ComprobanteVentaMercadoPagoBo;
+import com.ventas.entities.Cliente;
+import com.ventas.entities.Compra;
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.FacturaCompra;
+import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.util.HibernateUtils;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class CompraClienteMercadoPagoService {
-    
+public class ComprobanteVentaMercadoPagoService {
+
 //    public void deleteCompra(Compra cliente) throws Exception{
 //       Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //       Transaction tx = session.beginTransaction();
@@ -22,75 +27,38 @@ public class CompraClienteMercadoPagoService {
 //           throw new Exception (ex);
 //       }
 //    }
-//
-//    public void saveCompra(Compra compra) throws Exception {
+    public void saveComprobanteCompleto(Cliente cliente, Boolean nuevo, Double gravado, Double iva,
+            Double impuesto, Double total, CompraClienteMercadoPago ccmp, FacturaCompra facturaCompra, FacturaIvaIntercambio fii) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            if (nuevo) {
+                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto1(cliente, gravado, iva,
+                        impuesto, total, ccmp, facturaCompra, fii);
+            } else {
+//                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto2(cliente, gravado, iva,
+//                        impuesto, total, compraMercadoPago, facturaCompra);
+            }
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+
+//    public List<Compra> getAllCompras() throws Exception {
+//        List<Compra> compras = null;
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();
 //        try {
-//            new CompraBo().saveCompra(compra);
+//            compras = new CompraBo().getAllCompra();
 //            tx.commit();
 //        } catch (Exception ex) {
 //            tx.rollback();
 //            throw new Exception(ex);
 //        }
+//        return compras;
 //    }
-    public CompraClienteMercadoPago getComprobanteCompraClientesMercadoPago(Long id) throws Exception {
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        CompraClienteMercadoPago ccmp;
-        try {
-            ccmp = new CompraClienteMercadoPagoBo().getComprobanteCompraClientesMercadoPago(id);
-            tx.commit();
-        } catch (Exception ex) {
-            tx.rollback();
-            ccmp = null;
-            throw new Exception(ex);
-        }
-        return ccmp;
-    }
-    
-    
-    public void saveCompraClientesImportados(List<CompraClienteMercadoPago> compra) throws Exception {
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            new CompraClienteMercadoPagoBo().saveCompraClientesImportados(compra);
-            tx.commit();
-        } catch (Exception ex) {
-            tx.rollback();
-            throw new Exception(ex);
-        }
-    }
-
-    public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
-        List<CompraClienteMercadoPago> compras = null;
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            compras = new CompraClienteMercadoPagoBo().getComprasParaProcesar(limiteCompras);
-            tx.commit();
-        } catch (Exception ex) {
-            tx.rollback();
-            throw new Exception(ex);
-        }
-        return compras;
-    }
-
-    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
-        List<CompraClienteMercadoPago> compras = null;
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            compras = new CompraClienteMercadoPagoBo().getAllFacturasPendientesDeProcesar();
-            tx.commit();
-        } catch (Exception ex) {
-            tx.rollback();
-            throw new Exception(ex);
-        }
-        return compras;
-    }
-    
-    
 //    public void updateCompra(Compra compra) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();
@@ -102,7 +70,6 @@ public class CompraClienteMercadoPagoService {
 //            throw new Exception(ex);
 //        }
 //    }
-//    
 //    public List<Compra> getCompraOrdenado() throws Exception{
 //        List<Compra> compras = null;
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();

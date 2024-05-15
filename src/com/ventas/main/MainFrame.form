@@ -198,6 +198,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stockPeriodoProductoCompraMnuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="facturasMercadoPagoPendientesMnu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="FACTURAS MERCADO PAGO PENDIENTES"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="facturasMercadoPagoPendientesMnuActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="saldoFacturasCompraPendeintesMnu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="SALDO DE FACTURAS COMPRA PENDIENTES"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saldoFacturasCompraPendeintesMnuActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">

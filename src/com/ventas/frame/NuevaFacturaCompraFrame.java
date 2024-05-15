@@ -632,10 +632,15 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             facturaCompra.setProducto(producto);
             facturaCompra.setProveedor(proveedor);
             facturaCompra.setGravadoVenta(gravadoVenta);
+            facturaCompra.setGravadoTemp(0.0);
             facturaCompra.setIvaVenta(ivaVenta);
+            facturaCompra.setIvaTemp(0.0);
             facturaCompra.setImpuestoVenta(impuestoVenta);
+            facturaCompra.setImpuestoTemp(0.0);
             facturaCompra.setTotalVenta(totalVenta);
+            facturaCompra.setTotalUtilizado(0.0);
             facturaCompra.setTotal(totalFc);
+            facturaCompra.setTotalTemp(0.0);
             try {
                 new FacturaCompraService().saveFacturaCompra(facturaCompra);
             } catch (Exception ex) {

@@ -8,8 +8,11 @@ package com.ventas.util;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.IvaVentas;
 import com.ventas.entities.Titular;
+import com.ventas.services.IvaVentasService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Mario
  */
 public class UtilFrame {
-    
+
     private final int qr_TamAncho = 200;
     private final int qr_TamAlto = 200;
     private final String qr_formato = "png";
@@ -33,14 +36,13 @@ public class UtilFrame {
     private final String qr_tipoCmpbte = "6"; // ver estructuras
     private String qr_nroCmpbte;
     private String qr_importe;
-    private final String qr_moneda="PES";
-    private final String qr_cotiz="1";
+    private final String qr_moneda = "PES";
+    private final String qr_cotiz = "1";
     private String qr_tipoDocReceptor;
     private String qr_nroDocReceptor;
-    private final String qr_tipoCodAutoriz="E";
+    private final String qr_tipoCodAutoriz = "E";
     private String qr_codigoAutoriz;
-    
-    
+
     public static String fecha(String fe) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         int largo = fe.length();
@@ -59,10 +61,31 @@ public class UtilFrame {
         }
         return fe;
     }
+
+    public static String ultimaFecha() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String ultimaFecha = sdf.format(new Date());
+        try {
+            ultimaFecha = new IvaVentasService().getUltimaFechaFactura();
+        } catch (Exception ex) {
+            Logger.getLogger(UtilFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ultimaFecha;
+    }
+
+    public static Integer getUltimoNumeroFactura() {
+        Integer numero = 0;
+        try {
+            numero = new IvaVentasService().getUltimoNumeroFactura();
+        } catch (Exception ex) {
+            Logger.getLogger(UtilFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return numero;
+    }
     
     public static String crearQr(Titular titular, Cliente cliente, IvaVentas iv) {
         String data = qr_url
-               + "{\"ver\":" + qr_version;
+                + "{\"ver\":" + qr_version;
 //        99
         qr_fecha = qr_sdf.format(iv.getFecha());
         /*
@@ -79,9 +102,9 @@ public class UtilFrame {
                 + ",\"nroDocRec\":" + numeroDoc_qr
                 + ",\"tipoCodAut\":\"" + tipoCodigoAutoriz_qr + "\""
                 + ",\"codAut\":" + nroCae_qr + "}";
-        */
-        
-        /*
+         */
+
+ /*
         private final String qr_url = "https://www.afip.gob.ar/fe/qr/";
     private final String qr_version = "1";
     private final SimpleDateFormat qr_sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -96,10 +119,10 @@ public class UtilFrame {
     private String qr_nroDocReceptor;
     private final String qr_tipoCodAutoriz="E";
     private String qr_codigoAutoriz;
-        */
+         */
         return data;
     }
-    
+
     public static JTable limpiarTabla(JTable tabla) {
         int rows = tabla.getRowCount();
         if (rows > 0) {

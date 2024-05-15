@@ -339,12 +339,11 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
                 Object o[] = new Object[4];
                 o[0] = sdf.format(facturaCompra.getFecha());
                 o[1] = facturaCompra.getProveedor();
-                
                 o[2] = df.format(facturaCompra.getTotal());
-                if(facturaCompra.getProcesado()){
-                    o[3]="SIN PROCESAR";
+                if (!facturaCompra.getProcesado()) {
+                    o[3] = "SIN PROCESAR";
                 } else {
-                    o[3]="  PROCESADA";
+                    o[3] = "  PROCESADA";
                 }
                 tbl.addRow(o);
             }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.FacturaCompraReferenciaCompraMercadoPago" schema="joni" 
+           table="factura_compra_referencia_compra_mercado_Pago">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="facturaCompra"
+                    class="com.ventas.entities.FacturaCompra"
+                     lazy="false">
+                     <column name="ID_FACTURA_COMPRA" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="compraClienteMercadoPago"
+                    class="com.ventas.entities.CompraClienteMercadoPago"
+                     lazy="false">
+                     <column name="ID_COMPRA_CLIENTE_MERCADO_PAGO" not-null="false"/>
+        </many-to-one>
+        
+    </class>
+</hibernate-mapping>

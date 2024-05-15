@@ -17,7 +17,9 @@ import com.ventas.frame.FacturaWebFrame;
 import com.ventas.frame.FacturaWebPanificadosFrame;
 import com.ventas.frame.FacturarFrame;
 import com.ventas.frame.FacturarPanificadosFrame;
+import com.ventas.frame.FacturasCompraConSaldoPendienteParaAsignarFrame;
 import com.ventas.frame.FacturasMercadoPagoFrame;
+import com.ventas.frame.FacturasMercadoPagoPendientesFacturarFrame;
 import com.ventas.frame.ImportarClientesMercadoPagoFrame;
 import com.ventas.frame.ImportarProductoFrame;
 import com.ventas.frame.InformeStockFrame;
@@ -100,6 +102,8 @@ public class MainFrame extends javax.swing.JFrame {
         informeStockMnu = new javax.swing.JMenuItem();
         stockPeriodoProductoVentaMnu = new javax.swing.JMenuItem();
         stockPeriodoProductoCompraMnu = new javax.swing.JMenuItem();
+        facturasMercadoPagoPendientesMnu = new javax.swing.JMenuItem();
+        saldoFacturasCompraPendeintesMnu = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         versionMnu = new javax.swing.JMenuItem();
 
@@ -316,6 +320,22 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu4.add(stockPeriodoProductoCompraMnu);
 
+        facturasMercadoPagoPendientesMnu.setText("FACTURAS MERCADO PAGO PENDIENTES");
+        facturasMercadoPagoPendientesMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturasMercadoPagoPendientesMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(facturasMercadoPagoPendientesMnu);
+
+        saldoFacturasCompraPendeintesMnu.setText("SALDO DE FACTURAS COMPRA PENDIENTES");
+        saldoFacturasCompraPendeintesMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saldoFacturasCompraPendeintesMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(saldoFacturasCompraPendeintesMnu);
+
         jMenuBar1.add(jMenu4);
 
         jMenu3.setText("?");
@@ -475,6 +495,14 @@ public class MainFrame extends javax.swing.JFrame {
         comprasPorImporte();
     }//GEN-LAST:event_comprasPorImporteMnuActionPerformed
 
+    private void saldoFacturasCompraPendeintesMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saldoFacturasCompraPendeintesMnuActionPerformed
+        saldoPendienteFacturasCompra();
+    }//GEN-LAST:event_saldoFacturasCompraPendeintesMnuActionPerformed
+
+    private void facturasMercadoPagoPendientesMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturasMercadoPagoPendientesMnuActionPerformed
+        facturasMercadoPagoPendientes();
+    }//GEN-LAST:event_facturasMercadoPagoPendientesMnuActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -524,6 +552,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem configuracionMnu;
     private javax.swing.JMenuItem duplicadoPdfMnu;
     private javax.swing.JButton facturaMercadoPagoBtn;
+    private javax.swing.JMenuItem facturasMercadoPagoPendientesMnu;
     private javax.swing.JMenuItem importarMercadoPagoMnu;
     private javax.swing.JMenuItem importarMnu;
     private javax.swing.JMenuItem informeStockMnu;
@@ -540,6 +569,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton randomBtn;
     private javax.swing.JMenuItem recuperarAfipMnu;
     private javax.swing.JMenuItem rubrosMnu;
+    private javax.swing.JMenuItem saldoFacturasCompraPendeintesMnu;
     private javax.swing.JButton salirBtn;
     private javax.swing.JMenuItem stockMnu;
     private javax.swing.JMenuItem stockPeriodoProductoCompraMnu;
@@ -773,6 +803,18 @@ public class MainFrame extends javax.swing.JFrame {
     private void comprasPorImporte() {
         AbmFacturasComprasFrame afcf = new AbmFacturasComprasFrame();
         afcf.setVisible(true);
+        this.dispose();
+    }
+
+    private void saldoPendienteFacturasCompra() {
+        FacturasCompraConSaldoPendienteParaAsignarFrame fccsppaf = new FacturasCompraConSaldoPendienteParaAsignarFrame();
+        fccsppaf.setVisible(true);
+        this.dispose();
+    }
+
+    private void facturasMercadoPagoPendientes() {
+        FacturasMercadoPagoPendientesFacturarFrame fmppff = new FacturasMercadoPagoPendientesFacturarFrame();
+        fmppff.setVisible(true);
         this.dispose();
     }
 }

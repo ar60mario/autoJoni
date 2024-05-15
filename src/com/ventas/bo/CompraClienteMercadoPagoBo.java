@@ -5,6 +5,7 @@ package com.ventas.bo;
 
 import com.ventas.dao.CompraClienteMercadoPagoDao;
 import com.ventas.entities.CompraClienteMercadoPago;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,16 +19,6 @@ public class CompraClienteMercadoPagoBo {
 
     private final CompraClienteMercadoPagoDao dao = new CompraClienteMercadoPagoDao();
 
-//    public List<Compra> getAllCompra() throws Exception {
-//        List<Compra> listCompras = null;
-//
-//        try {
-//            listCompras = dao.getAll(Compra.class);
-//        } catch (HibernateException ex) {
-//            throw new Exception(ex);
-//        }
-//        return listCompras;
-//    }
 //
 //    public Compra saveCompra(Compra compra) throws Exception {
 //        try {
@@ -37,6 +28,16 @@ public class CompraClienteMercadoPagoBo {
 //        }
 //        return compra;
 //    }
+    public CompraClienteMercadoPago getComprobanteCompraClientesMercadoPago(Long id) throws Exception {
+        CompraClienteMercadoPago ccmp;
+        try {
+            ccmp = dao.getComprobanteCompraClientesMercadoPago(id);
+        } catch (HibernateException ex) {
+            ccmp = null;
+            throw new Exception(ex);
+        }
+        return ccmp;
+    }
 
     public void saveCompraClientesImportados(List<CompraClienteMercadoPago> compra) throws Exception {
         for (CompraClienteMercadoPago ccmp : compra) {
@@ -46,6 +47,45 @@ public class CompraClienteMercadoPagoBo {
                 throw new Exception(ex);
             }
         }
+    }
+
+    public void updateCompraClientesImportados(CompraClienteMercadoPago compra) throws Exception {
+        try {
+            dao.update(compra);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
+        List<CompraClienteMercadoPago> listCompras = null;
+        List<CompraClienteMercadoPago> comprasParaFacturar = new ArrayList<>();
+        try {
+            listCompras = dao.getComprasParaProcesar();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        Double totalCalculado = 0.0;
+        if (listCompras != null && !listCompras.isEmpty()) {
+            for (CompraClienteMercadoPago ccmp : listCompras) {
+                totalCalculado += ccmp.getImporte();
+                comprasParaFacturar.add(ccmp);
+                if (totalCalculado >= limiteCompras) {
+                    break;
+                }
+            }
+        }
+        return listCompras;
+    }
+    
+    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
+        List<CompraClienteMercadoPago> listCompras = null;
+        try {
+            listCompras = dao.getAllFacturasPendientesDeProcesar();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return listCompras;
     }
 
 //    public void updateCompra(Compra compra) throws Exception {

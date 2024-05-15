@@ -65,7 +65,27 @@ public class IvaVentasBo {
         }
         return fact;
     }
-    //getFacturasPanificadosEntreFechas
+    
+    public String getUltimaFechaFactura() throws Exception {
+        String fe = null;
+        try {
+            fe = (String) dao.getUltimaFechaFactura();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
+    public Integer getUltimoNumeroFactura() throws Exception {
+        Integer fe = null;
+        try {
+            fe = (Integer) dao.getUltimoNumeroFactura();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
     public List<IvaVentas> getFacturasPanificadosEntreFechas(Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
         try {

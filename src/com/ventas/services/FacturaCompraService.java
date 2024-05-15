@@ -31,6 +31,35 @@ public class FacturaCompraService {
             throw new Exception(ex);
         }
     }
+    
+    public void updateFacturaCompra(FacturaCompra fc) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        FacturaCompraBo fBo = new FacturaCompraBo();
+        try {
+            fBo.updateFacturaCompra(fc);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+
+    public FacturaCompra getFacturaCompraById(Long id) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        FacturaCompraBo fBo = new FacturaCompraBo();
+        FacturaCompra fc;
+        try {
+            fc = fBo.getFacturaCompraById(id);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            fc = null;
+            throw new Exception(ex);
+        }
+        return fc;
+    }
 
 //    public void deleteFactura(Factura fc) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -72,6 +101,22 @@ public class FacturaCompraService {
         }
         return facturas;
     }
+    
+    public List<FacturaCompra> getFacturasCompraPendientes() throws Exception {
+        List<FacturaCompra> facturas = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        FacturaCompraBo fBo = new FacturaCompraBo();
+        try {
+            facturas = fBo.getFacturasCompraPendientes();
+            tx.commit();
+        } catch (HibernateException ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return facturas;
+    }
+    
 //    
 //    public List<Factura> getAllFacturasActivas() throws Exception {
 //        List<Factura> facturas = null;

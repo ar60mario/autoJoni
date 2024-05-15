@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ventas.dao;
 
 import com.ventas.entities.Compra;
@@ -20,7 +19,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Mar y Mar Informatica
  */
-public class CompraDao extends GenericDao{
+public class CompraDao extends GenericDao {
 
     public List<Compra> getAllCompraOrdenado() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -28,7 +27,7 @@ public class CompraDao extends GenericDao{
         criteria.addOrder(Order.asc("fecha"));
         return (List<Compra>) criteria.list();
     }
-    
+
     public List<Compra> getCompraPorComprobante(String nro) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Compra.class);
@@ -36,7 +35,7 @@ public class CompraDao extends GenericDao{
         criteria.addOrder(Order.asc("fecha"));
         return (List<Compra>) criteria.list();
     }
-    
+
     public List<Compra> getComprasEntreFechas(Date de, Date al) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Compra.class);

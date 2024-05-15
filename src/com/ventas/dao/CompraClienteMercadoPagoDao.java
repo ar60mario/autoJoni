@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ventas.dao;
 
-import com.ventas.entities.Compra;
+import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.util.HibernateUtils;
 import java.util.Date;
 //import org.hibernate.classic.Session;
@@ -20,27 +19,35 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Mar y Mar Informatica
  */
-public class CompraClienteMercadoPagoDao extends GenericDao{
+public class CompraClienteMercadoPagoDao extends GenericDao {
 
-    public List<Compra> getAllCompraOrdenado() {
+    public CompraClienteMercadoPago getComprobanteCompraClientesMercadoPago(Long id) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(Compra.class);
+        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+        criteria.add(Restrictions.eq("id", id));
+        return (CompraClienteMercadoPago) criteria.uniqueResult();
+    }
+//    
+    public List<CompraClienteMercadoPago> getComprasParaProcesar() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+        criteria.add(Restrictions.eq("procesado", false));
         criteria.addOrder(Order.asc("fecha"));
-        return (List<Compra>) criteria.list();
+        return (List<CompraClienteMercadoPago>) criteria.list();
     }
     
-    public List<Compra> getCompraPorComprobante(String nro) {
+    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(Compra.class);
-        criteria.add(Restrictions.eq("comprobante", nro));
+        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+        criteria.add(Restrictions.eq("procesado", false));
         criteria.addOrder(Order.asc("fecha"));
-        return (List<Compra>) criteria.list();
+        return (List<CompraClienteMercadoPago>) criteria.list();
     }
-    
-    public List<Compra> getComprasEntreFechas(Date de, Date al) {
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(Compra.class);
-        criteria.add(Restrictions.between("fecha", de, al));
-        return (List<Compra>) criteria.list();
-    }
+//
+//    public List<Compra> getComprasEntreFechas(Date de, Date al) {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(Compra.class);
+//        criteria.add(Restrictions.between("fecha", de, al));
+//        return (List<Compra>) criteria.list();
+//    }
 }

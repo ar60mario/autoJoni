@@ -5,17 +5,44 @@
  */
 package com.ventas.frame;
 
+import com.ventas.entities.CalculoFactura;
+import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.FacturaCompra;
+import com.ventas.entities.FacturaCompraReferenciaCompraMercadoPago;
+import com.ventas.entities.FacturaIvaIntercambio;
+import com.ventas.main.MainFrame;
+import com.ventas.services.CompraClienteMercadoPagoService;
+import com.ventas.services.FacturaCompraService;
+import com.ventas.util.UtilFactura;
+import com.ventas.util.UtilFrame;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author argia
  */
 public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
 
+    private DecimalFormat df = new DecimalFormat("#0.00");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
     /**
      * Creates new form FacturasMercadoPagoFrame
      */
     public FacturasMercadoPagoFrame() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(100, 100, 255));
+        this.setLocationRelativeTo(null);
+        limpiarCampos();
     }
 
     /**
@@ -29,41 +56,82 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        fechaTxt = new javax.swing.JTextField();
         ultimaFechaTxt = new javax.swing.JTextField();
+        fechaTxt = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         procesarBtn = new javax.swing.JButton();
         presentarBtn = new javax.swing.JButton();
         volverBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        maximoFacturarTxt = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("FACTURACION MERCADO PAGO");
 
         jLabel1.setText("FECHA FACTURAS:");
 
         jLabel2.setText("ULTIMA FECHA SISTEMA:");
 
-        fechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fechaTxt.setText("ULT.FECHA");
-
         ultimaFechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ultimaFechaTxt.setText("FECHA");
+        ultimaFechaTxt.setText("ULT.FECHA");
+
+        fechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        fechaTxt.setText("FECHA");
+        fechaTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fechaTxtKeyPressed(evt);
+            }
+        });
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "CUIT", "NOMBRE", "GRAVADO", "IMPUESTO", "IVA", "TOTAL", "TOTAL MP", "REF1", "REF2"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabla);
 
         procesarBtn.setText("PROCESAR");
+        procesarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                procesarBtnActionPerformed(evt);
+            }
+        });
 
         presentarBtn.setText("PRESENTAR");
+        presentarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presentarBtnActionPerformed(evt);
+            }
+        });
 
         volverBtn.setText("VOLVER");
+        volverBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("MAXIMO A FACTURAR:");
+
+        maximoFacturarTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        maximoFacturarTxt.setText("MAX.FACTURAR");
+        maximoFacturarTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                maximoFacturarTxtKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,15 +140,19 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 909, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                            .addComponent(ultimaFechaTxt))
+                            .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                            .addComponent(fechaTxt))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(maximoFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(procesarBtn))
                     .addGroup(layout.createSequentialGroup()
@@ -95,12 +167,14 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(procesarBtn))
+                    .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(procesarBtn)
+                    .addComponent(jLabel3)
+                    .addComponent(maximoFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -112,6 +186,78 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void fechaTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            String fe = fechaTxt.getText();
+            int largo = fe.length();
+            if (largo == 10) {
+                maximoFacturarTxt.requestFocus();
+            } else {
+                if (largo > 10) {
+                    JOptionPane.showMessageDialog(this, "ERROR EN LARGO DE FECHA");
+                    return;
+                }
+            }
+            fe = UtilFrame.fecha(fe);
+            fechaTxt.setText(fe);
+        }
+    }//GEN-LAST:event_fechaTxtKeyPressed
+
+    private void procesarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procesarBtnActionPerformed
+        procesar();
+    }//GEN-LAST:event_procesarBtnActionPerformed
+
+    private void maximoFacturarTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maximoFacturarTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (!maximoFacturarTxt.getText().isEmpty()) {
+                procesarBtn.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_maximoFacturarTxtKeyPressed
+
+    private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
+        volver();
+    }//GEN-LAST:event_volverBtnActionPerformed
+
+    private void presentarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentarBtnActionPerformed
+        int rows = tabla.getRowCount();
+        if (rows < 1) {
+            JOptionPane.showMessageDialog(this, "DEBE TENER UNA FACTURA MINIMO PARA PRESENTAR");
+            return;
+        }
+        Date fecha = new Date();
+        try {
+            fecha = sdf.parse(fechaTxt.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (int i = 0; i < rows - 1; i++) {
+            String cuit = tabla.getValueAt(i, 0).toString();
+            String nombre = tabla.getValueAt(i, 1).toString();
+            Double gravado = Double.valueOf(tabla.getValueAt(i, 2).toString().replace(",", "."));
+            Double impuesto = Double.valueOf(tabla.getValueAt(i, 3).toString().replace(",", "."));
+            Double iva = Double.valueOf(tabla.getValueAt(i, 4).toString().replace(",", "."));
+            Double total = Double.valueOf(tabla.getValueAt(i, 5).toString().replace(",", "."));
+            Long compraMercadoPago = Long.valueOf(tabla.getValueAt(i, 7).toString());
+            Long facturaCompra = Long.valueOf(tabla.getValueAt(i, 8).toString());
+            Integer ultimoNumero = UtilFrame.getUltimoNumeroFactura();
+            //presentar afip
+            FacturaIvaIntercambio fii = new FacturaIvaIntercambio();
+            fii.setEstado("A");
+            fii.setCae(1234567890123456789L);
+            fii.setFechaVencimientoCae(new Date());
+            fii.setFecha(fecha);
+            fii.setLetra("B");
+            fii.setNumero(ultimoNumero +1);
+            fii.setSucursal(10);
+            if (fii.getEstado().equals("A")) {
+                UtilFactura.grabarComprobanteCompleto(cuit, nombre, gravado, iva, impuesto,
+                        total, compraMercadoPago, facturaCompra, fii);
+            }
+
+        }
+    }//GEN-LAST:event_presentarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,11 +298,120 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
     private javax.swing.JTextField fechaTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField maximoFacturarTxt;
     private javax.swing.JButton presentarBtn;
     private javax.swing.JButton procesarBtn;
     private javax.swing.JTable tabla;
     private javax.swing.JTextField ultimaFechaTxt;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiarCampos() {
+        String ultimaFecha = UtilFrame.ultimaFecha();
+        if (ultimaFecha != null) {
+            ultimaFechaTxt.setText(ultimaFecha);
+        } else {
+            ultimaFechaTxt.setText("01-01-2020");
+        }
+        fechaTxt.setText("");
+        maximoFacturarTxt.setText("");
+        fechaTxt.requestFocus();
+    }
+
+    private void volver() {
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
+    }
+
+    private void procesar() {
+        List<CompraClienteMercadoPago> compras = null;
+        UtilFrame.limpiarTabla(tabla);
+        if (!maximoFacturarTxt.getText().isEmpty()) {
+            Double maximoFacturar = Double.valueOf(maximoFacturarTxt.getText().replace(",", "."));
+            Double sumaDeFacturas = 0.0;
+            try {
+                compras = new CompraClienteMercadoPagoService().getComprasParaProcesar(maximoFacturar);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            }
+            List<FacturaCompra> facturas = null;
+            try {
+                facturas = new FacturaCompraService().getAllFacturas();
+            } catch (Exception ex) {
+                Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (compras != null && !compras.isEmpty()) {
+                if (facturas != null && !facturas.isEmpty()) {
+                    int i = 0;
+                    DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+                    for (CompraClienteMercadoPago ccmp : compras) {
+                        System.out.println(ccmp.getImporte());
+                        System.out.println(ccmp.getId());
+//                        System.out.println("p1");
+                        FacturaCompra fc = facturas.get(i);
+                        Double t1 = fc.getTotal() - fc.getTotalTemp();
+                        Double t2 = ccmp.getImporte();
+                        if (t2 <= t1) {
+                            CalculoFactura cf = UtilFactura.calcularTotales(fc, ccmp);
+                            if (cf != null) {
+                                Object o[] = new Object[9];
+                                o[0] = ccmp.getCuit();
+                                o[1] = ccmp.getNombre();
+                                o[2] = cf.getGravado();
+                                o[3] = cf.getImpuesto();
+                                o[4] = cf.getIva();
+                                o[5] = cf.getTotal();
+                                o[6] = cf.getTotalMp();
+                                o[7] = ccmp.getId();
+                                o[8] = fc.getId();
+                                sumaDeFacturas += cf.getTotalMp();
+                                String sumaDeFacturasString = df.format(sumaDeFacturas);
+                                sumaDeFacturas = Double.valueOf(sumaDeFacturasString.replace(",", "."));
+//                                System.out.println(cf.getTotal());
+//                                System.out.println(sumaDeFacturas);
+//                                JOptionPane.showMessageDialog(this, "VER");
+                                tbl.addRow(o);
+                                ccmp.setProcesado(true);
+                                fc.setGravadoTemp(fc.getGravadoTemp() + cf.getGravado());
+                                fc.setImpuestoTemp(fc.getImpuestoTemp() + cf.getImpuesto());
+                                fc.setIvaTemp(fc.getIvaTemp() + cf.getIva());
+                                fc.setTotalTemp(fc.getTotalTemp() + cf.getTotal());
+                                FacturaCompraReferenciaCompraMercadoPago fcrcmp
+                                        = new FacturaCompraReferenciaCompraMercadoPago();
+                                fcrcmp.setCompraClienteMercadoPago(ccmp);
+                                fcrcmp.setFacturaCompra(fc);
+                            }
+                        } else {
+                            // tomar total y el saldo de otra factura de compra
+                            i += 1;
+                        }
+//                        Double sumaFacturas = sumaDeFacturas.doubleValue();
+                        if (sumaDeFacturas > maximoFacturar) {
+                            break;
+                        }
+//                        System.out.println(i);
+//                        System.out.println(facturas.size());
+//                        System.out.println("p2");
+                        if (i > facturas.size() - 1) {
+                            break;
+                        }
+                    }
+                    Object o[] = new Object[7];
+                    o[0] = "";
+                    o[1] = "";
+                    o[2] = "";
+                    o[3] = "";
+                    o[4] = "";
+                    o[5] = "";
+                    o[6] = sumaDeFacturas.doubleValue();
+                    tbl.addRow(o);
+                    tabla.setModel(tbl);
+                }
+            }
+        }
+    }
 }

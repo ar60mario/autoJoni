@@ -8,6 +8,7 @@ package com.ventas.dao;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.IvaVentas;
 import com.ventas.util.HibernateUtils;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
@@ -32,6 +33,40 @@ public class IvaVentasDao extends GenericDao{
                         .addOrder(Order.asc("numeroFactura"))
                         .list();
         return fact;
+    }
+    
+    public String getUltimaFechaFactura() {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) 
+                session.createCriteria(IvaVentas.class)
+//                        .add(Restrictions.between("fecha", fd, fa))
+                      //  .add(Restrictions.eq("panificado", false))
+                        .setMaxResults(3)
+                        .addOrder(Order.desc("fecha"))
+//                        .addOrder(Order.asc("letra"))
+                        .addOrder(Order.desc("numeroFactura"))
+                        .list();
+        Date fecha = fact.get(0).getFecha();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
+    }
+    
+    public Integer getUltimoNumeroFactura() {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) 
+                session.createCriteria(IvaVentas.class)
+                        .add(Restrictions.eq("numeroSucursal", 10))
+                        .add(Restrictions.eq("tipoDoc", 6))
+                        .setMaxResults(3)
+                        .addOrder(Order.desc("numeroFactura"))
+//                        .addOrder(Order.asc("letra"))
+//                        .addOrder(Order.desc("numeroFactura"))
+                        .list();
+        Integer numero = fact.get(0).getNumeroFactura();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return numero;
     }
     
     public List<IvaVentas> getFacturasPanificadosEntreFechas(Date fd, Date fa) {

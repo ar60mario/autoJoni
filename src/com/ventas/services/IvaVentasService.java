@@ -47,6 +47,34 @@ public class IvaVentasService {
         return ivaVentas;
     }
     
+    public String getUltimaFechaFactura() throws Exception {
+        String fe = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            fe = new IvaVentasBo().getUltimaFechaFactura();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
+    public Integer getUltimoNumeroFactura() throws Exception {
+        Integer fe = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            fe = new IvaVentasBo().getUltimoNumeroFactura();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
     public List<IvaVentas> getAllIvaVentasByCodigoYFecha(Cliente cliente,Date fechaDe,Date fechaA) throws Exception {
         List<IvaVentas> ivaVentas = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

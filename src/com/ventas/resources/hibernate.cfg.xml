@@ -48,6 +48,7 @@
     <mapping resource="com/ventas/entities/Producto.hbm.xml"/>
     <mapping resource="com/ventas/entities/Factura.hbm.xml"/>
     <mapping resource="com/ventas/entities/FacturaCompra.hbm.xml"/>
+    <mapping resource="com/ventas/entities/FacturaCompraReferenciaCompraMercadoPago.hbm.xml"/>
     <mapping resource="com/ventas/entities/Remito.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonFc.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonRemito.hbm.xml"/>

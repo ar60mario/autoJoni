@@ -29,6 +29,36 @@ public class FacturaCompraBo {
         return fact;
     }
 
+    public FacturaCompra updateFacturaCompra(FacturaCompra factura) throws Exception {
+        FacturaCompra fact = null;
+        try {
+            fact = (FacturaCompra) dao.update(factura);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public FacturaCompra getFacturaCompraById(Long id) throws Exception {
+        FacturaCompra fact = null;
+        try {
+            fact = (FacturaCompra) dao.getFacturaCompraById(id);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public List<FacturaCompra> getFacturasCompraPendientes() throws Exception {
+        List<FacturaCompra> fact = null;
+        try {
+            fact = (List<FacturaCompra>) dao.getFacturasCompraPendientes();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+    
 //    public void deleteFactura(Factura factura) throws Exception {
 //        try {
 //            dao.delete(factura);
