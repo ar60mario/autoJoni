@@ -11,6 +11,7 @@
         <property name="nombre" type="string" column="NOMBRE"/>
         <property name="cuit" type="string" column="CUIT"/>
         <property name="importe" type="double" column="IMPORTE"/>
+        <property name="importeUtilizado" type="double" column="IMPORTE_UTILIZADO"/>
         <property name="procesado" type="boolean" column="PROCESADO"/>
     </class>
 </hibernate-mapping>

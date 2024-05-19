@@ -28,13 +28,13 @@ public class CompraClienteMercadoPagoDao extends GenericDao {
         return (CompraClienteMercadoPago) criteria.uniqueResult();
     }
 //    
-    public List<CompraClienteMercadoPago> getComprasParaProcesar() {
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
-        criteria.add(Restrictions.eq("procesado", false));
-        criteria.addOrder(Order.asc("fecha"));
-        return (List<CompraClienteMercadoPago>) criteria.list();
-    }
+//    public List<CompraClienteMercadoPago> getComprasParaProcesar() {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+//        criteria.add(Restrictions.eq("procesado", false));
+//        criteria.addOrder(Order.asc("fecha"));
+//        return (List<CompraClienteMercadoPago>) criteria.list();
+//    }
     
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

@@ -10,5 +10,6 @@
         <property name="orderMaximo" type="integer" column="ORDER_MAXIMO"/>
         <property name="importeMaximo" type="double" column="IMPORTE_MAXIMO"/>
         <property name="importeMaximoPanificados" type="double" column="IMPORTE_MAXIMO_PANIFICADOS"/>
+        <property name="importeMinimoMercadoPago" type="double" column="IMPORTE_MINIMO_MERCADO_PAGO"/>
     </class>
 </hibernate-mapping>

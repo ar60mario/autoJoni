@@ -56,7 +56,9 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         maximoTxt = new javax.swing.JTextField();
         grabarBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        volverBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        minimoFacturaMercadoPagoTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("CONFIGURACION");
@@ -73,12 +75,17 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Volver");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        volverBtn.setText("Volver");
+        volverBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                volverBtnActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("IMPORTE MINIMO PARA FACTURAS MERCADO PAGO:");
+
+        minimoFacturaMercadoPagoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        minimoFacturaMercadoPagoTxt.setText("MINIMO FC");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,11 +97,15 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(grabarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
+                        .addComponent(volverBtn))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                        .addComponent(maximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(maximoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                            .addComponent(minimoFacturaMercadoPagoTxt))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -104,10 +115,14 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(maximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(minimoFacturaMercadoPagoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grabarBtn)
-                    .addComponent(jButton2))
+                    .addComponent(volverBtn))
                 .addContainerGap())
         );
 
@@ -118,9 +133,9 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
         grabar();
     }//GEN-LAST:event_grabarBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         volver();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_volverBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,8 +189,9 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
             ConfiguracionTop cf = new ConfiguracionTop();
             cf.setId(1);
             cf.setImporteMaximo(1D);
-            cf.setImporteMaximoPanificados(0D);
+            cf.setImporteMaximoPanificados(0.0);
             cf.setOrderMaximo(1);
+            cf.setImporteMinimoMercadoPago(0.0);
             try {
                 new ConfiguracionTopService().saveConfigTop(cf);
             } catch (Exception ex) {
@@ -255,11 +271,12 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
             cl.setCuit("00-00000000-0");
             cl.setDescuento(0F);
             Domicilio dm = new Domicilio();
-            dm.setCalle("MIGUEL CANE");
-            dm.setNumero("3104");
+            dm.setCalle("COSQUIN");
+            dm.setNumero("2626");
             dm.setPiso("");
             dm.setDepartamento("");
-            dm.setLocalidad("SAN FERNANDO");
+            dm.setCodigoPostal("1814");
+            dm.setLocalidad("LA NORIA");
             dm.setProvincia("BUENOS AIRES");
             cl.setDomicilio(dm);
             try {
@@ -284,6 +301,7 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
             System.exit(0);
         }
         maximoTxt.setText(df.format(ct.getImporteMaximo()));
+        minimoFacturaMercadoPagoTxt.setText(df.format(ct.getImporteMinimoMercadoPago()));
         if (ct.getImporteMaximoPanificados() != null) {
 //        maximoPanTxt.setText(df.format(ct.getImporteMaximoPanificados()));
         } else {
@@ -293,15 +311,19 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton grabarBtn;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField maximoTxt;
+    private javax.swing.JTextField minimoFacturaMercadoPagoTxt;
+    private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
     private void grabar() {
         Double importe = Double.valueOf(maximoTxt.getText().replace(",", "."));
+        Double importeMinimo = Double.valueOf(minimoFacturaMercadoPagoTxt.getText().replace(",", "."));
 //        Double importe2 = Double.valueOf(maximoPanTxt.getText().replace(",", "."));
         ct.setImporteMaximo(importe);
+        ct.setImporteMinimoMercadoPago(importeMinimo);
 //        ct.setImporteMaximoPanificados(importe2);
         try {
             new ConfiguracionTopService().updateConfigTop(ct);

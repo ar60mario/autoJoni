@@ -42,20 +42,21 @@
     <mapping resource="com/ventas/entities/Cliente.hbm.xml"/>
     <mapping resource="com/ventas/entities/Compra.hbm.xml"/>
     <mapping resource="com/ventas/entities/CompraClienteMercadoPago.hbm.xml"/>
+    <mapping resource="com/ventas/entities/Configuracion.hbm.xml"/>
+    <mapping resource="com/ventas/entities/ConfiguracionTop.hbm.xml"/>
     <mapping resource="com/ventas/entities/Domicilio.hbm.xml"/>
     <mapping resource="com/ventas/entities/Rubro.hbm.xml"/>
     <mapping resource="com/ventas/entities/SubRubro.hbm.xml"/>
     <mapping resource="com/ventas/entities/Producto.hbm.xml"/>
     <mapping resource="com/ventas/entities/Factura.hbm.xml"/>
     <mapping resource="com/ventas/entities/FacturaCompra.hbm.xml"/>
-    <mapping resource="com/ventas/entities/FacturaCompraReferenciaCompraMercadoPago.hbm.xml"/>
+    <mapping resource="com/ventas/entities/FacturaCompraReferenciaMercadoPago.hbm.xml"/>
     <mapping resource="com/ventas/entities/Remito.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonFc.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonRemito.hbm.xml"/>
     <mapping resource="com/ventas/entities/IvaVentas.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonFactura.hbm.xml"/>
-    <mapping resource="com/ventas/entities/Configuracion.hbm.xml"/>
-    <mapping resource="com/ventas/entities/ConfiguracionTop.hbm.xml"/>
+    
     <mapping resource="com/ventas/entities/TipoDoc.hbm.xml"/>
     <mapping resource="com/ventas/entities/ProductoTop.hbm.xml"/>
     <mapping resource="com/ventas/entities/TicketTime.hbm.xml"/>

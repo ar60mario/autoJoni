@@ -61,7 +61,7 @@ public class CompraClienteMercadoPagoBo {
         List<CompraClienteMercadoPago> listCompras = null;
         List<CompraClienteMercadoPago> comprasParaFacturar = new ArrayList<>();
         try {
-            listCompras = dao.getComprasParaProcesar();
+            listCompras = dao.getAllFacturasPendientesDeProcesar();
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
@@ -75,7 +75,7 @@ public class CompraClienteMercadoPagoBo {
                 }
             }
         }
-        return listCompras;
+        return comprasParaFacturar;
     }
     
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {

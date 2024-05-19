@@ -9,18 +9,20 @@ package com.ventas.entities;
  *
  * @author argia
  */
-public class FacturaCompraReferenciaCompraMercadoPago {
+public class FacturaCompraReferenciaMercadoPago {
     private Long id;
     private FacturaCompra facturaCompra;
     private CompraClienteMercadoPago compraClienteMercadoPago;
+    private IvaVentas ivaVentas;
 
-    public FacturaCompraReferenciaCompraMercadoPago() {
+    public FacturaCompraReferenciaMercadoPago() {
     }
 
-    public FacturaCompraReferenciaCompraMercadoPago(Long id, FacturaCompra facturaCompra, CompraClienteMercadoPago compraClienteMercadoPago) {
+    public FacturaCompraReferenciaMercadoPago(Long id, FacturaCompra facturaCompra, CompraClienteMercadoPago compraClienteMercadoPago, IvaVentas ivaVentas) {
         this.id = id;
         this.facturaCompra = facturaCompra;
         this.compraClienteMercadoPago = compraClienteMercadoPago;
+        this.ivaVentas = ivaVentas;
     }
 
     public Long getId() {
@@ -45,6 +47,14 @@ public class FacturaCompraReferenciaCompraMercadoPago {
 
     public void setCompraClienteMercadoPago(CompraClienteMercadoPago compraClienteMercadoPago) {
         this.compraClienteMercadoPago = compraClienteMercadoPago;
+    }
+
+    public IvaVentas getIvaVentas() {
+        return ivaVentas;
+    }
+
+    public void setIvaVentas(IvaVentas ivaVentas) {
+        this.ivaVentas = ivaVentas;
     }
     
 }

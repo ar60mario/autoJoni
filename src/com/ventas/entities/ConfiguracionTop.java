@@ -14,15 +14,17 @@ public class ConfiguracionTop {
     private Integer orderMaximo;
     private Double importeMaximo;
     private Double importeMaximoPanificados;
+    private Double importeMinimoMercadoPago;
 
     public ConfiguracionTop() {
     }
 
-    public ConfiguracionTop(Integer id, Integer orderMaximo, Double importeMaximo, Double importeMaximoPanificados) {
+    public ConfiguracionTop(Integer id, Integer orderMaximo, Double importeMaximo, Double importeMaximoPanificados, Double importeMinimoMercadoPago) {
         this.id = id;
         this.orderMaximo = orderMaximo;
         this.importeMaximo = importeMaximo;
         this.importeMaximoPanificados = importeMaximoPanificados;
+        this.importeMinimoMercadoPago = importeMinimoMercadoPago;
     }
 
     public Integer getId() {
@@ -48,7 +50,7 @@ public class ConfiguracionTop {
     public void setImporteMaximo(Double importeMaximo) {
         this.importeMaximo = importeMaximo;
     }
-    
+
     public Double getImporteMaximoPanificados() {
         return importeMaximoPanificados;
     }
@@ -56,4 +58,13 @@ public class ConfiguracionTop {
     public void setImporteMaximoPanificados(Double importeMaximoPanificados) {
         this.importeMaximoPanificados = importeMaximoPanificados;
     }
+
+    public Double getImporteMinimoMercadoPago() {
+        return importeMinimoMercadoPago;
+    }
+
+    public void setImporteMinimoMercadoPago(Double importeMinimoMercadoPago) {
+        this.importeMinimoMercadoPago = importeMinimoMercadoPago;
+    }
+
 }

@@ -2,10 +2,12 @@ package com.ventas.services;
 
 import com.ventas.bo.CompraBo;
 import com.ventas.bo.ComprobanteVentaMercadoPagoBo;
+import com.ventas.entities.CalculoFactura;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.Compra;
 import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.FacturaCompra;
+import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.util.HibernateUtils;
 import java.util.Date;
@@ -27,17 +29,18 @@ public class ComprobanteVentaMercadoPagoService {
 //           throw new Exception (ex);
 //       }
 //    }
-    public void saveComprobanteCompleto(Cliente cliente, Boolean nuevo, Double gravado, Double iva,
-            Double impuesto, Double total, CompraClienteMercadoPago ccmp, FacturaCompra facturaCompra, FacturaIvaIntercambio fii) throws Exception {
+    public void saveComprobanteCompleto(Cliente cliente, Boolean nuevo, CalculoFactura cf, 
+            CompraClienteMercadoPago ccmp, FacturaCompra facturaCompra, 
+            FacturaIvaIntercambio fii, FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
             if (nuevo) {
-                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto1(cliente, gravado, iva,
-                        impuesto, total, ccmp, facturaCompra, fii);
+                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto1(cliente, cf, 
+                        ccmp, facturaCompra, fii);
             } else {
-//                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto2(cliente, gravado, iva,
-//                        impuesto, total, compraMercadoPago, facturaCompra);
+                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto2(cliente, cf, 
+                        ccmp, facturaCompra, fii, fcrmp);
             }
             tx.commit();
         } catch (Exception ex) {

@@ -32,6 +32,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ImportarProducto
+     * @param archivo
      */
     public ImportarClientesMercadoPagoFrame(File archivo) {
         initComponents();

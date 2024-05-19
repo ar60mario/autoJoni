@@ -8,6 +8,7 @@ package com.ventas.util;
 import com.ventas.entities.AlicuotaIva;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.ConfiguracionTop;
 import com.ventas.entities.Domicilio;
 import com.ventas.entities.IvaVentas;
 import com.ventas.entities.Producto;
@@ -15,6 +16,7 @@ import com.ventas.entities.Rubro;
 import com.ventas.entities.SubRubro;
 import com.ventas.services.AlicuotaIvaService;
 import com.ventas.services.ClienteService;
+import com.ventas.services.ConfiguracionTopService;
 import com.ventas.services.RubroService;
 import com.ventas.services.SubRubroService;
 import java.io.File;
@@ -171,6 +173,9 @@ public class LectorDeExcel {
     }
 
     public static List<CompraClienteMercadoPago> leerExcelCompraClientesMP(File file) throws IOException, BiffException, Exception {
+        ConfiguracionTop cf = null;
+        cf = new ConfiguracionTopService().getConfigTopById(1);
+        Double maximo = cf.getImporteMaximo();
         Workbook archivoExcel = Workbook.getWorkbook(file);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         int cantidadFilas = archivoExcel.getSheet(0).getRows();
@@ -183,30 +188,51 @@ public class LectorDeExcel {
                 String fecha = hoja.getCell(0, i).getContents();
                 int largoF = fecha.length();
                 if (largoF != 8) {
-                    JOptionPane.showMessageDialog(null, "ERROR EN FORMATO FECHA");
-                    salir = true;
+                    if (largoF != 10) {
+                        JOptionPane.showMessageDialog(null, "ERROR EN FORMATO FECHA " + i);
+                        salir = true;
+                    }
                 } else {
                     String fecha1 = fecha.substring(0, 6);
                     String fecha2 = "20";
                     String fecha3 = fecha.substring(6, 7);
-                    String fecha4 = fecha1+fecha2+fecha3;
+                    String fecha4 = fecha1 + fecha2 + fecha3;
                     compra.setFecha(sdf.parse(fecha4));
-                    compra.setNombre(hoja.getCell(1, i).getContents());
-                    String cui = hoja.getCell(2, i).getContents();
+                    compra.setNombre(hoja.getCell(2, i).getContents());
+                    String cui = hoja.getCell(1, i).getContents();
                     int largo = cui.length();
+                    String pri;
+                    String med;
+                    String fin;
                     if (largo != 11) {
-                        JOptionPane.showMessageDialog(null, "ERROR EN LAGO CUIT");
-                        salir = true;
+                        if (largo != 1) {
+                            JOptionPane.showMessageDialog(null, "ERROR EN LARGO CUIT " + i + " " + largo);
+                            salir = true;
+                        } else {
+                            if (!cui.equals("0")) {
+                                JOptionPane.showMessageDialog(null, "ERROR EN LARGO CUIT " + i + " _ " + largo);
+                                salir = true;
+                            }
+                        }
+                    }
+                    //cuiCli.substring(0, 2) + cuiCli.substring(3, 11) + cuiCli.substring(12, 13);
+                    if (cui.equals("0")) {
+                        pri = "00";
+                        med = "00000000";
+                        fin = "0";
                     } else {
-                        //cuiCli.substring(0, 2) + cuiCli.substring(3, 11) + cuiCli.substring(12, 13);
-                        String pri = cui.substring(0, 2);
-                        String med = cui.substring(2, 10);
-                        String fin = cui.substring(10, 11);
-//                System.out.println("X"+pri + "-" + med + "-" + fin+"X");
-//                System.exit(0);
-                        compra.setCuit(pri + "-" + med + "-" + fin);
-                        compra.setImporte(Double.valueOf(hoja.getCell(3, i).getContents().replaceAll("\\,", "\\.")));
-                        compra.setProcesado(false);
+                        pri = cui.substring(0, 2);
+                        med = cui.substring(2, 10);
+                        fin = cui.substring(10, 11);
+                    }
+                    Double importeMP = Double.valueOf(hoja.getCell(3, i).getContents().replaceAll("\\,", "\\."));
+                    compra.setCuit(pri + "-" + med + "-" + fin);
+                    compra.setImporte(importeMP);
+                    compra.setProcesado(false);
+                    compra.setImporteUtilizado(0.0);
+                    if (importeMP > maximo) {
+                        JOptionPane.showMessageDialog(null, "CONSUMIDOR FINAL CON IMPORTE MAYOR AL MAXIMO");
+                    } else {
                         listaClientes.add(compra);
                     }
                 }

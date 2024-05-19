@@ -12,17 +12,19 @@ public class CompraClienteMercadoPago {
     private String nombre;
     private String cuit;
     private Double importe;
+    private Double importeUtilizado;
     private Boolean procesado;
 
     public CompraClienteMercadoPago() {
     }
 
-    public CompraClienteMercadoPago(Long id, Date fecha, String nombre, String cuit, Double importe, Boolean procesado) {
+    public CompraClienteMercadoPago(Long id, Date fecha, String nombre, String cuit, Double importe, Double importeUtilizado, Boolean procesado) {
         this.id = id;
         this.fecha = fecha;
         this.nombre = nombre;
         this.cuit = cuit;
         this.importe = importe;
+        this.importeUtilizado = importeUtilizado;
         this.procesado = procesado;
     }
 
@@ -66,6 +68,14 @@ public class CompraClienteMercadoPago {
         this.importe = importe;
     }
 
+    public Double getImporteUtilizado() {
+        return importeUtilizado;
+    }
+
+    public void setImporteUtilizado(Double importeUtilizado) {
+        this.importeUtilizado = importeUtilizado;
+    }
+
     public Boolean getProcesado() {
         return procesado;
     }
@@ -73,5 +83,5 @@ public class CompraClienteMercadoPago {
     public void setProcesado(Boolean procesado) {
         this.procesado = procesado;
     }
-    
+
 }

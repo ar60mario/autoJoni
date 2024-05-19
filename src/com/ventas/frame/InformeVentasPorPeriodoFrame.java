@@ -117,7 +117,6 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
             tabla.clearSelection();
             tabla.setRowSelectionInterval(nro - 1, nro - 1);
         }
-        verCpbteBtn.setVisible(false);
         
     }
 
@@ -476,6 +475,7 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
         cigarrRb.setVisible(false);
         citiBtn.setVisible(false);
         impreSeleccBtn.setVisible(false);
+//        verCpbteBtn.setVisible(false);
     }
 
     private void buscar() {

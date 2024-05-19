@@ -7,11 +7,13 @@ package com.ventas.frame;
 
 import com.ventas.entities.CalculoFactura;
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.ConfiguracionTop;
 import com.ventas.entities.FacturaCompra;
-import com.ventas.entities.FacturaCompraReferenciaCompraMercadoPago;
+import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.main.MainFrame;
 import com.ventas.services.CompraClienteMercadoPagoService;
+import com.ventas.services.ConfiguracionTopService;
 import com.ventas.services.FacturaCompraService;
 import com.ventas.util.UtilFactura;
 import com.ventas.util.UtilFrame;
@@ -34,6 +36,10 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
 
     private DecimalFormat df = new DecimalFormat("#0.00");
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private List<CompraClienteMercadoPago> compras = null;
+    private CompraClienteMercadoPago compra;
+    private List<FacturaCompra> facturas = null;
+    private FacturaCompra factura;
 
     /**
      * Creates new form FacturasMercadoPagoFrame
@@ -89,23 +95,40 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CUIT", "NOMBRE", "GRAVADO", "IMPUESTO", "IVA", "TOTAL", "TOTAL MP", "REF1", "REF2"
+                "CUIT", "NOMBRE", "TOTAL"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(70);
+        }
 
-        procesarBtn.setText("PROCESAR");
+        procesarBtn.setText("CALCULAR");
         procesarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 procesarBtnActionPerformed(evt);
+            }
+        });
+        procesarBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                procesarBtnKeyPressed(evt);
             }
         });
 
@@ -140,7 +163,7 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -205,7 +228,7 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fechaTxtKeyPressed
 
     private void procesarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procesarBtnActionPerformed
-        procesar();
+        calcular();
     }//GEN-LAST:event_procesarBtnActionPerformed
 
     private void maximoFacturarTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maximoFacturarTxtKeyPressed
@@ -221,43 +244,40 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void presentarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentarBtnActionPerformed
-        int rows = tabla.getRowCount();
-        if (rows < 1) {
-            JOptionPane.showMessageDialog(this, "DEBE TENER UNA FACTURA MINIMO PARA PRESENTAR");
-            return;
-        }
-        Date fecha = new Date();
-        try {
-            fecha = sdf.parse(fechaTxt.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (int i = 0; i < rows - 1; i++) {
-            String cuit = tabla.getValueAt(i, 0).toString();
-            String nombre = tabla.getValueAt(i, 1).toString();
-            Double gravado = Double.valueOf(tabla.getValueAt(i, 2).toString().replace(",", "."));
-            Double impuesto = Double.valueOf(tabla.getValueAt(i, 3).toString().replace(",", "."));
-            Double iva = Double.valueOf(tabla.getValueAt(i, 4).toString().replace(",", "."));
-            Double total = Double.valueOf(tabla.getValueAt(i, 5).toString().replace(",", "."));
-            Long compraMercadoPago = Long.valueOf(tabla.getValueAt(i, 7).toString());
-            Long facturaCompra = Long.valueOf(tabla.getValueAt(i, 8).toString());
-            Integer ultimoNumero = UtilFrame.getUltimoNumeroFactura();
-            //presentar afip
-            FacturaIvaIntercambio fii = new FacturaIvaIntercambio();
-            fii.setEstado("A");
-            fii.setCae(1234567890123456789L);
-            fii.setFechaVencimientoCae(new Date());
-            fii.setFecha(fecha);
-            fii.setLetra("B");
-            fii.setNumero(ultimoNumero +1);
-            fii.setSucursal(10);
-            if (fii.getEstado().equals("A")) {
-                UtilFactura.grabarComprobanteCompleto(cuit, nombre, gravado, iva, impuesto,
-                        total, compraMercadoPago, facturaCompra, fii);
-            }
-
-        }
+        presentar();
+        JOptionPane.showMessageDialog(this, "REALIZADO");
+        volver();
+//        int rows = tabla.getRowCount();
+//        if (rows < 1) {
+//            JOptionPane.showMessageDialog(this, "DEBE TENER UNA FACTURA MINIMO PARA PRESENTAR");
+//            return;
+//        }
+//        Date fecha = new Date();
+//        try {
+//            fecha = sdf.parse(fechaTxt.getText());
+//        } catch (ParseException ex) {
+//            Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        for (int i = 0; i < rows - 1; i++) {
+//            String cuit = tabla.getValueAt(i, 0).toString();
+//            String nombre = tabla.getValueAt(i, 1).toString();
+//            Double gravado = Double.valueOf(tabla.getValueAt(i, 2).toString().replace(",", "."));
+//            Double impuesto = Double.valueOf(tabla.getValueAt(i, 3).toString().replace(",", "."));
+//            Double iva = Double.valueOf(tabla.getValueAt(i, 4).toString().replace(",", "."));
+//            Double total = Double.valueOf(tabla.getValueAt(i, 5).toString().replace(",", "."));
+//            Long compraMercadoPago = Long.valueOf(tabla.getValueAt(i, 7).toString());
+//            Long facturaCompra = Long.valueOf(tabla.getValueAt(i, 8).toString());
+//            
+//            //presentar afip
+//
+//        }
     }//GEN-LAST:event_presentarBtnActionPerformed
+
+    private void procesarBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_procesarBtnKeyPressed
+        if (evt.getKeyCode() == 10) {
+            calcular();
+        }
+    }//GEN-LAST:event_procesarBtnKeyPressed
 
     /**
      * @param args the command line arguments
@@ -326,92 +346,292 @@ public class FacturasMercadoPagoFrame extends javax.swing.JFrame {
         this.dispose();
     }
 
-    private void procesar() {
-        List<CompraClienteMercadoPago> compras = null;
+//    private void procesar() {
+//
+//        UtilFrame.limpiarTabla(tabla);
+//        if (!maximoFacturarTxt.getText().isEmpty()) {
+//            Double maximoFacturar = Double.valueOf(maximoFacturarTxt.getText().replace(",", "."));
+//            Double sumaDeFacturas = 0.0;
+//            try {
+//                compras = new CompraClienteMercadoPagoService().getComprasParaProcesar(maximoFacturar);
+//            } catch (Exception ex) {
+//                Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                return;
+//            }
+//
+//            try {
+//                facturas = new FacturaCompraService().getAllFacturas();
+//            } catch (Exception ex) {
+//                Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            if (compras != null && !compras.isEmpty()) {
+//                if (facturas != null && !facturas.isEmpty()) {
+//                    int i = 0;
+//                    DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+//                    for (CompraClienteMercadoPago ccmp : compras) {
+//                        System.out.println(ccmp.getImporte());
+//                        System.out.println(ccmp.getId());
+////                        System.out.println("p1");
+//                        FacturaCompra fc = facturas.get(i);
+//                        Double t1 = fc.getTotal() - fc.getTotalTemp();
+//                        Double t2 = ccmp.getImporte();
+//                        if (t2 <= t1) {
+//                            CalculoFactura cf = UtilFactura.calcularTotales(fc, ccmp);
+//                            if (cf != null) {
+//                                Object o[] = new Object[9];
+//                                o[0] = ccmp.getCuit();
+//                                o[1] = ccmp.getNombre();
+//                                o[2] = cf.getGravado();
+//                                o[3] = cf.getImpuesto();
+//                                o[4] = cf.getIva();
+//                                o[5] = cf.getTotal();
+//                                o[6] = cf.getTotalMp();
+//                                o[7] = ccmp.getId();
+//                                o[8] = fc.getId();
+//                                sumaDeFacturas += cf.getTotalMp();
+//                                String sumaDeFacturasString = df.format(sumaDeFacturas);
+//                                sumaDeFacturas = Double.valueOf(sumaDeFacturasString.replace(",", "."));
+////                                System.out.println(cf.getTotal());
+////                                System.out.println(sumaDeFacturas);
+////                                JOptionPane.showMessageDialog(this, "VER");
+//                                tbl.addRow(o);
+//                                ccmp.setProcesado(true);
+//                                fc.setGravadoTemp(fc.getGravadoTemp() + cf.getGravado());
+//                                fc.setImpuestoTemp(fc.getImpuestoTemp() + cf.getImpuesto());
+//                                fc.setIvaTemp(fc.getIvaTemp() + cf.getIva());
+//                                fc.setTotalTemp(fc.getTotalTemp() + cf.getTotal());
+////                                FacturaCompraReferenciaMercadoPago fcrmp
+////                                        = new FacturaCompraReferenciaMercadoPago();
+////                                fcrcmp.setCompraClienteMercadoPago(ccmp);
+////                                fcrcmp.setFacturaCompra(fc);
+//                            }
+//                        } else {
+//                            // tomar total y el saldo de otra factura de compra
+//                            i += 1;
+//                        }
+////                        Double sumaFacturas = sumaDeFacturas.doubleValue();
+//                        if (sumaDeFacturas > maximoFacturar) {
+//                            break;
+//                        }
+////                        System.out.println(i);
+////                        System.out.println(facturas.size());
+////                        System.out.println("p2");
+//                        if (i > facturas.size() - 1) {
+//                            break;
+//                        }
+//                    }
+//                    Object o[] = new Object[7];
+//                    o[0] = "";
+//                    o[1] = "";
+//                    o[2] = "";
+//                    o[3] = "";
+//                    o[4] = "";
+//                    o[5] = "";
+//                    o[6] = sumaDeFacturas.doubleValue();
+//                    tbl.addRow(o);
+//                    tabla.setModel(tbl);
+//                }
+//            }
+//        }
+//    }
+    private void calcular() {
+        compras = null;
         UtilFrame.limpiarTabla(tabla);
         if (!maximoFacturarTxt.getText().isEmpty()) {
             Double maximoFacturar = Double.valueOf(maximoFacturarTxt.getText().replace(",", "."));
-            Double sumaDeFacturas = 0.0;
             try {
                 compras = new CompraClienteMercadoPagoService().getComprasParaProcesar(maximoFacturar);
             } catch (Exception ex) {
                 Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             }
-            List<FacturaCompra> facturas = null;
-            try {
-                facturas = new FacturaCompraService().getAllFacturas();
-            } catch (Exception ex) {
-                Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            llenarTabla();
+        }
+    }
+
+    private void llenarTabla() {
+        if (compras != null && !compras.isEmpty()) {
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            Double sumaDeFacturas = 0.0;
+            for (CompraClienteMercadoPago ccmp : compras) {
+                Object o[] = new Object[3];
+                o[0] = ccmp.getCuit();
+                o[1] = ccmp.getNombre();
+                o[2] = ccmp.getImporte();
+                sumaDeFacturas += ccmp.getImporte();
+                tbl.addRow(o);
             }
+            Object o[] = new Object[3];
+            o[0] = "";
+            o[1] = "TOTAL A PROCESAR";
+            o[2] = sumaDeFacturas;
+            tbl.addRow(o);
+            tabla.setModel(tbl);
+        }
+    }
+
+    private void presentar() {
+        try {
+            facturas = new FacturaCompraService().getAllFacturas();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ConfiguracionTop ct = null;
+        try {
+            ct = new ConfiguracionTopService().getConfigTopById(1);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (ct != null) {
             if (compras != null && !compras.isEmpty()) {
                 if (facturas != null && !facturas.isEmpty()) {
-                    int i = 0;
-                    DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
-                    for (CompraClienteMercadoPago ccmp : compras) {
-                        System.out.println(ccmp.getImporte());
-                        System.out.println(ccmp.getId());
-//                        System.out.println("p1");
-                        FacturaCompra fc = facturas.get(i);
-                        Double t1 = fc.getTotal() - fc.getTotalTemp();
-                        Double t2 = ccmp.getImporte();
-                        if (t2 <= t1) {
-                            CalculoFactura cf = UtilFactura.calcularTotales(fc, ccmp);
-                            if (cf != null) {
-                                Object o[] = new Object[9];
-                                o[0] = ccmp.getCuit();
-                                o[1] = ccmp.getNombre();
-                                o[2] = cf.getGravado();
-                                o[3] = cf.getImpuesto();
-                                o[4] = cf.getIva();
-                                o[5] = cf.getTotal();
-                                o[6] = cf.getTotalMp();
-                                o[7] = ccmp.getId();
-                                o[8] = fc.getId();
-                                sumaDeFacturas += cf.getTotalMp();
-                                String sumaDeFacturasString = df.format(sumaDeFacturas);
-                                sumaDeFacturas = Double.valueOf(sumaDeFacturasString.replace(",", "."));
-//                                System.out.println(cf.getTotal());
-//                                System.out.println(sumaDeFacturas);
-//                                JOptionPane.showMessageDialog(this, "VER");
-                                tbl.addRow(o);
-                                ccmp.setProcesado(true);
-                                fc.setGravadoTemp(fc.getGravadoTemp() + cf.getGravado());
-                                fc.setImpuestoTemp(fc.getImpuestoTemp() + cf.getImpuesto());
-                                fc.setIvaTemp(fc.getIvaTemp() + cf.getIva());
-                                fc.setTotalTemp(fc.getTotalTemp() + cf.getTotal());
-                                FacturaCompraReferenciaCompraMercadoPago fcrcmp
-                                        = new FacturaCompraReferenciaCompraMercadoPago();
-                                fcrcmp.setCompraClienteMercadoPago(ccmp);
-                                fcrcmp.setFacturaCompra(fc);
+                    Boolean salir1 = true;
+//                Boolean salir2 = false;
+                    Integer cantidadFacturas = facturas.size();
+                    Integer cantidadCompras = compras.size();
+                    Integer contadorFacturas = 0;
+                    Integer contadorCompras = 0;
+                    do {
+                        compra = compras.get(contadorCompras);
+                        factura = facturas.get(contadorFacturas);
+                        Double totalCompraMP = compra.getImporte();
+                        Double totalFactura = factura.getTotalVenta() - factura.getTotalUtilizado();
+                        if (totalFactura < ct.getImporteMinimoMercadoPago()) {
+                            contadorFacturas += 1;
+                        }
+
+                        Date fecha = new Date();
+                        try {
+                            fecha = sdf.parse(fechaTxt.getText());
+                        } catch (ParseException ex) {
+                            Logger.getLogger(FacturasMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if (totalFactura > totalCompraMP) {
+                            CalculoFactura cf = UtilFactura.calcularTotales(factura, compra);
+//                        System.out.println(cf.getGravado());
+//                        System.out.println(cf.getImpuesto());
+//                        System.out.println(cf.getIva());
+//                        System.out.println(cf.getTotal());
+//                        System.out.println(cf.getTotalMp());
+//                        System.exit(0);
+                            Integer ultimoNumero = UtilFrame.getUltimoNumeroFactura();
+                            // presentar afip
+                            FacturaIvaIntercambio fii = new FacturaIvaIntercambio();
+                            FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
+
+                            fii.setEstado("A");
+                            fii.setCae(1234567890123456789L);
+                            fii.setFechaVencimientoCae(new Date());
+                            fii.setFecha(fecha);
+                            fii.setLetra("B");
+                            fii.setNumero(ultimoNumero + 1);
+                            fii.setSucursal(10);
+
+                            compra.setProcesado(true);
+                            compra.setImporteUtilizado(compra.getImporte());
+
+                            factura.setGravadoUtilizado(factura.getGravadoUtilizado() + cf.getGravado());
+                            factura.setIvaUtilizado(factura.getIvaUtilizado() + cf.getIva());
+                            factura.setImpuestoUtilizado(factura.getImpuestoUtilizado() + cf.getImpuesto());
+                            factura.setTotalUtilizado(factura.getTotalUtilizado() + cf.getTotal());
+
+                            fcrmp.setCompraClienteMercadoPago(compra);
+                            fcrmp.setFacturaCompra(factura);
+
+                            if (fii.getEstado().equals("A")) {
+                                UtilFactura.grabarComprobanteCompleto(cf,
+                                        compra, factura, fii, fcrmp);
+                            }
+                            contadorCompras += 1;
+                            if (contadorCompras > cantidadCompras - 1) {
+                                salir1 = false;
                             }
                         } else {
-                            // tomar total y el saldo de otra factura de compra
-                            i += 1;
+                            if (totalFactura < totalCompraMP) {
+                                CalculoFactura cf = UtilFactura.calcularTotales2(factura, compra);
+
+                                Integer ultimoNumero = UtilFrame.getUltimoNumeroFactura();
+                                // presentar afip
+                                FacturaIvaIntercambio fii = new FacturaIvaIntercambio();
+                                FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
+
+                                fii.setEstado("A");
+                                fii.setCae(1234567890123456789L);
+                                fii.setFechaVencimientoCae(new Date());
+                                fii.setFecha(fecha);
+                                fii.setLetra("B");
+                                fii.setNumero(ultimoNumero + 1);
+                                fii.setSucursal(10);
+                                compra.setProcesado(true);
+                                compra.setImporteUtilizado(cf.getTotal());
+
+                                factura.setGravadoUtilizado(factura.getGravadoVenta());
+                                factura.setIvaUtilizado(factura.getIvaVenta());
+                                factura.setImpuestoUtilizado(factura.getImpuestoVenta());
+                                factura.setTotalUtilizado(factura.getTotalVenta());
+
+                                fcrmp.setFacturaCompra(factura);
+                                fcrmp.setCompraClienteMercadoPago(compra);
+
+                                if (fii.getEstado().equals("A")) {
+                                    UtilFactura.grabarComprobanteCompleto(cf, compra, factura, fii, fcrmp);
+                                }
+                                contadorFacturas += 1;
+                                if (contadorFacturas > cantidadFacturas - 1) {
+                                    salir1 = false;
+                                }
+                            } else {
+                                //  if (totalFactura == totalCompraMP) {
+                                CalculoFactura cf = UtilFactura.calcularTotales3(factura, compra);
+
+                                Integer ultimoNumero = UtilFrame.getUltimoNumeroFactura();
+                                // presentar afip
+                                FacturaIvaIntercambio fii = new FacturaIvaIntercambio();
+                                FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
+
+                                fii.setEstado("A");
+                                fii.setCae(1234567890123456789L);
+                                fii.setFechaVencimientoCae(new Date());
+                                fii.setFecha(fecha);
+                                fii.setLetra("B");
+                                fii.setNumero(ultimoNumero + 1);
+                                fii.setSucursal(10);
+
+                                compra.setProcesado(true);
+                                compra.setImporteUtilizado(compra.getImporte());
+
+                                factura.setGravadoUtilizado(factura.getGravadoVenta());
+                                factura.setIvaUtilizado(factura.getIvaVenta());
+                                factura.setImpuestoUtilizado(factura.getImpuestoVenta());
+                                factura.setTotalUtilizado(factura.getTotalVenta());
+
+                                fcrmp.setCompraClienteMercadoPago(compra);
+                                fcrmp.setFacturaCompra(factura);
+
+                                if (fii.getEstado().equals("A")) {
+                                    UtilFactura.grabarComprobanteCompleto(cf, compra, factura, fii, fcrmp);
+                                }
+
+                                contadorFacturas += 1;
+                                if (contadorFacturas > cantidadFacturas - 1) {
+                                    salir1 = false;
+                                }
+                            }
                         }
-//                        Double sumaFacturas = sumaDeFacturas.doubleValue();
-                        if (sumaDeFacturas > maximoFacturar) {
-                            break;
-                        }
-//                        System.out.println(i);
-//                        System.out.println(facturas.size());
-//                        System.out.println("p2");
-                        if (i > facturas.size() - 1) {
-                            break;
-                        }
-                    }
-                    Object o[] = new Object[7];
-                    o[0] = "";
-                    o[1] = "";
-                    o[2] = "";
-                    o[3] = "";
-                    o[4] = "";
-                    o[5] = "";
-                    o[6] = sumaDeFacturas.doubleValue();
-                    tbl.addRow(o);
-                    tabla.setModel(tbl);
+
+                    } while (salir1);
+                } else {
+                    JOptionPane.showMessageDialog(this, "NO HAY FACTURAS COMPRA DISPONIBLES");
                 }
             }
         }
     }
+    /*
+    int rows = tabla.getRowCount();
+//        if (rows < 1) {
+//            JOptionPane.showMessageDialog(this, "DEBE TENER UNA FACTURA MINIMO PARA PRESENTAR");
+//            return;
+//        }
+//        
+     */
 }
