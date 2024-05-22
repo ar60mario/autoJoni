@@ -214,6 +214,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saldoFacturasCompraPendeintesMnuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="facturasDeMercadoPagoMnu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="FACTURAS CORRESPONDIENTES A MERCADO PAGO"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="facturasDeMercadoPagoMnuActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="facturasMercadoPagoCompletadasMnu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="FACTURAS MERCADO PAGO COMPLETADAS"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="facturasMercadoPagoCompletadasMnuActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">

@@ -90,7 +90,19 @@ public class CompraClienteMercadoPagoService {
         return compras;
     }
     
-    
+    public List<CompraClienteMercadoPago> getAllFacturasProcesadas() throws Exception {
+        List<CompraClienteMercadoPago> compras = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            compras = new CompraClienteMercadoPagoBo().getAllFacturasProcesadas();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return compras;
+    }
 //    public void updateCompra(Compra compra) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();

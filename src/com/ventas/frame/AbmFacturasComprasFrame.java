@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
 import com.ventas.entities.FacturaCompra;
@@ -68,16 +63,27 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FECHA", "PROVEEDOR", "TOTAL", "PROCESADA"
+                "FECHA", "PROVEEDOR", "TOTAL", "TOTAL_VENTA", "TOTAL_USADO"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
-            tabla.getColumnModel().getColumn(0).setResizable(false);
-            tabla.getColumnModel().getColumn(1).setResizable(false);
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(400);
-            tabla.getColumnModel().getColumn(2).setResizable(false);
-            tabla.getColumnModel().getColumn(3).setResizable(false);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
         }
 
         jLabel1.setText("FECHA:");
@@ -142,7 +148,7 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -328,7 +334,7 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
             return;
         }
         try {
-            facturas = new FacturaCompraService().getAllFacturas();
+            facturas = new FacturaCompraService().getFacturasEntreFechas(de, al);
         } catch (Exception ex) {
             Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -336,15 +342,12 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
         if (facturas != null && !facturas.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (FacturaCompra facturaCompra : facturas) {
-                Object o[] = new Object[4];
+                Object o[] = new Object[5];
                 o[0] = sdf.format(facturaCompra.getFecha());
                 o[1] = facturaCompra.getProveedor();
                 o[2] = df.format(facturaCompra.getTotal());
-                if (!facturaCompra.getProcesado()) {
-                    o[3] = "SIN PROCESAR";
-                } else {
-                    o[3] = "  PROCESADA";
-                }
+                o[3] = df.format(facturaCompra.getTotalVenta());
+                o[4] = df.format(facturaCompra.getTotalUtilizado());
                 tbl.addRow(o);
             }
             tabla.setModel(tbl);

@@ -22,8 +22,9 @@ public class ComprobanteVentaMercadoPagoBo {
 
     public void saveComprobanteCompleto1(Cliente cliente, CalculoFactura cf, 
             CompraClienteMercadoPago compraMercadoPago,
-            FacturaCompra facturaCompra, FacturaIvaIntercambio fii) throws Exception {
-        Cliente cl = new ClienteBo().saveCliente(cliente);
+            FacturaCompra facturaCompra, FacturaIvaIntercambio fii,
+            FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
+        
         IvaVentas iv = new IvaVentas();
         RenglonFactura rf = new RenglonFactura();
         iv.setExento(0.0);
@@ -47,7 +48,6 @@ public class ComprobanteVentaMercadoPagoBo {
         iv.setIva10_5(0.0);
         iv.setIva27(0.0);
         iv.setTotal(cf.getTotal());
-        iv.setCliente(cl);
         iv.setCae(fii.getCae());
         iv.setFechaCae(fii.getFechaVencimientoCae());
         rf.setCantidad(1F);
@@ -72,11 +72,16 @@ public class ComprobanteVentaMercadoPagoBo {
         rf.setProducto(facturaCompra.getProducto());
         rf.setSugerido(0.0);
         rf.setTotal(cf.getTotal());
+        
+        Cliente cl = new ClienteBo().saveCliente(cliente);
+        iv.setCliente(cl);
         iv = new IvaVentasBo().saveIvaVentas(iv);
         rf.setIvaVentas(iv);
+        fcrmp.setIvaVentas(iv);
         new RenglonFacturaBo().saveRenglon(rf);
         new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compraMercadoPago);
         new FacturaCompraBo().updateFacturaCompra(facturaCompra);
+        new FacturaCompraReferenciaMercadoPagoBo().saveFacturaCompraReferenciaMercadoPago(fcrmp);
 
         //renglon iva ventas
     }
@@ -85,6 +90,7 @@ public class ComprobanteVentaMercadoPagoBo {
             CompraClienteMercadoPago compraMercadoPago,
             FacturaCompra facturaCompra, FacturaIvaIntercambio fii,
             FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
+        
         IvaVentas iv = new IvaVentas();
         RenglonFactura rf = new RenglonFactura();
         iv.setExento(0.0);
@@ -133,6 +139,7 @@ public class ComprobanteVentaMercadoPagoBo {
         rf.setProducto(facturaCompra.getProducto());
         rf.setSugerido(0.0);
         rf.setTotal(cf.getTotal());
+        
         iv = new IvaVentasBo().saveIvaVentas(iv);
         rf.setIvaVentas(iv);
         fcrmp.setIvaVentas(iv);

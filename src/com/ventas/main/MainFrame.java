@@ -18,6 +18,8 @@ import com.ventas.frame.FacturaWebPanificadosFrame;
 import com.ventas.frame.FacturarFrame;
 import com.ventas.frame.FacturarPanificadosFrame;
 import com.ventas.frame.FacturasCompraConSaldoPendienteParaAsignarFrame;
+import com.ventas.frame.FacturasDeMercadoPagoFrame;
+import com.ventas.frame.FacturasMercadoPagoCompletadasFacturarFrame;
 import com.ventas.frame.FacturasMercadoPagoFrame;
 import com.ventas.frame.FacturasMercadoPagoPendientesFacturarFrame;
 import com.ventas.frame.ImportarClientesMercadoPagoFrame;
@@ -104,6 +106,8 @@ public class MainFrame extends javax.swing.JFrame {
         stockPeriodoProductoCompraMnu = new javax.swing.JMenuItem();
         facturasMercadoPagoPendientesMnu = new javax.swing.JMenuItem();
         saldoFacturasCompraPendeintesMnu = new javax.swing.JMenuItem();
+        facturasDeMercadoPagoMnu = new javax.swing.JMenuItem();
+        facturasMercadoPagoCompletadasMnu = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         versionMnu = new javax.swing.JMenuItem();
 
@@ -336,6 +340,22 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu4.add(saldoFacturasCompraPendeintesMnu);
 
+        facturasDeMercadoPagoMnu.setText("FACTURAS CORRESPONDIENTES A MERCADO PAGO");
+        facturasDeMercadoPagoMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturasDeMercadoPagoMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(facturasDeMercadoPagoMnu);
+
+        facturasMercadoPagoCompletadasMnu.setText("FACTURAS MERCADO PAGO COMPLETADAS");
+        facturasMercadoPagoCompletadasMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturasMercadoPagoCompletadasMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(facturasMercadoPagoCompletadasMnu);
+
         jMenuBar1.add(jMenu4);
 
         jMenu3.setText("?");
@@ -503,6 +523,14 @@ public class MainFrame extends javax.swing.JFrame {
         facturasMercadoPagoPendientes();
     }//GEN-LAST:event_facturasMercadoPagoPendientesMnuActionPerformed
 
+    private void facturasDeMercadoPagoMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturasDeMercadoPagoMnuActionPerformed
+        facturasDeMercadoPago();
+    }//GEN-LAST:event_facturasDeMercadoPagoMnuActionPerformed
+
+    private void facturasMercadoPagoCompletadasMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturasMercadoPagoCompletadasMnuActionPerformed
+        facturasMercadoPagoCompletadas();
+    }//GEN-LAST:event_facturasMercadoPagoCompletadasMnuActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -552,6 +580,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem configuracionMnu;
     private javax.swing.JMenuItem duplicadoPdfMnu;
     private javax.swing.JButton facturaMercadoPagoBtn;
+    private javax.swing.JMenuItem facturasDeMercadoPagoMnu;
+    private javax.swing.JMenuItem facturasMercadoPagoCompletadasMnu;
     private javax.swing.JMenuItem facturasMercadoPagoPendientesMnu;
     private javax.swing.JMenuItem importarMercadoPagoMnu;
     private javax.swing.JMenuItem importarMnu;
@@ -814,6 +844,18 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void facturasMercadoPagoPendientes() {
         FacturasMercadoPagoPendientesFacturarFrame fmppff = new FacturasMercadoPagoPendientesFacturarFrame();
+        fmppff.setVisible(true);
+        this.dispose();
+    }
+
+    private void facturasDeMercadoPago() {
+        FacturasDeMercadoPagoFrame fdmpf = new FacturasDeMercadoPagoFrame();
+        fdmpf.setVisible(true);
+        this.dispose();
+    }
+
+    private void facturasMercadoPagoCompletadas() {
+        FacturasMercadoPagoCompletadasFacturarFrame fmppff = new FacturasMercadoPagoCompletadasFacturarFrame();
         fmppff.setVisible(true);
         this.dispose();
     }

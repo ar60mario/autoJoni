@@ -102,7 +102,21 @@ public class IvaVentasService {
         }
         return fact;
     }
-    //getFacturasCigarrillosEntreFechas
+    
+    public List<IvaVentas> getFacturasEntreFechasOrdenCliente(Date fd, Date fa) throws Exception {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            fact = new IvaVentasBo().getFacturasEntreFechasOrdenCliente(fd, fa);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+    
     public List<IvaVentas> getFacturasCigarrillosEntreFechas(Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

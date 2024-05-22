@@ -17,18 +17,6 @@ import org.hibernate.Transaction;
 
 public class ComprobanteVentaMercadoPagoService {
 
-//    public void deleteCompra(Compra cliente) throws Exception{
-//       Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-//       Transaction tx = session.beginTransaction();
-//       try{
-//          new CompraBo().deleteCliente(cliente);
-//          tx.commit();
-//       }
-//       catch(Exception ex){
-//           tx.rollback();
-//           throw new Exception (ex);
-//       }
-//    }
     public void saveComprobanteCompleto(Cliente cliente, Boolean nuevo, CalculoFactura cf, 
             CompraClienteMercadoPago ccmp, FacturaCompra facturaCompra, 
             FacturaIvaIntercambio fii, FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
@@ -37,7 +25,7 @@ public class ComprobanteVentaMercadoPagoService {
         try {
             if (nuevo) {
                 new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto1(cliente, cf, 
-                        ccmp, facturaCompra, fii);
+                        ccmp, facturaCompra, fii, fcrmp);
             } else {
                 new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto2(cliente, cf, 
                         ccmp, facturaCompra, fii, fcrmp);

@@ -43,6 +43,14 @@ public class CompraClienteMercadoPagoDao extends GenericDao {
         criteria.addOrder(Order.asc("fecha"));
         return (List<CompraClienteMercadoPago>) criteria.list();
     }
+    
+    public List<CompraClienteMercadoPago> getAllFacturasProcesadas() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+        criteria.add(Restrictions.eq("procesado", true));
+        criteria.addOrder(Order.asc("fecha"));
+        return (List<CompraClienteMercadoPago>) criteria.list();
+    }
 //
 //    public List<Compra> getComprasEntreFechas(Date de, Date al) {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();

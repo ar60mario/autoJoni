@@ -7,6 +7,7 @@ package com.ventas.bo;
 
 import com.ventas.dao.FacturaCompraReferenciaMercadoPagoDao;
 import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
+import com.ventas.entities.IvaVentas;
 import org.hibernate.HibernateException;
 
 /**
@@ -27,4 +28,29 @@ public class FacturaCompraReferenciaMercadoPagoBo {
         }
         return fact;
     }
+    
+    public FacturaCompraReferenciaMercadoPago getFacturaById(Long id) 
+    throws Exception {
+        FacturaCompraReferenciaMercadoPago fact = null;
+        try {
+            fact = (FacturaCompraReferenciaMercadoPago) 
+                    dao.getFacturaById(id);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+    
+    public FacturaCompraReferenciaMercadoPago getFacturaByIvaVentas(IvaVentas iv) 
+    throws Exception {
+        FacturaCompraReferenciaMercadoPago fact = null;
+        try {
+            fact = (FacturaCompraReferenciaMercadoPago) 
+                    dao.getFacturaByIvaVentas(iv);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+    
 }

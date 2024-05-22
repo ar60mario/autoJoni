@@ -88,6 +88,16 @@ public class CompraClienteMercadoPagoBo {
         return listCompras;
     }
 
+    public List<CompraClienteMercadoPago> getAllFacturasProcesadas() throws Exception {
+        List<CompraClienteMercadoPago> listCompras = null;
+        try {
+            listCompras = dao.getAllFacturasProcesadas();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return listCompras;
+    }
+    
 //    public void updateCompra(Compra compra) throws Exception {
 //        try {
 //            compra = (Compra) dao.update(compra);

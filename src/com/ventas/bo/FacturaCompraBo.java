@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.FacturaCompraDao;
 import com.ventas.entities.FacturaCompra;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
 
@@ -58,7 +54,17 @@ public class FacturaCompraBo {
         }
         return fact;
     }
-    
+
+    public List<FacturaCompra> getFacturasEntreFechas(Date de, Date al) throws Exception {
+        List<FacturaCompra> fact = null;
+        try {
+            fact = (List<FacturaCompra>) dao.getFacturasEntreFechas(de, al);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
 //    public void deleteFactura(Factura factura) throws Exception {
 //        try {
 //            dao.delete(factura);

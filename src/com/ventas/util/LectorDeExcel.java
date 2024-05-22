@@ -192,11 +192,16 @@ public class LectorDeExcel {
                         JOptionPane.showMessageDialog(null, "ERROR EN FORMATO FECHA " + i);
                         salir = true;
                     }
+//                    System.out.println(fecha);
+//                    System.out.println("x");
+//                    System.exit(0);
                 } else {
                     String fecha1 = fecha.substring(0, 6);
                     String fecha2 = "20";
-                    String fecha3 = fecha.substring(6, 7);
+                    String fecha3 = fecha.substring(6, 8);
                     String fecha4 = fecha1 + fecha2 + fecha3;
+//                    System.out.println(fecha4);
+//                    System.exit(0);
                     compra.setFecha(sdf.parse(fecha4));
                     compra.setNombre(hoja.getCell(2, i).getContents());
                     String cui = hoja.getCell(1, i).getContents();
@@ -230,8 +235,12 @@ public class LectorDeExcel {
                     compra.setImporte(importeMP);
                     compra.setProcesado(false);
                     compra.setImporteUtilizado(0.0);
-                    if (importeMP > maximo) {
-                        JOptionPane.showMessageDialog(null, "CONSUMIDOR FINAL CON IMPORTE MAYOR AL MAXIMO");
+                    if (cui.equals("0")) {
+                        if (importeMP > maximo) {
+                            JOptionPane.showMessageDialog(null, "CONSUMIDOR FINAL CON IMPORTE MAYOR AL MAXIMO" + i);
+                        } else {
+                            listaClientes.add(compra);
+                        }
                     } else {
                         listaClientes.add(compra);
                     }
