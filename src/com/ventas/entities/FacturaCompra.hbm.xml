@@ -11,29 +11,20 @@
         <property name="ganancia" type="float" column="GANANCIA"/>
         <property name="gravado" type="double" column="GRAVADO"/>
         <property name="gravadoVenta" type="double" column="GRAVADO_VENTA"/>
-        <property name="gravadoTemp" type="double" column="GRAVADO_TEMP"/>
         <property name="iva" type="double" column="IVA"/>
         <property name="ivaVenta" type="double" column="IVA_VENTA"/>
-        <property name="ivaTemp" type="double" column="IVA_TEMP"/>
         <property name="iibb" type="double" column="II_BB"/>
         <property name="impuesto1" type="double" column="IMPUESTO_1"/>
         <property name="impuesto2" type="double" column="IMPUESTO_2"/>
         <property name="impuesto3" type="double" column="IMPUESTO_3"/>
         <property name="impuestoVenta" type="double" column="IMPUESTO_VENTA"/>
-        <property name="impuestoTemp" type="double" column="IMPUESTO_TEMP"/>
         <property name="proveedor" type="string" column="PROVEEDOR"/>
         <property name="total" type="double" column="TOTAL"/>
         <property name="totalVenta" type="double" column="TOTAL_VENTA"/>
-        <property name="totalTemp" type="double" column="TOTAL_TEMP"/>
-        <property name="gravadoUtilizado" type="double" column="GRAVADO_UTILIZADO"/>
-        <property name="ivaUtilizado" type="double" column="IVA_UTILIZADO"/>
-        <property name="impuestoUtilizado" type="double" column="IMPUESTO_UTILIZADO"/>
-        <property name="totalUtilizado" type="double" column="TOTAL_UTILIZADO"/>
-        <property name="procesado" type="boolean" column="PROCESADO"/>
-        <many-to-one name="producto"
-                    class="com.ventas.entities.Producto"
+        <many-to-one name="articuloCompra"
+                     class="com.ventas.entities.ArticuloCompra"
                      lazy="false">
-                     <column name="ID_PRODUCTO" not-null="true"/>
+            <column name="ID_ARTICULO_COMPRA" not-null="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

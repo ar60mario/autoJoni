@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.entities.CalculoFactura;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.CompraClienteMercadoPago;
-import com.ventas.entities.FacturaCompra;
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.entities.IvaVentas;
@@ -22,7 +17,7 @@ public class ComprobanteVentaMercadoPagoBo {
 
     public void saveComprobanteCompleto1(Cliente cliente, CalculoFactura cf, 
             CompraClienteMercadoPago compraMercadoPago,
-            FacturaCompra facturaCompra, FacturaIvaIntercambio fii,
+            ArticuloCompra facturaCompra, FacturaIvaIntercambio fii,
             FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
         
         IvaVentas iv = new IvaVentas();
@@ -53,7 +48,7 @@ public class ComprobanteVentaMercadoPagoBo {
         rf.setCantidad(1F);
         rf.setCostoG(0.0);
         rf.setCostoI(0.0);
-        rf.setDescripcion(facturaCompra.getProducto().getDetalle());
+        rf.setDescripcion(facturaCompra.getNombre());
         rf.setDescuento(0.0);
         rf.setExento(0.0);
         rf.setFabricacion(false);
@@ -80,7 +75,8 @@ public class ComprobanteVentaMercadoPagoBo {
         fcrmp.setIvaVentas(iv);
         new RenglonFacturaBo().saveRenglon(rf);
         new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compraMercadoPago);
-        new FacturaCompraBo().updateFacturaCompra(facturaCompra);
+        //ArticuloVenta update
+//        new FacturaCompraBo().updateFacturaCompra(facturaCompra);
         new FacturaCompraReferenciaMercadoPagoBo().saveFacturaCompraReferenciaMercadoPago(fcrmp);
 
         //renglon iva ventas
@@ -88,7 +84,7 @@ public class ComprobanteVentaMercadoPagoBo {
     
     public void saveComprobanteCompleto2(Cliente cliente, CalculoFactura cf, 
             CompraClienteMercadoPago compraMercadoPago,
-            FacturaCompra facturaCompra, FacturaIvaIntercambio fii,
+            ArticuloCompra facturaCompra, FacturaIvaIntercambio fii,
             FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
         
         IvaVentas iv = new IvaVentas();
@@ -145,7 +141,8 @@ public class ComprobanteVentaMercadoPagoBo {
         fcrmp.setIvaVentas(iv);
         new RenglonFacturaBo().saveRenglon(rf);
         new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compraMercadoPago);
-        new FacturaCompraBo().updateFacturaCompra(facturaCompra);
+        //ArticuloVenta update
+//        new FacturaCompraBo().updateFacturaCompra(facturaCompra);
         new FacturaCompraReferenciaMercadoPagoBo().saveFacturaCompraReferenciaMercadoPago(fcrmp);
                 
         //renglon iva ventas

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.ArticuloCompra" schema="joni" table="articulo_compra">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="impuesto" type="double" column="IMPUESTO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <property name="gravadoUsado" type="double" column="GRAVADO_USADO"/>
+        <property name="impuestoUsado" type="double" column="IMPUESTO_USADO"/>
+        <property name="ivaUsado" type="double" column="IVA_USADO"/>
+        <property name="totalUsado" type="double" column="TOTAL_USADO"/>
+        <property name="activo" type="boolean" column="ACTIVO"/>
+        <many-to-one name="producto"
+                    class="com.ventas.entities.Producto"
+                     lazy="false">
+                     <column name="ID_´RODUCTO" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -122,49 +122,49 @@ public class UtilFactura {
             DecimalFormat df = new DecimalFormat("#0.00");
             CalculoFactura cf = new CalculoFactura();
 
-            Double gravadoCalculado = fc.getGravadoVenta() - fc.getGravadoUtilizado();
-            String gravadoCalculadoString = df.format(gravadoCalculado);
-            Double gravadoCalculadoRedondeado = Double.valueOf(gravadoCalculadoString.replace(",", "."));
-            cf.setGravado(gravadoCalculadoRedondeado);
+//            Double gravadoCalculado = fc.getGravadoVenta() - fc.getGravadoUtilizado();
+//            String gravadoCalculadoString = df.format(gravadoCalculado);
+//            Double gravadoCalculadoRedondeado = Double.valueOf(gravadoCalculadoString.replace(",", "."));
+//            cf.setGravado(gravadoCalculadoRedondeado);
 
-            Double impuestoCalculado = fc.getImpuestoVenta() - fc.getImpuestoUtilizado();
-            String impuestoVentaString = df.format(impuestoCalculado);
-            Double impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
-            cf.setImpuesto(impuestoRedondeado);
+//            Double impuestoCalculado = fc.getImpuestoVenta() - fc.getImpuestoUtilizado();
+//            String impuestoVentaString = df.format(impuestoCalculado);
+//            Double impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
+//            cf.setImpuesto(impuestoRedondeado);
 
-            Double ivaCalculado = gravadoCalculadoRedondeado * (porcIva / 100);
-            String ivaCalculadoString = df.format(ivaCalculado);
-            Double ivaCalculadoRedondeado = Double.valueOf(ivaCalculadoString.replace(",", "."));
-            cf.setIva(ivaCalculadoRedondeado);
+//            Double ivaCalculado = gravadoCalculadoRedondeado * (porcIva / 100);
+//            String ivaCalculadoString = df.format(ivaCalculado);
+//            Double ivaCalculadoRedondeado = Double.valueOf(ivaCalculadoString.replace(",", "."));
+//            cf.setIva(ivaCalculadoRedondeado);
 
-            Double t1 = fc.getTotalVenta() - fc.getTotalUtilizado();
-            String t1String = df.format(t1);
-            Double t1Redondeado = Double.valueOf(t1String.replace(",", "."));
+//            Double t1 = fc.getTotalVenta() - fc.getTotalUtilizado();
+//            String t1String = df.format(t1);
+//            Double t1Redondeado = Double.valueOf(t1String.replace(",", "."));
 
-            Double t2 = gravadoCalculadoRedondeado
-                    + impuestoRedondeado
-                    + ivaCalculadoRedondeado;
-            String t2String = df.format(t2);
-            Double t2Redondeado = Double.valueOf(t2String.replace(",", "."));
+//            Double t2 = gravadoCalculadoRedondeado
+//                    + impuestoRedondeado
+//                    + ivaCalculadoRedondeado;
+//            String t2String = df.format(t2);
+//            Double t2Redondeado = Double.valueOf(t2String.replace(",", "."));
 
-            if (!df.format(t1).equals(df.format(t2Redondeado))) {
-                if (t1Redondeado > t2Redondeado) {
-                    impuestoCalculado = impuestoRedondeado + .01;
-                } else {
-                    impuestoCalculado = impuestoRedondeado - .01;
-                }
-                impuestoVentaString = df.format(impuestoCalculado);
-                impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
-                cf.setImpuesto(impuestoRedondeado);
-                t2 = gravadoCalculadoRedondeado
-                        + impuestoRedondeado
-                        + ivaCalculadoRedondeado;
-                t2String = df.format(t2);
-                t2Redondeado = Double.valueOf(t2String.replace(",", "."));
-            }
+//            if (!df.format(t1).equals(df.format(t2Redondeado))) {
+//                if (t1Redondeado > t2Redondeado) {
+//                    impuestoCalculado = impuestoRedondeado + .01;
+//                } else {
+//                    impuestoCalculado = impuestoRedondeado - .01;
+//                }
+//                impuestoVentaString = df.format(impuestoCalculado);
+//                impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
+//                cf.setImpuesto(impuestoRedondeado);
+//                t2 = gravadoCalculadoRedondeado
+//                        + impuestoRedondeado
+//                        + ivaCalculadoRedondeado;
+//                t2String = df.format(t2);
+//                t2Redondeado = Double.valueOf(t2String.replace(",", "."));
+//            }
 
-            cf.setTotalMp(t2Redondeado);
-            cf.setTotal(t1Redondeado);
+//            cf.setTotalMp(t2Redondeado);
+//            cf.setTotal(t1Redondeado);
 
             return cf;
         }
@@ -185,54 +185,54 @@ public class UtilFactura {
             DecimalFormat df = new DecimalFormat("#0.00");
             CalculoFactura cf = new CalculoFactura();
 
-            Double gravadoCalculado = fc.getGravadoVenta() - fc.getGravadoUtilizado();
-            String gravadoCalculadoString = df.format(gravadoCalculado);
-            Double gravadoCalculadoRedondeado = Double.valueOf(gravadoCalculadoString.replace(",", "."));
-            cf.setGravado(gravadoCalculadoRedondeado);
+//            Double gravadoCalculado = fc.getGravadoVenta() - fc.getGravadoUtilizado();
+//            String gravadoCalculadoString = df.format(gravadoCalculado);
+//            Double gravadoCalculadoRedondeado = Double.valueOf(gravadoCalculadoString.replace(",", "."));
+//            cf.setGravado(gravadoCalculadoRedondeado);
 
-            Double impuestoCalculado = fc.getImpuestoVenta() - fc.getImpuestoUtilizado();
-            String impuestoCalculadoString = df.format(impuestoCalculado);
-            Double impuestoCalculadoRedondeado = Double.valueOf(impuestoCalculadoString.replace(",", "."));
-            cf.setImpuesto(impuestoCalculadoRedondeado);
+//            Double impuestoCalculado = fc.getImpuestoVenta() - fc.getImpuestoUtilizado();
+//            String impuestoCalculadoString = df.format(impuestoCalculado);
+//            Double impuestoCalculadoRedondeado = Double.valueOf(impuestoCalculadoString.replace(",", "."));
+//            cf.setImpuesto(impuestoCalculadoRedondeado);
 
-            Double ivaCalculado = gravadoCalculadoRedondeado * (porcIva / 100);
-            String ivaCalculadoString = df.format(ivaCalculado);
-            Double ivaCalculadoRedondeado = Double.valueOf(ivaCalculadoString.replace(",", "."));
-            cf.setIva(ivaCalculadoRedondeado);
+//            Double ivaCalculado = gravadoCalculadoRedondeado * (porcIva / 100);
+//            String ivaCalculadoString = df.format(ivaCalculado);
+//            Double ivaCalculadoRedondeado = Double.valueOf(ivaCalculadoString.replace(",", "."));
+//            cf.setIva(ivaCalculadoRedondeado);
 
-            Double totalFacturaParaMercadoPago = fc.getTotalVenta() - fc.getTotalUtilizado();
-            String totalFacturaParaMercadoPagoString = df.format(totalFacturaParaMercadoPago);
-            Double totalFacturaParaMercadoPagoRedondeado = Double.valueOf(totalFacturaParaMercadoPagoString
-                    .replace(",", "."));
+//            Double totalFacturaParaMercadoPago = fc.getTotalVenta() - fc.getTotalUtilizado();
+//            String totalFacturaParaMercadoPagoString = df.format(totalFacturaParaMercadoPago);
+//            Double totalFacturaParaMercadoPagoRedondeado = Double.valueOf(totalFacturaParaMercadoPagoString
+//                    .replace(",", "."));
 //            cf.setTotal(totalFacturaParaMercadoPagoRedondeado);
 //            cf.setTotalMp(totalFacturaParaMercadoPagoRedondeado);
 
-            Double t1 = totalFacturaParaMercadoPagoRedondeado;
-            String t1String = df.format(t1);
-            Double t1Redondeado = Double.valueOf(t1String.replace(",", "."));
-            Double t2 = gravadoCalculadoRedondeado
-                    + impuestoCalculadoRedondeado
-                    + ivaCalculadoRedondeado;
-            String t2String = df.format(t2);
-            Double t2Redondeado = Double.valueOf(t2String.replace(",", "."));
-
-            if (!df.format(t1Redondeado).equals(df.format(t2Redondeado))) {
-                if (t1Redondeado > t2Redondeado) {
-                    impuestoCalculado = impuestoCalculadoRedondeado + .01;
-                } else {
-                    impuestoCalculado = impuestoCalculadoRedondeado - .01;
-                }
-                String impuestoVentaString = df.format(impuestoCalculado);
-                Double impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
-                cf.setImpuesto(impuestoRedondeado);
-                t2 = gravadoCalculadoRedondeado
-                        + impuestoRedondeado
-                        + ivaCalculadoRedondeado;
-                t2String = df.format(t2);
-                t2Redondeado = Double.valueOf(t2String.replace(",", "."));
-            }
-            cf.setTotal(t1Redondeado);
-            cf.setTotalMp(t2Redondeado);
+//            Double t1 = totalFacturaParaMercadoPagoRedondeado;
+//            String t1String = df.format(t1);
+//            Double t1Redondeado = Double.valueOf(t1String.replace(",", "."));
+//            Double t2 = gravadoCalculadoRedondeado
+//                    + impuestoCalculadoRedondeado
+//                    + ivaCalculadoRedondeado;
+//            String t2String = df.format(t2);
+//            Double t2Redondeado = Double.valueOf(t2String.replace(",", "."));
+//
+//            if (!df.format(t1Redondeado).equals(df.format(t2Redondeado))) {
+//                if (t1Redondeado > t2Redondeado) {
+//                    impuestoCalculado = impuestoCalculadoRedondeado + .01;
+//                } else {
+//                    impuestoCalculado = impuestoCalculadoRedondeado - .01;
+//                }
+//                String impuestoVentaString = df.format(impuestoCalculado);
+//                Double impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
+//                cf.setImpuesto(impuestoRedondeado);
+//                t2 = gravadoCalculadoRedondeado
+//                        + impuestoRedondeado
+//                        + ivaCalculadoRedondeado;
+//                t2String = df.format(t2);
+//                t2Redondeado = Double.valueOf(t2String.replace(",", "."));
+//            }
+//            cf.setTotal(t1Redondeado);
+//            cf.setTotalMp(t2Redondeado);
 
             return cf;
         }

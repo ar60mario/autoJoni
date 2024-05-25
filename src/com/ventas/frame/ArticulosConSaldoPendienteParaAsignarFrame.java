@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author argia
  */
-public class FacturasCompraConSaldoPendienteParaAsignarFrame extends javax.swing.JFrame {
+public class ArticulosConSaldoPendienteParaAsignarFrame extends javax.swing.JFrame {
 
     private List<FacturaCompra> compras;
     private SimpleDateFormat sdf = new SimpleDateFormat();
@@ -23,7 +23,7 @@ public class FacturasCompraConSaldoPendienteParaAsignarFrame extends javax.swing
     /**
      * Creates new form FacturasCompraConSaldoPendienteParaAsignarFrame
      */
-    public FacturasCompraConSaldoPendienteParaAsignarFrame() {
+    public ArticulosConSaldoPendienteParaAsignarFrame() {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
@@ -126,20 +126,21 @@ public class FacturasCompraConSaldoPendienteParaAsignarFrame extends javax.swing
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturasCompraConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ArticulosConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturasCompraConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ArticulosConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturasCompraConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ArticulosConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturasCompraConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ArticulosConSaldoPendienteParaAsignarFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturasCompraConSaldoPendienteParaAsignarFrame().setVisible(true);
+                new ArticulosConSaldoPendienteParaAsignarFrame().setVisible(true);
             }
         });
     }
@@ -161,7 +162,7 @@ public class FacturasCompraConSaldoPendienteParaAsignarFrame extends javax.swing
         try {
             compras = new FacturaCompraService().getFacturasCompraPendientes();
         } catch (Exception ex) {
-            Logger.getLogger(FacturasCompraConSaldoPendienteParaAsignarFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ArticulosConSaldoPendienteParaAsignarFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -176,7 +177,7 @@ public class FacturasCompraConSaldoPendienteParaAsignarFrame extends javax.swing
                 o[3]=df.format(fc.getImpuestoVenta());
                 o[4]=df.format(fc.getIvaVenta());
                 o[5]=df.format(fc.getTotalVenta());
-                o[6]=df.format(fc.getTotalUtilizado());
+//                o[6]=df.format(fc.getTotalUtilizado());
                 tbl.addRow(o);
             }
             tabla.setModel(tbl);

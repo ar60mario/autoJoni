@@ -24,11 +24,11 @@ public class ComprobanteVentaMercadoPagoService {
         Transaction tx = session.beginTransaction();
         try {
             if (nuevo) {
-                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto1(cliente, cf, 
-                        ccmp, facturaCompra, fii, fcrmp);
+//                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto1(cliente, cf, 
+//                        ccmp, facturaCompra, fii, fcrmp);
             } else {
-                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto2(cliente, cf, 
-                        ccmp, facturaCompra, fii, fcrmp);
+//                new ComprobanteVentaMercadoPagoBo().saveComprobanteCompleto2(cliente, cf, 
+//                        ccmp, facturaCompra, fii, fcrmp);
             }
             tx.commit();
         } catch (Exception ex) {

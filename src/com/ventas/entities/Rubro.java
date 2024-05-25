@@ -1,11 +1,10 @@
-
 package com.ventas.entities;
 
 public class Rubro {
-private Long id;
-private Integer codigo;
-private String nombre;
 
+    private Long id;
+    private Integer codigo;
+    private String nombre;
 
     public Rubro() {
     }

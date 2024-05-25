@@ -63,14 +63,14 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FECHA", "PROVEEDOR", "TOTAL", "TOTAL_VENTA", "TOTAL_USADO"
+                "FECHA", "PROVEEDOR", "TOTAL", "TOTAL_VENTA"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -342,12 +342,11 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
         if (facturas != null && !facturas.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (FacturaCompra facturaCompra : facturas) {
-                Object o[] = new Object[5];
+                Object o[] = new Object[4];
                 o[0] = sdf.format(facturaCompra.getFecha());
                 o[1] = facturaCompra.getProveedor();
                 o[2] = df.format(facturaCompra.getTotal());
                 o[3] = df.format(facturaCompra.getTotalVenta());
-                o[4] = df.format(facturaCompra.getTotalUtilizado());
                 tbl.addRow(o);
             }
             tabla.setModel(tbl);

@@ -8,10 +8,10 @@
         <id name="id" column="ID">
             <generator class="identity"/>
         </id>
-        <many-to-one name="facturaCompra"
-                    class="com.ventas.entities.FacturaCompra"
+        <many-to-one name="articuloCompra"
+                    class="com.ventas.entities.ArticuloCompra"
                      lazy="false">
-                     <column name="ID_FACTURA_COMPRA" not-null="true"/>
+                     <column name="ID_ARTICULO_COMPRA" not-null="true"/>
         </many-to-one>
         <many-to-one name="compraClienteMercadoPago"
                     class="com.ventas.entities.CompraClienteMercadoPago"

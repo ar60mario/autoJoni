@@ -5,10 +5,11 @@
  */
 package com.ventas.frame;
 
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.Configuracion;
 import com.ventas.entities.FacturaCompra;
-import com.ventas.entities.Producto;
 import com.ventas.entities.Rubro;
+import com.ventas.services.ArticuloVentaService;
 import com.ventas.services.ConfiguracionService;
 import com.ventas.services.FacturaCompraService;
 import com.ventas.services.ProductoService;
@@ -29,8 +30,8 @@ import javax.swing.JOptionPane;
  */
 public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
 
-    private List<Producto> productos;
-    private Producto producto;
+    private List<ArticuloCompra> articulos;
+    private ArticuloCompra articulo;
     private DecimalFormat df = new DecimalFormat("#0.00");
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Float porceIva = 0F;
@@ -454,7 +455,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         if (evt.getModifiers() == 16) {
             int row = combo.getSelectedIndex();
             if (row > 0) {
-                producto = productos.get(row - 1);
+                articulo = articulos.get(row - 1);
                 calcularTotal();
             }
         }
@@ -464,7 +465,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         if (evt.getKeyCode() == 10) {
             int row = combo.getSelectedIndex();
             if (row > 0) {
-                producto = productos.get(row - 1);
+                articulo = articulos.get(row - 1);
                 calcularTotal();
             }
         }
@@ -560,7 +561,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         totalVentaTxt.setText("");
         combo.removeAllItems();
         combo.addItem("");
-        productos = null;
+        articulos = null;
         Rubro rubro = null;
         try {
             rubro = new RubroService().getRubroByCodigo(100);
@@ -571,13 +572,13 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
 //        System.exit(0);
         if (rubro != null) {
             try {
-                productos = new ProductoService().getAllProductosByRubro(rubro);
+//                articulos = new ArticuloVentaService().toString();
             } catch (Exception ex) {
                 Logger.getLogger(NuevaFacturaCompraFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (productos != null && !productos.isEmpty()) {
-                for (Producto producto : productos) {
-                    combo.addItem(producto.getDetalle());
+            if (articulos != null && !articulos.isEmpty()) {
+                for (ArticuloCompra artic : articulos) {
+                    combo.addItem(artic.getNombre());
                 }
             }
         }
@@ -616,33 +617,26 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             Double totalVenta = Double.valueOf(totalVentaTxt.getText().replace(",", "."));
             String proveedor = proveedorTxt.getText();
             int row = combo.getSelectedIndex();
-            Producto producto = productos.get(row - 1);
+            articulo = articulos.get(row - 1);
             facturaCompra.setFecha(fecha);
             facturaCompra.setGanancia(ganancia);
             facturaCompra.setGravado(gravado);
-            facturaCompra.setGravadoUtilizado(0.0);
             facturaCompra.setIibb(iibb);
             facturaCompra.setImpuesto1(impuesto_1);
             facturaCompra.setImpuesto2(impuesto_2);
             facturaCompra.setImpuesto3(impuesto_3);
-            facturaCompra.setImpuestoUtilizado(0.0);
             facturaCompra.setIva(iva);
-            facturaCompra.setIvaUtilizado(0.0);
-            facturaCompra.setProcesado(false);
-            facturaCompra.setProducto(producto);
+            facturaCompra.setArticuloVenta(articulo);
             facturaCompra.setProveedor(proveedor);
             facturaCompra.setGravadoVenta(gravadoVenta);
-            facturaCompra.setGravadoTemp(0.0);
             facturaCompra.setIvaVenta(ivaVenta);
-            facturaCompra.setIvaTemp(0.0);
             facturaCompra.setImpuestoVenta(impuestoVenta);
-            facturaCompra.setImpuestoTemp(0.0);
             facturaCompra.setTotalVenta(totalVenta);
-            facturaCompra.setTotalUtilizado(0.0);
             facturaCompra.setTotal(totalFc);
-            facturaCompra.setTotalTemp(0.0);
+            
             try {
                 new FacturaCompraService().saveFacturaCompra(facturaCompra);
+                
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "ERROR GRABANDO FACTURA COMPRA");
                 return;

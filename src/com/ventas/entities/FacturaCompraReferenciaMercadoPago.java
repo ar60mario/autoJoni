@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.entities;
 
 /**
@@ -11,16 +6,16 @@ package com.ventas.entities;
  */
 public class FacturaCompraReferenciaMercadoPago {
     private Long id;
-    private FacturaCompra facturaCompra;
+    private ArticuloCompra articuloCompra;
     private CompraClienteMercadoPago compraClienteMercadoPago;
     private IvaVentas ivaVentas;
 
     public FacturaCompraReferenciaMercadoPago() {
     }
 
-    public FacturaCompraReferenciaMercadoPago(Long id, FacturaCompra facturaCompra, CompraClienteMercadoPago compraClienteMercadoPago, IvaVentas ivaVentas) {
+    public FacturaCompraReferenciaMercadoPago(Long id, ArticuloCompra articuloCompra, CompraClienteMercadoPago compraClienteMercadoPago, IvaVentas ivaVentas) {
         this.id = id;
-        this.facturaCompra = facturaCompra;
+        this.articuloCompra = articuloCompra;
         this.compraClienteMercadoPago = compraClienteMercadoPago;
         this.ivaVentas = ivaVentas;
     }
@@ -33,12 +28,12 @@ public class FacturaCompraReferenciaMercadoPago {
         this.id = id;
     }
 
-    public FacturaCompra getFacturaCompra() {
-        return facturaCompra;
+    public ArticuloCompra getArticuloCompra() {
+        return articuloCompra;
     }
 
-    public void setFacturaCompra(FacturaCompra facturaCompra) {
-        this.facturaCompra = facturaCompra;
+    public void setArticuloCompra(ArticuloCompra articuloCompra) {
+        this.articuloCompra = articuloCompra;
     }
 
     public CompraClienteMercadoPago getCompraClienteMercadoPago() {
