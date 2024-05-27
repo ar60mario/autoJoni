@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
-import com.ventas.entities.CalculoFactura;
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.ConfiguracionTop;
-import com.ventas.entities.FacturaCompra;
-import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
-import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.main.MainFrame;
+import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.CompraClienteMercadoPagoService;
 import com.ventas.services.ConfiguracionTopService;
 import com.ventas.services.FacturaCompraService;
-import com.ventas.util.UtilFactura;
 import com.ventas.util.UtilFrame;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,8 +29,8 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private List<CompraClienteMercadoPago> compras = null;
     private CompraClienteMercadoPago compra;
-    private List<FacturaCompra> facturas = null;
-    private FacturaCompra factura;
+    private List<ArticuloCompra> facturas = null;
+    private ArticuloCompra factura;
     private Integer contadorFacturas = 0;
     private Integer contadorCompras = 0;
 
@@ -461,46 +452,20 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
 
     private void presentar() {
         try {
-            facturas = new FacturaCompraService().getAllFacturas();
+            facturas = new ArticuloCompraService().getArticulosConSaldosParaAplicar();
         } catch (Exception ex) {
-            Logger.getLogger(FacturarMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ConfiguracionTop ct = null;
-        try {
-            ct = new ConfiguracionTopService().getConfigTopById(1);
-        } catch (Exception ex) {
-            Logger.getLogger(FacturarMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Double importeMinimoMercadoPago = 0.0;
-        if (ct != null) {
-            importeMinimoMercadoPago = ct.getImporteMinimoMercadoPago();
-        } else {
+            JOptionPane.showMessageDialog(this, "ERROR 455");
             return;
         }
-        Date fecha = new Date();
-        try {
-            fecha = sdf.parse(fechaTxt.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(FacturarMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
         if (compras != null && !compras.isEmpty()) {
-            if (facturas != null && !facturas.isEmpty()) {
-                Boolean salir1 = true;
-//                Boolean salir2 = false;
-                Integer cantidadFacturas = facturas.size();
-                Integer cantidadCompras = compras.size();
-
-                do {
-                    salir1 = generarFactura(cantidadCompras,
-                            cantidadFacturas, importeMinimoMercadoPago,
-                            fecha);
-
-                } while (salir1);
+            if (facturas.isEmpty()) {
+                presentarSinSaldos();
             } else {
-                JOptionPane.showMessageDialog(this, "NO HAY FACTURAS COMPRA DISPONIBLES");
+                presentarConSaldos();
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR NO HAY PAGOS MERCADO PAGO PARA PROCESAR");
         }
-
     }
 
     /*
@@ -675,5 +640,46 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
             return false;
         }
         return true;
+    }
+
+    private void presentarSinSaldos() {
+
+    }
+
+    private void presentarConSaldos() {
+        ConfiguracionTop ct = null;
+        try {
+            ct = new ConfiguracionTopService().getConfigTopById(1);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "ERROR 648");
+            return;
+        }
+        Double importeMinimoMercadoPago = 0.0;
+        if (ct != null) {
+            importeMinimoMercadoPago = ct.getImporteMinimoMercadoPago();
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR 655");
+            return;
+        }
+        Date fecha = new Date();
+        try {
+            fecha = sdf.parse(fechaTxt.getText());
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "ERROR 662");
+            return;
+        }
+
+        Boolean salir1 = true;
+//                Boolean salir2 = false;
+        Integer cantidadFacturas = facturas.size();
+        Integer cantidadCompras = compras.size();
+
+        do {
+            salir1 = generarFactura(cantidadCompras,
+                    cantidadFacturas, importeMinimoMercadoPago,
+                    fecha);
+
+        } while (salir1);
+
     }
 }

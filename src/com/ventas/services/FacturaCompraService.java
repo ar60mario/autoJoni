@@ -1,6 +1,7 @@
 package com.ventas.services;
 
 import com.ventas.bo.FacturaCompraBo;
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.FacturaCompra;
 import com.ventas.util.HibernateUtils;
 import java.util.Date;
@@ -28,6 +29,19 @@ public class FacturaCompraService {
         }
     }
 
+    public void saveFacturaCompraAndArticulo(FacturaCompra fc, ArticuloCompra articulo) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        FacturaCompraBo fBo = new FacturaCompraBo();
+        try {
+            fBo.saveFacturaCompraAndArticulo(fc, articulo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
     public void updateFacturaCompra(FacturaCompra fc) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();

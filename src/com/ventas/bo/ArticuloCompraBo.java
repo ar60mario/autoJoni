@@ -1,7 +1,8 @@
 package com.ventas.bo;
 
-import com.ventas.dao.ArticuloVentaDao;
+import com.ventas.dao.ArticuloCompraDao;
 import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.Producto;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -10,9 +11,9 @@ import org.hibernate.HibernateException;
  *
  * @author Mario
  */
-public class ArticuloVentaBo {
+public class ArticuloCompraBo {
 
-    private final ArticuloVentaDao dao = new ArticuloVentaDao();
+    private final ArticuloCompraDao dao = new ArticuloCompraDao();
 
     public List<ArticuloCompra> getAllArticulos() throws Exception {
         List<ArticuloCompra> articulos;
@@ -24,6 +25,26 @@ public class ArticuloVentaBo {
         return articulos;
     }
 
+    public List<ArticuloCompra> getAllArticulosActivos() throws Exception {
+        List<ArticuloCompra> articulos;
+        try {
+            articulos = dao.getAllArticulosActivos();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return articulos;
+    }
+
+    public List<ArticuloCompra> getArticulosConSaldosParaAplicar() throws Exception {
+        List<ArticuloCompra> articulos;
+        try {
+            articulos = dao.getArticulosConSaldosParaAplicar();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return articulos;
+    }
+    
 //    public List<Producto> getAllProductosByRubro(Rubro rubro) throws Exception {
 //        ProductoDao dao = new ProductoDao();
 //        List<Producto> losProductos = new ArrayList<Producto>();
@@ -34,26 +55,35 @@ public class ArticuloVentaBo {
 //        }
 //        return losProductos;
 //    }
-//    
-//    public Producto guardarProducto(Producto producto) throws Exception {
-//        try {
-//            dao.save(producto);
-//        } catch (HibernateException ex) {
-//            throw new Exception(ex);
-//        }
-//        return producto;
-//    }
-//
-//    public Producto getProductoByCodigo(Integer codigo) throws Exception {
-//        Producto producto = null;
-//        try {
-//            producto = dao.getByCodigo(codigo);
-//        } catch (HibernateException ex) {
-//            throw new Exception(ex);
-//        }
-//        return producto;
-//    }
-//
+    public ArticuloCompra guardarArticuloCompra(ArticuloCompra articulo) throws Exception {
+        try {
+            dao.save(articulo);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return articulo;
+    }
+
+    public ArticuloCompra updateArticuloCompra(ArticuloCompra articulo) throws Exception {
+
+        try {
+            dao.update(articulo);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return articulo;
+    }
+
+    public ArticuloCompra getArticuloCompraByProducto(Producto producto) throws Exception {
+        ArticuloCompra articulo = null;
+        try {
+            articulo = dao.getArticuloCompraByProducto(producto);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return articulo;
+    }
+
 //    public Producto getProductoPanificadoByCodigo(Integer codigo) throws Exception {
 //        Producto producto = null;
 //        try {
@@ -275,5 +305,4 @@ public class ArticuloVentaBo {
 //        }
 //        return productos;
 //    }
-
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
 import com.ventas.entities.Producto;
@@ -37,9 +32,10 @@ public class AbmProductoFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form AbmProductoFrame
+     *
+     * @param filtro
      */
     public AbmProductoFrame(String filtro) {
-        //getContentPane().setBackground(new java.awt.Color(0, 139, 139));
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
@@ -241,9 +237,9 @@ public class AbmProductoFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
-        this.dispose();
         MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void modificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarBtnActionPerformed
@@ -259,9 +255,9 @@ public class AbmProductoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_modificarBtnActionPerformed
 
     private void nuevoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoBtnActionPerformed
-        this.dispose();
-        NuevoProductoFrame nuevoProductoFrame = new NuevoProductoFrame();
+        NuevoProductoFrame nuevoProductoFrame = new NuevoProductoFrame(filtro);
         nuevoProductoFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_nuevoBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
@@ -296,10 +292,10 @@ public class AbmProductoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_panificadosChkActionPerformed
 
     private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
-        if(evt.getModifiers()==16){
+        if (evt.getModifiers() == 16) {
             int row = combo.getSelectedIndex();
             borrarTabla();
-            if(row > 0){
+            if (row > 0) {
                 llenarTablaByRubro();
             }
         }
@@ -366,13 +362,13 @@ public class AbmProductoFrame extends javax.swing.JFrame {
     private void llenarTabla() {
         int row = combo.getSelectedIndex();
         Rubro ru;
-        if(row > 0){
-            ru = rubros.get(row-1);
-        }else{
+        if (row > 0) {
+            ru = rubros.get(row - 1);
+        } else {
             JOptionPane.showMessageDialog(this, "ERROR EN RUBROS");
             return;
         }
-        
+
         this.filtro = productoTxt.getText();
         if (panificadosChk.isSelected()) {
             try {
@@ -481,12 +477,12 @@ public class AbmProductoFrame extends javax.swing.JFrame {
         }
         combo.removeAllItems();
         combo.addItem("");
-        if(rubros != null && !rubros.isEmpty()){
-            for(Rubro r:rubros){
+        if (rubros != null && !rubros.isEmpty()) {
+            for (Rubro r : rubros) {
                 combo.addItem(r.getNombre());
             }
         }
-        combo.setSelectedIndex(1);
+        combo.setSelectedIndex(2);
     }
 
     private void borrarTabla() {
@@ -520,7 +516,7 @@ public class AbmProductoFrame extends javax.swing.JFrame {
 
     private void llenarTablaByRubro() {
         int row = combo.getSelectedIndex();
-        Rubro r = rubros.get(row -1);
+        Rubro r = rubros.get(row - 1);
         this.filtro = productoTxt.getText();
         if (panificadosChk.isSelected()) {
             try {

@@ -242,6 +242,21 @@ public class ProductoService {
         return productoLista;
     }
 
+    public List<Producto> getProductosDeTabacaleras(Integer desde) throws Exception {
+        List<Producto> productoLista = new ArrayList();
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            ProductoBo bo = new ProductoBo();
+            productoLista = bo.getProductosDeTabacaleras(desde);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productoLista;
+    }
+    
     public List<Producto> getAllProductosOrdenadoByNombre(String filtro) throws Exception {
         List<Producto> productoLista = new ArrayList();
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

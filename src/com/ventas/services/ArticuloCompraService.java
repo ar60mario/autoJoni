@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.services;
 
-import com.ventas.bo.ArticuloVentaBo;
+import com.ventas.bo.ArticuloCompraBo;
 import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.Producto;
 import com.ventas.entities.Rubro;
 import com.ventas.util.HibernateUtils;
 import java.util.ArrayList;
@@ -18,14 +14,14 @@ import org.hibernate.Transaction;
  *
  * @author Mario
  */
-public class ArticuloVentaService {
+public class ArticuloCompraService {
 
-    public List<ArticuloCompra> getAllArticuloVenta() throws Exception {
+    public List<ArticuloCompra> getAllArticulosCompra() throws Exception {
         List<ArticuloCompra> articulos = new ArrayList();
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            ArticuloVentaBo bo = new ArticuloVentaBo();
+            ArticuloCompraBo bo = new ArticuloCompraBo();
             articulos = bo.getAllArticulos();
             tx.commit();
         } catch (Exception ex) {
@@ -35,6 +31,39 @@ public class ArticuloVentaService {
 
         return articulos;
     }
+
+    public List<ArticuloCompra> getAllArticulosActivos() throws Exception {
+        List<ArticuloCompra> articulos = new ArrayList();
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            ArticuloCompraBo bo = new ArticuloCompraBo();
+            articulos = bo.getAllArticulosActivos();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+
+        return articulos;
+    }
+
+    public List<ArticuloCompra> getArticulosConSaldosParaAplicar() throws Exception {
+        List<ArticuloCompra> articulos = new ArrayList();
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            ArticuloCompraBo bo = new ArticuloCompraBo();
+            articulos = bo.getArticulosConSaldosParaAplicar();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+
+        return articulos;
+    }
+    
 //
 //    public List<Producto> getAllProductosByRubro(Rubro rubro) throws Exception {
 //        List<Producto> productoLista = new ArrayList();
@@ -51,34 +80,34 @@ public class ArticuloVentaService {
 //
 //        return productoLista;
 //    }
-//    
-//    public void guardarProducto(Producto producto) throws Exception {
-//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-//        Transaction tx = session.beginTransaction();
-//        try {
-//            ProductoBo bo = new ProductoBo();
-//            bo.guardarProducto(producto);
-//            tx.commit();
-//        } catch (Exception ex) {
-//            tx.rollback();
-//            throw new Exception(ex);
-//        }
-//    }
-//
-//    public Producto getProductoByCodigo(Integer codigo) throws Exception {
-//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-//        Transaction tx = session.beginTransaction();
-//        Producto producto = null;
-//        try {
-//            producto = new ProductoBo().getProductoByCodigo(codigo);
-//            tx.commit();
-//        } catch (Exception ex) {
-//            tx.rollback();
-//            throw new Exception(ex);
-//        }
-//        return producto;
-//    }
-//    
+    public ArticuloCompra guardarArticuloCompra(ArticuloCompra articulo) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            ArticuloCompraBo bo = new ArticuloCompraBo();
+            bo.guardarArticuloCompra(articulo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return articulo;
+    }
+
+    public ArticuloCompra getArticuloCompraByProducto(Producto producto) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        ArticuloCompra articulo = null;
+        try {
+            articulo = new ArticuloCompraBo().getArticuloCompraByProducto(producto);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return articulo;
+    }
+
 //    public Producto getProductoPanificadoByCodigo(Integer codigo) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();
@@ -373,5 +402,4 @@ public class ArticuloVentaService {
 //        }
 //        return productos;
 //    }
-    
 }

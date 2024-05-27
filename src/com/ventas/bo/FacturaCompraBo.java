@@ -1,6 +1,7 @@
 package com.ventas.bo;
 
 import com.ventas.dao.FacturaCompraDao;
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.FacturaCompra;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,17 @@ public class FacturaCompraBo {
         FacturaCompra fact = null;
         try {
             fact = (FacturaCompra) dao.save(factura);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+    
+    public FacturaCompra saveFacturaCompraAndArticulo(FacturaCompra factura, ArticuloCompra articulo) throws Exception {
+        FacturaCompra fact = null;
+        try {
+            fact = (FacturaCompra) dao.save(factura);
+            new ArticuloCompraBo().updateArticuloCompra(articulo);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

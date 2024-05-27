@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.dao;
 
 import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.Producto;
 import com.ventas.util.HibernateUtils;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -18,22 +14,49 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Mario
  */
-public class ArticuloVentaDao extends GenericDao {
+public class ArticuloCompraDao extends GenericDao {
 
-//    public Producto getByCodigo(Integer codigo) {
-//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-//        Criteria criteria = session.createCriteria(Producto.class);
-//        criteria.add(Restrictions.eq("codigo", codigo));
+    public ArticuloCompra getArticuloCompraByProducto(Producto producto) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ArticuloCompra.class);
+        criteria.add(Restrictions.eq("producto", producto));
 //        criteria.add(Restrictions.eq("panificado", false));
-//        Producto producto = (Producto) criteria.uniqueResult();
-//        return producto;
-//    }
+        ArticuloCompra articulo = (ArticuloCompra) criteria.uniqueResult();
+        return articulo;
+    }
 
     public List<ArticuloCompra> getAllArticulos() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(ArticuloCompra.class);
-        criteria.add(Restrictions.eq("inactivo", false));
-        criteria.add(Restrictions.eq("panificado", false));
+//        criteria.add(Restrictions.eq("activo", true));
+//        criteria.add(Restrictions.eq("panificado", false));
+        List<ArticuloCompra> articulos = (List<ArticuloCompra>) criteria.list();
+        return articulos;
+    }
+    
+//    public List<ArticuloCompra> getAllArticulosActivos() {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(ArticuloCompra.class);
+//        criteria.add(Restrictions.eq("activo", true));
+////        criteria.add(Restrictions.eq("panificado", false));
+//        List<ArticuloCompra> articulos = (List<ArticuloCompra>) criteria.list();
+//        return articulos;
+//    }
+    
+    public List<ArticuloCompra> getArticulosConSaldosParaAplicar() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ArticuloCompra.class);
+        criteria.add(Restrictions.gt("total", 0.00));
+//        criteria.add(Restrictions.eq("panificado", false));
+        List<ArticuloCompra> articulos = (List<ArticuloCompra>) criteria.list();
+        return articulos;
+    }
+    
+    public List<ArticuloCompra> getAllArticulosActivos() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ArticuloCompra.class);
+        criteria.add(Restrictions.eq("activo", true));
+//        criteria.add(Restrictions.eq("panificado", false));
         List<ArticuloCompra> articulos = (List<ArticuloCompra>) criteria.list();
         return articulos;
     }

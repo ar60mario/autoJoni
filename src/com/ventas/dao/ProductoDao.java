@@ -273,6 +273,14 @@ public class ProductoDao extends GenericDao {
 
         return (List<Producto>) criteria.list();
     }
+    
+    public List<Producto> getProductosDeTabacaleras(Integer desde) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.gt("codigo", desde));
+        criteria.addOrder(Order.asc("detalle"));
+        return (List<Producto>) criteria.list();
+    }
 
     public Producto getByCodigoBarras(Long codigoBarras) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

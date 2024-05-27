@@ -359,6 +359,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Fc Autom.X Importe"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="facturaAutomPorImporteBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

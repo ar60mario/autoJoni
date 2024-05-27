@@ -9,7 +9,7 @@ import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.Configuracion;
 import com.ventas.entities.FacturaCompra;
 import com.ventas.entities.Rubro;
-import com.ventas.services.ArticuloVentaService;
+import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.ConfiguracionService;
 import com.ventas.services.FacturaCompraService;
 import com.ventas.services.ProductoService;
@@ -382,7 +382,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         if (evt.getKeyCode() == 10) {
             if (!netoGravadoTxt.getText().isEmpty()) {
                 Double netoGravado = Double.valueOf(netoGravadoTxt.getText().replace(",", "."));
-                ivaTxt.setText(df.format(netoGravado * .21));
+                ivaTxt.setText(df.format(netoGravado * porceIva / 100));
                 ivaTxt.requestFocus();
             }
         }
@@ -578,7 +578,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             }
             if (articulos != null && !articulos.isEmpty()) {
                 for (ArticuloCompra artic : articulos) {
-                    combo.addItem(artic.getNombre());
+                    combo.addItem(artic.getProducto().getDetalle());
                 }
             }
         }
@@ -626,17 +626,29 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             facturaCompra.setImpuesto2(impuesto_2);
             facturaCompra.setImpuesto3(impuesto_3);
             facturaCompra.setIva(iva);
-            facturaCompra.setArticuloVenta(articulo);
+            facturaCompra.setArticuloCompra(articulo);
             facturaCompra.setProveedor(proveedor);
             facturaCompra.setGravadoVenta(gravadoVenta);
             facturaCompra.setIvaVenta(ivaVenta);
             facturaCompra.setImpuestoVenta(impuestoVenta);
             facturaCompra.setTotalVenta(totalVenta);
             facturaCompra.setTotal(totalFc);
-            
+            Double gravadoArticulo = articulo.getGravado() + gravadoVenta;
+            Double impuestoArticulo = articulo.getImpuesto() + impuestoVenta;
+            Double ivaArticulo = articulo.getIva() + ivaVenta;
+            Double totalArticulo = articulo.getTotal() + totalVenta;
+            gravadoArticulo = importeRedondeado(gravadoArticulo);
+            impuestoArticulo = importeRedondeado(impuestoArticulo);
+            ivaArticulo = importeRedondeado(ivaArticulo);
+            totalArticulo = importeRedondeado(totalArticulo);
+            articulo.setGravado(importeRedondeado(gravadoArticulo));
+            articulo.setImpuesto(impuestoArticulo);
+            articulo.setIva(ivaArticulo);
+            articulo.setTotal(totalArticulo);
+
             try {
-                new FacturaCompraService().saveFacturaCompra(facturaCompra);
-                
+                new FacturaCompraService().saveFacturaCompraAndArticulo(facturaCompra, articulo);
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "ERROR GRABANDO FACTURA COMPRA");
                 return;
@@ -648,7 +660,6 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     }
 
     private boolean validar() {
-
         if (netoGravadoTxt.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "NETO GRAVADO NO PUEDE ESTAR EN CERO");
             netoGravadoTxt.requestFocus();
@@ -659,7 +670,6 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             ivaTxt.requestFocus();
             return false;
         }
-
         return true;
     }
 
@@ -676,24 +686,24 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         } else {
             importe = Double.valueOf(text.replace(",", "."));
         }
-        return importe;
+        Double imp = importeRedondeado(importe);
+        return imp;
     }
 
     private void calcularTotal() {
-
         if (netoGravadoTxt.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "NETO GRAVADO NO PUEDE ESTAR EN CERO");
+            JOptionPane.showMessageDialog(this, "NETO GRAVADO NO PUEDE ESTAR VACIO");
             netoGravadoTxt.requestFocus();
             return;
         }
         Double netoGravado = Double.valueOf(netoGravadoTxt.getText().replace(",", "."));
         if (ivaTxt.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "IVA NO PUEDE ESTAR EN CERO");
+            JOptionPane.showMessageDialog(this, "IVA NO PUEDE ESTAR VACIO");
             ivaTxt.requestFocus();
             return;
         }
         if (gananciaTxt.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "GANANCIA NO PUEDE ESTAR EN CERO");
+            JOptionPane.showMessageDialog(this, "GANANCIA NO PUEDE ESTAR VACIO");
             gananciaTxt.requestFocus();
             return;
         }
@@ -704,7 +714,9 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         Double ivaVenta;
         Float ganancia = Float.valueOf(gananciaTxt.getText().replace(",", "."));
         gravadoVenta = netoGravado * (1 + ganancia / 100);
+        gravadoVenta = importeRedondeado(gravadoVenta);
         ivaVenta = gravadoVenta * porceIva / 100;
+        ivaVenta = importeRedondeado(ivaVenta);
         if (!impuesto_1Txt.getText().isEmpty()) {
             impuestoVenta += devolver(impuesto_1Txt.getText().replace(",", "."));
         }
@@ -716,15 +728,27 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         }
         total += devolver(netoGravadoTxt.getText().replace(",", "."));
         total += devolver(ivaTxt.getText().replace(",", "."));
+        total = importeRedondeado(total);
         total += devolver(iibbTxt.getText().replace(",", "."));
+        total = importeRedondeado(total);
         total += devolver(impuesto_1Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
         total += devolver(impuesto_2Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
         total += devolver(impuesto_3Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
         totalTxt.setText(df.format(total));
         ivaVentaTxt.setText(df.format(ivaVenta));
         impuestoVentaTxt.setText(df.format(impuestoVenta));
         totalVenta = gravadoVenta + ivaVenta + impuestoVenta;
+        totalVenta = importeRedondeado(totalVenta);
         totalVentaTxt.setText(df.format(totalVenta));
         gravadoVentaTxt.setText(df.format(gravadoVenta));
+    }
+
+    private Double importeRedondeado(Double importeOriginal) {
+        String importeString = df.format(importeOriginal);
+        Double importeRedondeado = Double.valueOf(importeString.replace(",", "."));
+        return importeRedondeado;
     }
 }

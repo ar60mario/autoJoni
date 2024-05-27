@@ -48,7 +48,7 @@ public class ComprobanteVentaMercadoPagoBo {
         rf.setCantidad(1F);
         rf.setCostoG(0.0);
         rf.setCostoI(0.0);
-        rf.setDescripcion(facturaCompra.getNombre());
+        rf.setDescripcion(facturaCompra.getProducto().getDetalle());
         rf.setDescuento(0.0);
         rf.setExento(0.0);
         rf.setFabricacion(false);

@@ -143,6 +143,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         facturaAutomPorImporteBtn.setText("Fc Autom.X Importe");
+        facturaAutomPorImporteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturaAutomPorImporteBtnActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Abm");
 
@@ -548,6 +553,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void articulosPorMontoMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_articulosPorMontoMnuActionPerformed
         abmArticulosPorMonto();
     }//GEN-LAST:event_articulosPorMontoMnuActionPerformed
+
+    private void facturaAutomPorImporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturaAutomPorImporteBtnActionPerformed
+        
+    }//GEN-LAST:event_facturaAutomPorImporteBtnActionPerformed
 
     /**
      * @param args the command line arguments

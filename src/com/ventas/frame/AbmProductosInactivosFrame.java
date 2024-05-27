@@ -275,7 +275,7 @@ public class AbmProductosInactivosFrame extends javax.swing.JFrame {
 
     private void nuevoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoBtnActionPerformed
         this.dispose();
-        NuevoProductoFrame nuevoProductoFrame = new NuevoProductoFrame();
+        NuevoProductoFrame nuevoProductoFrame = new NuevoProductoFrame(null);
         nuevoProductoFrame.setVisible(true);
     }//GEN-LAST:event_nuevoBtnActionPerformed
 

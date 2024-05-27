@@ -200,6 +200,18 @@ public class ProductoBo {
         return losProductos;
     }
 
+    public List<Producto> getProductosDeTabacaleras(Integer desde) throws Exception {
+        ProductoDao dao = new ProductoDao();
+        List<Producto> losProductos = new ArrayList<Producto>();
+
+        try {
+            losProductos = dao.getProductosDeTabacaleras(desde);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return losProductos;
+    }
+    
     public List<Producto> getAllProductosOrdByNombre(String filtro) throws Exception {
         ProductoDao dao = new ProductoDao();
         List<Producto> losProductos = new ArrayList<Producto>();

@@ -6,14 +6,13 @@
 package com.ventas.frame;
 
 import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.Producto;
 import com.ventas.main.MainFrame;
-import com.ventas.services.ArticuloVentaService;
+import com.ventas.services.ArticuloCompraService;
 import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -67,14 +66,14 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CÓDIGO", "NOMBRE", "TOTAL", "USADO", "ACTIVO"
+                "CÓDIGO", "NOMBRE", "TOTAL", "ACTIVO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -228,14 +227,15 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
     private void buscarArticulos() {
         articulos = null;
         try {
-            articulos = new ArticuloVentaService().getAllArticuloVenta();
+            articulos = new ArticuloCompraService().getAllArticulosCompra();
         } catch (Exception ex) {
             articulos = new ArrayList<>();
             ArticuloCompra av = new ArticuloCompra();
-            av.setCodigo(0);
-            av.setNombre("NO HAY ARTICULOS PARA MOSTRAR");
+            Producto prod = new Producto();
+            prod.setDetalle("NO HAY ARTICULOS PARA MOSTRAR");
+            prod.setCodigo(0);
+            av.setProducto(prod);
             av.setTotal(0.0);
-            av.setTotalUsado(0.0);
             av.setActivo(false);
         }
     }
@@ -246,10 +246,10 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (ArticuloCompra av : articulos) {
                 Object o[] = new Object[5];
-                o[0] = av.getCodigo();
-                o[1] = av.getNombre();
+                Producto prod = av.getProducto();
+                o[0] = prod.getCodigo();
+                o[1] = prod.getDetalle();
                 o[2] = df.format(av.getTotal());
-                o[3] = df.format(av.getTotalUsado());
                 if (av.getActivo()) {
                     o[4] = "ACTIVO";
                 } else {
@@ -262,7 +262,9 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
     }
 
     private void nuevo() {
-
+        NuevoArticuloCompraFrame nacf = new NuevoArticuloCompraFrame();
+        nacf.setVisible(true);
+        this.dispose();
     }
 
     private void modificar() {
