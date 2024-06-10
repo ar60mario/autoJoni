@@ -1,8 +1,8 @@
 package com.ventas.frame;
 
-import com.ventas.entities.FacturaCompra;
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.main.MainFrame;
-import com.ventas.services.FacturaCompraService;
+import com.ventas.services.ArticuloCompraService;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ArticulosConSaldoPendienteParaAsignarFrame extends javax.swing.JFrame {
 
-    private List<FacturaCompra> compras;
+    private List<ArticuloCompra> compras;
     private SimpleDateFormat sdf = new SimpleDateFormat();
     private DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -160,7 +160,7 @@ public class ArticulosConSaldoPendienteParaAsignarFrame extends javax.swing.JFra
     private void cargarLista() {
         compras = null;
         try {
-            compras = new FacturaCompraService().getFacturasCompraPendientes();
+            compras = new ArticuloCompraService().getArticulosConSaldosParaAplicar();
         } catch (Exception ex) {
             Logger.getLogger(ArticulosConSaldoPendienteParaAsignarFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -169,14 +169,14 @@ public class ArticulosConSaldoPendienteParaAsignarFrame extends javax.swing.JFra
     private void llenarTabla() {
         if(compras != null && !compras.isEmpty()){
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
-            for(FacturaCompra fc:compras){
+            for(ArticuloCompra fc:compras){
                 Object o[] = new Object[7];
-                o[0]=sdf.format(fc.getFecha());
-                o[1]=fc.getProveedor();
-                o[2]=df.format(fc.getGravadoVenta());
-                o[3]=df.format(fc.getImpuestoVenta());
-                o[4]=df.format(fc.getIvaVenta());
-                o[5]=df.format(fc.getTotalVenta());
+                o[0]=fc.getProducto().getDetalle();//sdf.format(fc.getFecha());
+                o[1]="";//fc.getProveedor();
+                o[2]=df.format(fc.getGravado());
+                o[3]=df.format(fc.getImpuesto());
+                o[4]=df.format(fc.getIva());
+                o[5]=df.format(fc.getTotal());
 //                o[6]=df.format(fc.getTotalUtilizado());
                 tbl.addRow(o);
             }

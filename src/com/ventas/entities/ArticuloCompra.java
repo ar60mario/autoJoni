@@ -17,15 +17,12 @@ public class ArticuloCompra {
     public ArticuloCompra() {
     }
 
-    public ArticuloCompra(Long id, Double gravado, Double impuesto,
-            Double iva, Double total, Boolean activo, Producto producto) {
+    public ArticuloCompra(Long id, Double gravado, Double impuesto, Double iva, Double total, Boolean activo, Producto producto) {
         this.id = id;
-
         this.gravado = gravado;
         this.impuesto = impuesto;
         this.iva = iva;
         this.total = total;
-
         this.activo = activo;
         this.producto = producto;
     }

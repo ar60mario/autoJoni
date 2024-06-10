@@ -238,6 +238,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Se guardarán todos los CLIENTES listados.\n¿Confirma la operación?",
             "Confirmar", JOptionPane.OK_CANCEL_OPTION);
         if(confirm == JOptionPane.OK_OPTION){
+            
             try{
                 new CompraClienteMercadoPagoService().saveCompraClientesImportados(compras);
                 JOptionPane.showMessageDialog(this, "Clientes guardados correctamente.");

@@ -16,17 +16,25 @@ public class CalculoFactura {
     private Double iva;
     private Double total;
     private Double totalMp;
+    private Producto producto;
+    private ArticuloCompra articulo;
+    private String cuitCliente;
+    private CompraClienteMercadoPago compraMercadoPago;
 
     public CalculoFactura() {
     }
 
-    public CalculoFactura(Long id, Double gravado, Double impuesto, Double iva, Double total, Double totalMp) {
+    public CalculoFactura(Long id, Double gravado, Double impuesto, Double iva, Double total, Double totalMp, Producto producto, ArticuloCompra articulo, String cuitCliente, CompraClienteMercadoPago compraMercadoPago) {
         this.id = id;
         this.gravado = gravado;
         this.impuesto = impuesto;
         this.iva = iva;
         this.total = total;
         this.totalMp = totalMp;
+        this.producto = producto;
+        this.articulo = articulo;
+        this.cuitCliente = cuitCliente;
+        this.compraMercadoPago = compraMercadoPago;
     }
 
     public Long getId() {
@@ -77,4 +85,36 @@ public class CalculoFactura {
         this.totalMp = totalMp;
     }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public ArticuloCompra getArticulo() {
+        return articulo;
+    }
+
+    public void setArticulo(ArticuloCompra articulo) {
+        this.articulo = articulo;
+    }
+
+    public String getCuitCliente() {
+        return cuitCliente;
+    }
+
+    public void setCuitCliente(String cuitCliente) {
+        this.cuitCliente = cuitCliente;
+    }
+
+    public CompraClienteMercadoPago getCompraMercadoPago() {
+        return compraMercadoPago;
+    }
+
+    public void setCompraMercadoPago(CompraClienteMercadoPago compraMercadoPago) {
+        this.compraMercadoPago = compraMercadoPago;
+    }
+    
 }

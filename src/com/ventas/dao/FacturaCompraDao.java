@@ -28,10 +28,10 @@ public class FacturaCompraDao extends GenericDao {
     }
 
     public List<FacturaCompra> getFacturasCompraPendientes() {
-        List<FacturaCompra> fact = null;
+        List<FacturaCompra> fact;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         fact = (List<FacturaCompra>) session.createCriteria(FacturaCompra.class)
-                .add(Restrictions.eq("procesado", false))
+//                .add(Restrictions.eq("activo", true))
                 .list();
         return fact;
     }

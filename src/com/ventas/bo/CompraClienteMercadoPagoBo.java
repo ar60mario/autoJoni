@@ -4,7 +4,9 @@
 package com.ventas.bo;
 
 import com.ventas.dao.CompraClienteMercadoPagoDao;
+import com.ventas.entities.Cliente;
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.Domicilio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +44,44 @@ public class CompraClienteMercadoPagoBo {
     public void saveCompraClientesImportados(List<CompraClienteMercadoPago> compra) throws Exception {
         for (CompraClienteMercadoPago ccmp : compra) {
             try {
+                String cuit = ccmp.getCuit();
+                Cliente cliente;
+                cliente = new ClienteBo().getClienteByCuit(cuit);
+                if(cliente == null){
+                    Cliente cli = new Cliente();
+                    Domicilio domi = new Domicilio();
+                    domi.setCalle("COSQUIN");
+                    domi.setNumero("2626");
+                    domi.setCodigoPostal("1814");
+                    domi.setDepartamento("");
+                    domi.setLocalidad("LA NORIA");
+                    domi.setPiso("");
+                    domi.setProvincia("BUENOS AIRES");
+                    cli.setActivo(true);
+                    cli.setCategoriaDeIva(5);
+                    cli.setCelular("");
+                    cli.setCodigo(cuit);
+                    cli.setCuit(cuit);
+                    cli.setDescuento(0F);
+                    cli.setDomicilio(domi);
+                    cli.setFormaDePago(1);
+                    cli.setMail("");
+                    cli.setObservaciones("");
+                    cli.setRazonSocial(ccmp.getNombre());
+                    cli.setSaldo(0.0);
+                    cli.setTelefono("");
+                    cli.setTieneDescuento(false);
+                    cli.setTipo("99");
+                    new ClienteBo().saveCliente(cli);
+                }
+//                String p = cuit.substring(0,2);
+//                String m = cuit.substring(2, 8);
+//                String f = cuit.substring(10,10);
+//                System.out.println(cuit);
+//                System.out.println(p);
+//                System.out.println(m);
+//                System.out.println(f);
+//                System.exit(0);
                 dao.save(ccmp);
             } catch (HibernateException ex) {
                 throw new Exception(ex);
@@ -57,6 +97,16 @@ public class CompraClienteMercadoPagoBo {
         }
     }
 
+    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
+        List<CompraClienteMercadoPago> listCompras = null;
+        try {
+            listCompras = dao.getAllFacturasPendientesDeProcesar();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return listCompras;
+    }
+    
     public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
         List<CompraClienteMercadoPago> listCompras = null;
         List<CompraClienteMercadoPago> comprasParaFacturar = new ArrayList<>();
@@ -78,15 +128,15 @@ public class CompraClienteMercadoPagoBo {
         return comprasParaFacturar;
     }
     
-    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
-        List<CompraClienteMercadoPago> listCompras = null;
-        try {
-            listCompras = dao.getAllFacturasPendientesDeProcesar();
-        } catch (HibernateException ex) {
-            throw new Exception(ex);
-        }
-        return listCompras;
-    }
+//    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
+//        List<CompraClienteMercadoPago> listCompras = null;
+//        try {
+//            listCompras = dao.getAllFacturasPendientesDeProcesar();
+//        } catch (HibernateException ex) {
+//            throw new Exception(ex);
+//        }
+//        return listCompras;
+//    }
 
     public List<CompraClienteMercadoPago> getAllFacturasProcesadas() throws Exception {
         List<CompraClienteMercadoPago> listCompras = null;

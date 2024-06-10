@@ -29,6 +29,7 @@ public class FacturaCompraBo {
     public FacturaCompra saveFacturaCompraAndArticulo(FacturaCompra factura, ArticuloCompra articulo) throws Exception {
         FacturaCompra fact = null;
         try {
+            factura.setArticuloCompra(articulo);
             fact = (FacturaCompra) dao.save(factura);
             new ArticuloCompraBo().updateArticuloCompra(articulo);
         } catch (HibernateException ex) {

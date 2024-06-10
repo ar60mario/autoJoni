@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.util;
 
+import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.CalculoFactura;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.CompraClienteMercadoPago;
@@ -14,15 +10,9 @@ import com.ventas.entities.FacturaCompra;
 import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.services.ClienteService;
-import com.ventas.services.CompraClienteMercadoPagoService;
 import com.ventas.services.ComprobanteVentaMercadoPagoService;
 import com.ventas.services.ConfiguracionService;
-import com.ventas.services.FacturaCompraService;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,7 +27,8 @@ public class UtilFactura {
         try {
             cfg = new ConfiguracionService().getFacturas(id_config);
         } catch (Exception ex) {
-            Logger.getLogger(UtilFactura.class.getName()).log(Level.SEVERE, null, ex);
+            //
+            return null;
         }
         if (cfg != null) {
             Float porcIva = cfg.getIva();
@@ -114,7 +105,7 @@ public class UtilFactura {
         try {
             cfg = new ConfiguracionService().getFacturas(id_config);
         } catch (Exception ex) {
-            Logger.getLogger(UtilFactura.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         if (cfg != null) {
             Float porcIva = cfg.getIva();
@@ -126,27 +117,22 @@ public class UtilFactura {
 //            String gravadoCalculadoString = df.format(gravadoCalculado);
 //            Double gravadoCalculadoRedondeado = Double.valueOf(gravadoCalculadoString.replace(",", "."));
 //            cf.setGravado(gravadoCalculadoRedondeado);
-
 //            Double impuestoCalculado = fc.getImpuestoVenta() - fc.getImpuestoUtilizado();
 //            String impuestoVentaString = df.format(impuestoCalculado);
 //            Double impuestoRedondeado = Double.valueOf(impuestoVentaString.replace(",", "."));
 //            cf.setImpuesto(impuestoRedondeado);
-
 //            Double ivaCalculado = gravadoCalculadoRedondeado * (porcIva / 100);
 //            String ivaCalculadoString = df.format(ivaCalculado);
 //            Double ivaCalculadoRedondeado = Double.valueOf(ivaCalculadoString.replace(",", "."));
 //            cf.setIva(ivaCalculadoRedondeado);
-
 //            Double t1 = fc.getTotalVenta() - fc.getTotalUtilizado();
 //            String t1String = df.format(t1);
 //            Double t1Redondeado = Double.valueOf(t1String.replace(",", "."));
-
 //            Double t2 = gravadoCalculadoRedondeado
 //                    + impuestoRedondeado
 //                    + ivaCalculadoRedondeado;
 //            String t2String = df.format(t2);
 //            Double t2Redondeado = Double.valueOf(t2String.replace(",", "."));
-
 //            if (!df.format(t1).equals(df.format(t2Redondeado))) {
 //                if (t1Redondeado > t2Redondeado) {
 //                    impuestoCalculado = impuestoRedondeado + .01;
@@ -162,10 +148,54 @@ public class UtilFactura {
 //                t2String = df.format(t2);
 //                t2Redondeado = Double.valueOf(t2String.replace(",", "."));
 //            }
-
 //            cf.setTotalMp(t2Redondeado);
 //            cf.setTotal(t1Redondeado);
+            return cf;
+        }
+        return null;
+    }
 
+    public static CalculoFactura calcularTotalesAutomatico(Double totalGenerado, ArticuloCompra compra) {
+        if (totalGenerado.equals(0.0)) {
+            return null;
+        }
+        if (compra == null) {
+            return null;
+        }
+        Long id_config = 1L;
+        Configuracion cfg;
+        Double impuestoVenta = compra.getImpuesto();
+        Double totalVenta = compra.getTotal();
+        Double porcentajeCalculo = impuestoVenta / totalVenta;
+        try {
+            cfg = new ConfiguracionService().getFacturas(id_config);
+        } catch (Exception ex) {
+            return null;
+        }
+        if (cfg != null) {
+            Float porcIva = cfg.getIva();
+
+            CalculoFactura cf = new CalculoFactura();
+
+            Double impuestoRedondeado = calcularRedondeo(totalGenerado * porcentajeCalculo);
+
+            Double brutoRedondeado = calcularRedondeo(totalGenerado - impuestoRedondeado);
+
+            Double netoRedondeado = calcularRedondeo(brutoRedondeado / (1 + porcIva / 100));
+
+            Double ivaRedondeado = calcularRedondeo(netoRedondeado * porcIva / 100);
+
+            Double totalRedondeado = calcularRedondeo(netoRedondeado
+                    + impuestoRedondeado
+                    + ivaRedondeado);
+
+            cf.setGravado(netoRedondeado);
+            cf.setImpuesto(impuestoRedondeado);
+            cf.setIva(ivaRedondeado);
+            cf.setTotal(totalRedondeado);
+            cf.setProducto(compra.getProducto());
+            cf.setArticulo(compra);
+            
             return cf;
         }
         return null;
@@ -178,7 +208,7 @@ public class UtilFactura {
         try {
             cfg = new ConfiguracionService().getFacturas(id_config);
         } catch (Exception ex) {
-            Logger.getLogger(UtilFactura.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         if (cfg != null) {
             Float porcIva = cfg.getIva();
@@ -189,24 +219,20 @@ public class UtilFactura {
 //            String gravadoCalculadoString = df.format(gravadoCalculado);
 //            Double gravadoCalculadoRedondeado = Double.valueOf(gravadoCalculadoString.replace(",", "."));
 //            cf.setGravado(gravadoCalculadoRedondeado);
-
 //            Double impuestoCalculado = fc.getImpuestoVenta() - fc.getImpuestoUtilizado();
 //            String impuestoCalculadoString = df.format(impuestoCalculado);
 //            Double impuestoCalculadoRedondeado = Double.valueOf(impuestoCalculadoString.replace(",", "."));
 //            cf.setImpuesto(impuestoCalculadoRedondeado);
-
 //            Double ivaCalculado = gravadoCalculadoRedondeado * (porcIva / 100);
 //            String ivaCalculadoString = df.format(ivaCalculado);
 //            Double ivaCalculadoRedondeado = Double.valueOf(ivaCalculadoString.replace(",", "."));
 //            cf.setIva(ivaCalculadoRedondeado);
-
 //            Double totalFacturaParaMercadoPago = fc.getTotalVenta() - fc.getTotalUtilizado();
 //            String totalFacturaParaMercadoPagoString = df.format(totalFacturaParaMercadoPago);
 //            Double totalFacturaParaMercadoPagoRedondeado = Double.valueOf(totalFacturaParaMercadoPagoString
 //                    .replace(",", "."));
 //            cf.setTotal(totalFacturaParaMercadoPagoRedondeado);
 //            cf.setTotalMp(totalFacturaParaMercadoPagoRedondeado);
-
 //            Double t1 = totalFacturaParaMercadoPagoRedondeado;
 //            String t1String = df.format(t1);
 //            Double t1Redondeado = Double.valueOf(t1String.replace(",", "."));
@@ -233,7 +259,6 @@ public class UtilFactura {
 //            }
 //            cf.setTotal(t1Redondeado);
 //            cf.setTotalMp(t2Redondeado);
-
             return cf;
         }
         return null;
@@ -281,5 +306,17 @@ public class UtilFactura {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "ERROR GRABANDO COMPROBANTE NUEVO");
         }
+    }
+
+    private static Double calcularRedondeo(Double importe) {
+        DecimalFormat df = new DecimalFormat("#0.00");
+        if (importe > 0.0) {
+            String importeStr = df.format(importe);
+            Double redondeado = Double.valueOf(importeStr.replace(",", "."));
+            return redondeado;
+        } else {
+            return 0.0;
+        }
+
     }
 }

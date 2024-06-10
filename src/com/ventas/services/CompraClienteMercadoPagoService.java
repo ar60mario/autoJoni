@@ -1,6 +1,7 @@
 package com.ventas.services;
 
 import com.ventas.bo.CompraClienteMercadoPagoBo;
+import com.ventas.entities.Cliente;
 import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.util.HibernateUtils;
 import java.util.Date;
@@ -54,26 +55,15 @@ public class CompraClienteMercadoPagoService {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
+//            for(CompraClienteMercadoPago ccmp : compra){
+//                
+//            }
             new CompraClienteMercadoPagoBo().saveCompraClientesImportados(compra);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
-    }
-
-    public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
-        List<CompraClienteMercadoPago> compras = null;
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            compras = new CompraClienteMercadoPagoBo().getComprasParaProcesar(limiteCompras);
-            tx.commit();
-        } catch (Exception ex) {
-            tx.rollback();
-            throw new Exception(ex);
-        }
-        return compras;
     }
 
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
@@ -89,6 +79,35 @@ public class CompraClienteMercadoPagoService {
         }
         return compras;
     }
+    
+    
+    public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
+        List<CompraClienteMercadoPago> compras = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            compras = new CompraClienteMercadoPagoBo().getComprasParaProcesar(limiteCompras);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return compras;
+    }
+
+//    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
+//        List<CompraClienteMercadoPago> compras = null;
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Transaction tx = session.beginTransaction();
+//        try {
+//            compras = new CompraClienteMercadoPagoBo().getAllFacturasPendientesDeProcesar();
+//            tx.commit();
+//        } catch (Exception ex) {
+//            tx.rollback();
+//            throw new Exception(ex);
+//        }
+//        return compras;
+//    }
     
     public List<CompraClienteMercadoPago> getAllFacturasProcesadas() throws Exception {
         List<CompraClienteMercadoPago> compras = null;

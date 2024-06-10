@@ -70,7 +70,7 @@ public class IvaVentasDao extends GenericDao {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
-                .add(Restrictions.eq("numeroSucursal", 10))
+//                .add(Restrictions.eq("numeroSucursal", 10))
                 .add(Restrictions.eq("tipoDoc", 6))
                 .setMaxResults(3)
                 .addOrder(Order.desc("numeroFactura"))

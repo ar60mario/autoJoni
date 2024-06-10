@@ -14,9 +14,13 @@
         <property name="iva" type="double" column="IVA"/>
         <property name="ivaVenta" type="double" column="IVA_VENTA"/>
         <property name="iibb" type="double" column="II_BB"/>
+        <property name="iibb_2" type="double" column="II_BB_2"/>
+        <property name="percepcion_1" type="double" column="PERCEPCION_1"/>
+        <property name="percepcion_2" type="double" column="PERCEPCION_2"/>
         <property name="impuesto1" type="double" column="IMPUESTO_1"/>
         <property name="impuesto2" type="double" column="IMPUESTO_2"/>
         <property name="impuesto3" type="double" column="IMPUESTO_3"/>
+        <property name="impuesto4" type="double" column="IMPUESTO_4"/>
         <property name="impuestoVenta" type="double" column="IMPUESTO_VENTA"/>
         <property name="proveedor" type="string" column="PROVEEDOR"/>
         <property name="total" type="double" column="TOTAL"/>

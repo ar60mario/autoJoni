@@ -89,7 +89,7 @@ public class IvaVentasBo {
     public Integer getUltimoNumeroFactura() throws Exception {
         Integer fe = null;
         try {
-            fe = (Integer) dao.getUltimoNumeroFactura();
+            fe = dao.getUltimoNumeroFactura();
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

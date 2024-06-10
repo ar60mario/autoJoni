@@ -5,9 +5,13 @@
  */
 package com.ventas.services;
 
+import com.ventas.bo.ArticuloCompraBo;
+import com.ventas.bo.CompraClienteMercadoPagoBo;
 import com.ventas.bo.IvaVentasBo;
 import com.ventas.bo.RenglonFacturaBo;
 import com.ventas.bo.RenglonNotaCreditoBo;
+import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.IvaVentas;
 import com.ventas.entities.RenglonFactura;
 import com.ventas.entities.RenglonNotaCredito;
@@ -27,23 +31,55 @@ public class FacturaService {
         Transaction tx = session.beginTransaction();
         IvaVentasBo ivaBO = new IvaVentasBo();
         IvaVentas ivaVentas = ivaBO.saveIvaVentas(iv);
-        Boolean bolean = true;
+//        Boolean bolean = true;
         for (RenglonFactura renglon : rf) {
             renglon.setIvaVentas(ivaVentas);
             try {
                 RenglonFacturaBo bo = new RenglonFacturaBo();
                 bo.saveRenglon(renglon);
+//                ArticuloCompraBo bo2 = new ArticuloCompraBo();
+//                bo2.updateArticuloCompra(artCmpr);
+                tx.commit();
             } catch (Exception ex) {
-                bolean = false;
+//                bolean = false;
                 tx.rollback();
                 throw new Exception(ex);
             }
         }
-        if (bolean) {
-            tx.commit();
-        }
+//        if (bolean) {
+//            
+//        }
     }
-    
+
+    public void saveFacturaCompleta(IvaVentas iv, List<RenglonFactura> rf,
+            ArticuloCompra artCmpr, CompraClienteMercadoPago compra) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        IvaVentasBo ivaBO = new IvaVentasBo();
+        IvaVentas ivaVentas = ivaBO.saveIvaVentas(iv);
+//        Boolean bolean = true;
+        for (RenglonFactura renglon : rf) {
+            renglon.setIvaVentas(ivaVentas);
+            try {
+                RenglonFacturaBo bo = new RenglonFacturaBo();
+                bo.saveRenglon(renglon);
+                ArticuloCompraBo bo2 = new ArticuloCompraBo();
+                bo2.updateArticuloCompra(artCmpr);
+                if (compra != null) {
+                    new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
+                }
+                tx.commit();
+            } catch (Exception ex) {
+//                bolean = false;
+                tx.rollback();
+                throw new Exception(ex);
+            }
+        }
+//        if (bolean) {
+//            
+//        }
+    }
+
     public void saveNotaCredito(IvaVentas iv, List<RenglonNotaCredito> rf) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -65,6 +101,5 @@ public class FacturaService {
             tx.commit();
         }
     }
-    
-    
+
 }

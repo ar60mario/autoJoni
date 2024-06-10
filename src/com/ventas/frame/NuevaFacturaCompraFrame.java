@@ -12,7 +12,6 @@ import com.ventas.entities.Rubro;
 import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.ConfiguracionService;
 import com.ventas.services.FacturaCompraService;
-import com.ventas.services.ProductoService;
 import com.ventas.services.RubroService;
 import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
@@ -42,7 +41,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     public NuevaFacturaCompraFrame() {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
-        this.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         limpiarCampos();
     }
 
@@ -84,6 +83,14 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         ivaVentaTxt = new javax.swing.JTextField();
         totalVentaTxt = new javax.swing.JTextField();
         impuestoVentaTxt = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        iibb_2Txt = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        percepcion_1Txt = new javax.swing.JTextField();
+        percepcion_2Txt = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        impuesto_4Txt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("NUEVA FACTURA COMPRA X IMPORTE");
@@ -229,6 +236,46 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         impuestoVentaTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         impuestoVentaTxt.setText("IMPUESTO VTA");
 
+        jLabel13.setText("IIBB 2:");
+
+        iibb_2Txt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        iibb_2Txt.setText("ING. BRUTOS 2");
+        iibb_2Txt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                iibb_2TxtKeyPressed(evt);
+            }
+        });
+
+        jLabel14.setText("PERCEP.1:");
+
+        jLabel15.setText("PERCEP.2:");
+
+        percepcion_1Txt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        percepcion_1Txt.setText("PERCEP.1");
+        percepcion_1Txt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                percepcion_1TxtKeyPressed(evt);
+            }
+        });
+
+        percepcion_2Txt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        percepcion_2Txt.setText("PERCEP.2");
+        percepcion_2Txt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                percepcion_2TxtKeyPressed(evt);
+            }
+        });
+
+        jLabel16.setText("IMPUESTO 4:");
+
+        impuesto_4Txt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        impuesto_4Txt.setText("IMPUESTO 4");
+        impuesto_4Txt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                impuesto_4TxtKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -244,6 +291,11 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(18, 18, 18)
+                                .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel13)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4)
@@ -253,22 +305,28 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel8)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10)
-                                    .addComponent(jLabel1))
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel16))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(impuesto_4Txt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(percepcion_2Txt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(percepcion_1Txt, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(gananciaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(netoGravadoTxt)
-                                                .addComponent(ivaTxt)
-                                                .addComponent(iibbTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                                                .addComponent(impuesto_1Txt)
-                                                .addComponent(impuesto_2Txt)
-                                                .addComponent(impuesto_3Txt)
-                                                .addComponent(proveedorTxt)
-                                                .addComponent(fechaTxt)))
+                                            .addComponent(netoGravadoTxt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(ivaTxt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(iibbTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                            .addComponent(impuesto_1Txt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(impuesto_2Txt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(impuesto_3Txt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(proveedorTxt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(fechaTxt, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(iibb_2Txt, javax.swing.GroupLayout.Alignment.LEADING))
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(87, 87, 87)
@@ -282,11 +340,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                                                     .addComponent(totalVentaTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                         .addComponent(jLabel12)
-                                                        .addGap(19, 19, 19))))))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                        .addGap(19, 19, 19)))))))))
                         .addGap(0, 55, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -297,52 +351,68 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(gananciaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(netoGravadoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(gravadoVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(ivaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ivaVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(iibbTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(iibb_2Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(percepcion_1Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(percepcion_2Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(impuesto_1Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(impuestoVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(impuesto_2Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(impuesto_3Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(impuesto_4Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(proveedorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grabarBtn)
                     .addComponent(volverBtn))
@@ -401,7 +471,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             if (iibbTxt.getText().isEmpty()) {
                 iibbTxt.setText("0.00");
             }
-            impuesto_1Txt.requestFocus();
+            iibb_2Txt.requestFocus();
         }
 
     }//GEN-LAST:event_iibbTxtKeyPressed
@@ -429,7 +499,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             if (impuesto_3Txt.getText().isEmpty()) {
                 impuesto_3Txt.setText("0.00");
             }
-            proveedorTxt.requestFocus();
+            impuesto_4Txt.requestFocus();
         }
     }//GEN-LAST:event_impuesto_3TxtKeyPressed
 
@@ -477,6 +547,42 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_grabarBtnKeyPressed
 
+    private void iibb_2TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_iibb_2TxtKeyPressed
+        if(evt.getKeyCode()==10){
+            if (iibb_2Txt.getText().isEmpty()) {
+                iibb_2Txt.setText("0.00");
+            }
+            percepcion_1Txt.requestFocus();
+        }
+    }//GEN-LAST:event_iibb_2TxtKeyPressed
+
+    private void percepcion_1TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_percepcion_1TxtKeyPressed
+        if(evt.getKeyCode()==10){
+            if (percepcion_1Txt.getText().isEmpty()) {
+                percepcion_1Txt.setText("0.00");
+            }
+            percepcion_2Txt.requestFocus();
+        }
+    }//GEN-LAST:event_percepcion_1TxtKeyPressed
+
+    private void percepcion_2TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_percepcion_2TxtKeyPressed
+        if(evt.getKeyCode()==10){
+            if (percepcion_2Txt.getText().isEmpty()) {
+                percepcion_2Txt.setText("0.00");
+            }
+            impuesto_1Txt.requestFocus();
+        }
+    }//GEN-LAST:event_percepcion_2TxtKeyPressed
+
+    private void impuesto_4TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_impuesto_4TxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (impuesto_4Txt.getText().isEmpty()) {
+                impuesto_4Txt.setText("0.00");
+            }
+            proveedorTxt.requestFocus();
+        }
+    }//GEN-LAST:event_impuesto_4TxtKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -519,16 +625,22 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private javax.swing.JButton grabarBtn;
     private javax.swing.JTextField gravadoVentaTxt;
     private javax.swing.JTextField iibbTxt;
+    private javax.swing.JTextField iibb_2Txt;
     private javax.swing.JTextField impuestoVentaTxt;
     private javax.swing.JTextField impuesto_1Txt;
     private javax.swing.JTextField impuesto_2Txt;
     private javax.swing.JTextField impuesto_3Txt;
+    private javax.swing.JTextField impuesto_4Txt;
     private javax.swing.JTextField ivaTxt;
     private javax.swing.JTextField ivaVentaTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -538,6 +650,8 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField netoGravadoTxt;
+    private javax.swing.JTextField percepcion_1Txt;
+    private javax.swing.JTextField percepcion_2Txt;
     private javax.swing.JTextField proveedorTxt;
     private javax.swing.JTextField totalTxt;
     private javax.swing.JTextField totalVentaTxt;
@@ -551,7 +665,11 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         impuesto_1Txt.setText("");
         impuesto_2Txt.setText("");
         impuesto_3Txt.setText("");
+        impuesto_4Txt.setText("");
         iibbTxt.setText("");
+        iibb_2Txt.setText("");
+        percepcion_1Txt.setText("");
+        percepcion_2Txt.setText("");
         ivaTxt.setText("");
         totalTxt.setText("");
         proveedorTxt.setText("");
@@ -572,7 +690,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
 //        System.exit(0);
         if (rubro != null) {
             try {
-//                articulos = new ArticuloVentaService().toString();
+                articulos = new ArticuloCompraService().getAllArticulosActivos();
             } catch (Exception ex) {
                 Logger.getLogger(NuevaFacturaCompraFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -607,9 +725,13 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             Double gravado = Double.valueOf(netoGravadoTxt.getText().replace(",", "."));
             Double iva = Double.valueOf(ivaTxt.getText().replace(",", "."));
             Double iibb = Double.valueOf(iibbTxt.getText().replace(",", "."));
+            Double iibb_2 = Double.valueOf(iibb_2Txt.getText().replace(",", "."));
+            Double percepcion_1 = Double.valueOf(percepcion_1Txt.getText().replace(",", "."));
+            Double percepcion_2 = Double.valueOf(percepcion_2Txt.getText().replace(",", "."));
             Double impuesto_1 = Double.valueOf(impuesto_1Txt.getText().replace(",", "."));
             Double impuesto_2 = Double.valueOf(impuesto_2Txt.getText().replace(",", "."));
             Double impuesto_3 = Double.valueOf(impuesto_3Txt.getText().replace(",", "."));
+            Double impuesto_4 = Double.valueOf(impuesto_4Txt.getText().replace(",", "."));
             Double totalFc = Double.valueOf(totalTxt.getText().replace(",", "."));
             Double gravadoVenta = Double.valueOf(gravadoVentaTxt.getText().replace(",", "."));
             Double ivaVenta = Double.valueOf(ivaVentaTxt.getText().replace(",", "."));
@@ -633,6 +755,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             facturaCompra.setImpuestoVenta(impuestoVenta);
             facturaCompra.setTotalVenta(totalVenta);
             facturaCompra.setTotal(totalFc);
+            facturaCompra.setArticuloCompra(articulo);
             Double gravadoArticulo = articulo.getGravado() + gravadoVenta;
             Double impuestoArticulo = articulo.getImpuesto() + impuestoVenta;
             Double ivaArticulo = articulo.getIva() + ivaVenta;
@@ -648,7 +771,6 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
 
             try {
                 new FacturaCompraService().saveFacturaCompraAndArticulo(facturaCompra, articulo);
-
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "ERROR GRABANDO FACTURA COMPRA");
                 return;
@@ -679,7 +801,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         this.dispose();
     }
 
-    private Double devolver(String text) {
+    private Double redondear(String text) {
         Double importe;
         if (text.isEmpty()) {
             importe = 0.0;
@@ -718,24 +840,36 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         ivaVenta = gravadoVenta * porceIva / 100;
         ivaVenta = importeRedondeado(ivaVenta);
         if (!impuesto_1Txt.getText().isEmpty()) {
-            impuestoVenta += devolver(impuesto_1Txt.getText().replace(",", "."));
+            impuestoVenta += redondear(impuesto_1Txt.getText().replace(",", "."));
         }
         if (!impuesto_2Txt.getText().isEmpty()) {
-            impuestoVenta += devolver(impuesto_2Txt.getText().replace(",", "."));
+            impuestoVenta += redondear(impuesto_2Txt.getText().replace(",", "."));
         }
         if (!impuesto_3Txt.getText().isEmpty()) {
-            impuestoVenta += devolver(impuesto_3Txt.getText().replace(",", "."));
+            impuestoVenta += redondear(impuesto_3Txt.getText().replace(",", "."));
         }
-        total += devolver(netoGravadoTxt.getText().replace(",", "."));
-        total += devolver(ivaTxt.getText().replace(",", "."));
+        if (!impuesto_4Txt.getText().isEmpty()) {
+            impuestoVenta += redondear(impuesto_4Txt.getText().replace(",", "."));
+        }
+        
+        total += redondear(netoGravadoTxt.getText().replace(",", "."));
+        total += redondear(ivaTxt.getText().replace(",", "."));
         total = importeRedondeado(total);
-        total += devolver(iibbTxt.getText().replace(",", "."));
+        total += redondear(iibbTxt.getText().replace(",", "."));
         total = importeRedondeado(total);
-        total += devolver(impuesto_1Txt.getText().replace(",", "."));
+        total += redondear(iibb_2Txt.getText().replace(",", "."));
         total = importeRedondeado(total);
-        total += devolver(impuesto_2Txt.getText().replace(",", "."));
+        total += redondear(percepcion_1Txt.getText().replace(",", "."));
         total = importeRedondeado(total);
-        total += devolver(impuesto_3Txt.getText().replace(",", "."));
+        total += redondear(percepcion_2Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
+        total += redondear(impuesto_1Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
+        total += redondear(impuesto_2Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
+        total += redondear(impuesto_3Txt.getText().replace(",", "."));
+        total = importeRedondeado(total);
+        total += redondear(impuesto_4Txt.getText().replace(",", "."));
         total = importeRedondeado(total);
         totalTxt.setText(df.format(total));
         ivaVentaTxt.setText(df.format(ivaVenta));

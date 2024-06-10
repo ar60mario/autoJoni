@@ -18,6 +18,7 @@ import com.ventas.frame.FacturaWebFrame;
 import com.ventas.frame.FacturaWebPanificadosFrame;
 import com.ventas.frame.FacturarFrame;
 import com.ventas.frame.ArticulosConSaldoPendienteParaAsignarFrame;
+import com.ventas.frame.FacturarAutomaticoPorMontoFrame;
 import com.ventas.frame.FacturasDeMercadoPagoFrame;
 import com.ventas.frame.FacturasMercadoPagoCompletadasFacturarFrame;
 import com.ventas.frame.FacturarMercadoPagoFrame;
@@ -555,7 +556,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_articulosPorMontoMnuActionPerformed
 
     private void facturaAutomPorImporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturaAutomPorImporteBtnActionPerformed
-        
+        facturaAutomPorImporte();
     }//GEN-LAST:event_facturaAutomPorImporteBtnActionPerformed
 
     /**
@@ -892,6 +893,12 @@ public class MainFrame extends javax.swing.JFrame {
     private void abmArticulosPorMonto() {
         AbmArticulosPorMontoFrame aapmf = new AbmArticulosPorMontoFrame();
         aapmf.setVisible(true);
+        this.dispose();
+    }
+
+    private void facturaAutomPorImporte() {
+        FacturarAutomaticoPorMontoFrame fapmf = new FacturarAutomaticoPorMontoFrame();
+        fapmf.setVisible(true);
         this.dispose();
     }
 }

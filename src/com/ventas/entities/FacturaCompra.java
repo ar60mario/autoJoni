@@ -16,9 +16,13 @@ public class FacturaCompra {
     private Double iva;
     private Double ivaVenta;
     private Double iibb;
+    private Double iibb_2;
+    private Double percepcion_1;
+    private Double percepcion_2;
     private Double impuesto1;
     private Double impuesto2;
     private Double impuesto3;
+    private Double impuesto4;
     private Double impuestoVenta;
     private String proveedor;
     private Double total;
@@ -28,7 +32,7 @@ public class FacturaCompra {
     public FacturaCompra() {
     }
 
-    public FacturaCompra(Long id, Date fecha, Float ganancia, Double gravado, Double gravadoVenta, Double iva, Double ivaVenta, Double iibb, Double impuesto1, Double impuesto2, Double impuesto3, Double impuestoVenta, String proveedor, Double total, Double totalVenta, ArticuloCompra articuloCompra) {
+    public FacturaCompra(Long id, Date fecha, Float ganancia, Double gravado, Double gravadoVenta, Double iva, Double ivaVenta, Double iibb, Double iibb_2, Double percepcion_1, Double percepcion_2, Double impuesto1, Double impuesto2, Double impuesto3, Double impuesto4, Double impuestoVenta, String proveedor, Double total, Double totalVenta, ArticuloCompra articuloCompra) {
         this.id = id;
         this.fecha = fecha;
         this.ganancia = ganancia;
@@ -37,9 +41,13 @@ public class FacturaCompra {
         this.iva = iva;
         this.ivaVenta = ivaVenta;
         this.iibb = iibb;
+        this.iibb_2 = iibb_2;
+        this.percepcion_1 = percepcion_1;
+        this.percepcion_2 = percepcion_2;
         this.impuesto1 = impuesto1;
         this.impuesto2 = impuesto2;
         this.impuesto3 = impuesto3;
+        this.impuesto4 = impuesto4;
         this.impuestoVenta = impuestoVenta;
         this.proveedor = proveedor;
         this.total = total;
@@ -111,6 +119,30 @@ public class FacturaCompra {
         this.iibb = iibb;
     }
 
+    public Double getIibb_2() {
+        return iibb_2;
+    }
+
+    public void setIibb_2(Double iibb_2) {
+        this.iibb_2 = iibb_2;
+    }
+
+    public Double getPercepcion_1() {
+        return percepcion_1;
+    }
+
+    public void setPercepcion_1(Double percepcion_1) {
+        this.percepcion_1 = percepcion_1;
+    }
+
+    public Double getPercepcion_2() {
+        return percepcion_2;
+    }
+
+    public void setPercepcion_2(Double percepcion_2) {
+        this.percepcion_2 = percepcion_2;
+    }
+
     public Double getImpuesto1() {
         return impuesto1;
     }
@@ -133,6 +165,14 @@ public class FacturaCompra {
 
     public void setImpuesto3(Double impuesto3) {
         this.impuesto3 = impuesto3;
+    }
+
+    public Double getImpuesto4() {
+        return impuesto4;
+    }
+
+    public void setImpuesto4(Double impuesto4) {
+        this.impuesto4 = impuesto4;
     }
 
     public Double getImpuestoVenta() {

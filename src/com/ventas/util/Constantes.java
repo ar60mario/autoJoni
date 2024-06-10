@@ -32,6 +32,7 @@ public class Constantes {
     
     public static final String cuitTitular = "20300377425";
     public static final String puntoVenta = "10";
+    public static final String tipoDocTit = "80";
     public static final String certif = "/JONI_2024_22d9a5cec0ec4972.crt";
     public static final String llave = "/clave_privada_20300377425_202404201217.key";
     public static final String userdir = "d:/ventasJo/crt";
