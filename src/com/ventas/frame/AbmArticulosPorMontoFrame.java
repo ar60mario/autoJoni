@@ -13,6 +13,7 @@ import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -245,15 +246,15 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
         if (articulos != null && !articulos.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (ArticuloCompra av : articulos) {
-                Object o[] = new Object[5];
+                Object o[] = new Object[4];
                 Producto prod = av.getProducto();
                 o[0] = prod.getCodigo();
                 o[1] = prod.getDetalle();
                 o[2] = df.format(av.getTotal());
                 if (av.getActivo()) {
-                    o[4] = "ACTIVO";
+                    o[3] = "ACTIVO";
                 } else {
-                    o[4] = "INACTIVO";
+                    o[3] = "INACTIVO";
                 }
                 tbl.addRow(o);
             }
@@ -268,7 +269,15 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
     }
 
     private void modificar() {
-
+        int row = tabla.getSelectedRow();
+        if(row < 0){
+            JOptionPane.showMessageDialog(this, "SELECCIONE UN ARTICULO PARA MODIFICAR");
+            return;
+        }
+        ArticuloCompra art = articulos.get(row);
+        ModificarArticuloCompraFrame macf = new ModificarArticuloCompraFrame(art);
+        macf.setVisible(true);
+        this.dispose();
     }
 
     private void limpiarCampos() {

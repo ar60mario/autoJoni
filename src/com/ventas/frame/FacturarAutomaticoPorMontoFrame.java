@@ -52,7 +52,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private Cliente cliente;
     private String cuitCliente;
     private String tipoDocCli;
-    private final int tst = 0; // 1 esta en test
+    private final int tst = 1; // 1 esta en test
 
     /**
      * Creates new form FacturarAutomaticoPorMontoFrame
@@ -91,6 +91,8 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         segDeTxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         segAlTxt = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        combo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("FACTURACION AUTOMATICA POR MONTO");
@@ -156,6 +158,11 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                 calcularBtnActionPerformed(evt);
             }
         });
+        calcularBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcularBtnKeyPressed(evt);
+            }
+        });
 
         importeMaximoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         importeMaximoTxt.setText("IMPORTE MAX");
@@ -194,6 +201,20 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         segAlTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         segAlTxt.setText("SEG");
 
+        jLabel7.setText("TABACALERA:");
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
+        combo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                comboKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -213,28 +234,36 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(volverBtn))
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(58, 58, 58)
+                                .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(ultimaFechaTxt)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(calcularBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 38, Short.MAX_VALUE)))
+                        .addComponent(calcularBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -244,11 +273,15 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,7 +289,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                     .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(calcularBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(volverBtn)
@@ -317,9 +350,42 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         if (evt.getKeyCode() == 10) {
             if (!totalFacturarTxt.getText().isEmpty()) {
                 mostrarImportes();
+                combo.addFocusListener(null);
+                combo.showPopup();
+                combo.requestFocus();
             }
         }
     }//GEN-LAST:event_totalFacturarTxtKeyPressed
+
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+        if (evt.getModifiers() == 16) {
+            int row = combo.getSelectedIndex();
+            if (row > 0) {
+                calcularBtn.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_comboActionPerformed
+
+    private void comboKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboKeyPressed
+        if (evt.getKeyCode() == 10) {
+            int row = combo.getSelectedIndex();
+            if (row > 0) {
+                calcularBtn.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_comboKeyPressed
+
+    private void calcularBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcularBtnKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (!importeMinimoTxt.getText().isEmpty()) {
+                minimo = Double.valueOf(importeMinimoTxt.getText().replace(",", "."));
+            }
+            if (!importeMaximoTxt.getText().isEmpty()) {
+                maximo = Double.valueOf(importeMaximoTxt.getText().replace(",", "."));
+            }
+            calcular();
+        }
+    }//GEN-LAST:event_calcularBtnKeyPressed
 
     /**
      * @param args the command line arguments
@@ -358,6 +424,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calcularBtn;
+    private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField fechaTxt;
     private javax.swing.JTextField importeMaximoTxt;
     private javax.swing.JTextField importeMinimoTxt;
@@ -367,6 +434,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton presentarBtn;
     private javax.swing.JTextField segAlTxt;
@@ -420,25 +488,33 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             cliente = null;
         }
-
+        articulos = null;
+        try {
+            articulos = new ArticuloCompraService().getAllArticulosActivos();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "NO HAY TABACALERAS DISPONIBLES");
+            return;
+        }
+        combo.removeAllItems();
+        combo.addItem("");
+        if (articulos != null && !articulos.isEmpty()) {
+            for (ArticuloCompra ac : articulos) {
+                combo.addItem(ac.getProducto().getDetalle() + " - $" + df.format(ac.getTotal()));
+            }
+        }
     }
 
     private void calcular() {
         Double limiteFacturar = Double.valueOf(totalFacturarTxt.getText());
         UtilFrame.limpiarTabla(tabla);
-        articulos = null;
-        try {
-            articulos = new ArticuloCompraService().getAllArticulosActivos();
-        } catch (Exception ex) {
-//            Logger.getLogger(FacturarAutomaticoPorMontoFrame.class.getName()).log(Level.SEVERE, null, ex);
-            return;
-        }
-        if (articulos != null && !articulos.isEmpty()) {
-            nuevasFacturas = calcularConFacturas(limiteFacturar, articulos);
+        int row = combo.getSelectedIndex();
+        if (row > 0) {
+            ArticuloCompra articulo = articulos.get(row - 1);
+            nuevasFacturas = calcularConFacturas(limiteFacturar, articulo);
+            llenarTabla(nuevasFacturas);
         } else {
-            nuevasFacturas = calcularSinFacturas(limiteFacturar);
+            JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR TABACALERA");
         }
-        llenarTabla(nuevasFacturas);
     }
 
     private void presentar() {
@@ -475,6 +551,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                                     tipoDocCli, cf.getGravado(), cf.getImpuesto(), cf.getIva(),
                                     cf.getTotal(), fechaFacturas, puntoVenta);
                         } else {
+                            fii = new FacturaIvaIntercambio();
                             fii.setCae(123456789012345L);
                             fii.setEstado("A");
                             fii.setFecha(fechaFacturas);
@@ -546,12 +623,12 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                             artCmpr.setIva(artCmpr.getIva() - iv.getIva());
                             artCmpr.setTotal(artCmpr.getTotal() - iv.getTotal());
                             try {
-                                new FacturaService().saveFacturaCompleta(iv, listaRf, artCmpr, null);
+                                new FacturaService().saveFacturaCompleta(iv, listaRf, artCmpr, null, null);
                             } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(this, "ERROR 466");
                                 break;
                             }
-                            
+
                         } else {
                             JOptionPane.showMessageDialog(this, "ERR AFIP");
                         }
@@ -574,16 +651,15 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private void mostrarImportes() {
         importeMinimoTxt.setText(df.format(minimo));
         importeMaximoTxt.setText(df.format(maximo));
-        calcularBtn.requestFocus();
     }
 
-    private List<CalculoFactura> calcularConFacturas(Double limiteFacturar, List<ArticuloCompra> compras) {
+    private List<CalculoFactura> calcularConFacturas(Double limiteFacturar, ArticuloCompra compra) {
         List<CalculoFactura> nuevas_facturas = new ArrayList<>();
         Double totalFacturas = 0.00;
         Boolean repetir = true;
         Integer contadorCompras = 0;
-        Integer ultimoCompras = compras.size();
-        ArticuloCompra compra = compras.get(contadorCompras);
+//        Integer ultimoCompras = compras.size();
+//        ArticuloCompra compra = compras.get(contadorCompras);
         do {
             Random rnd = new Random();
             Double importeRnd = rnd.nextDouble() * (maximo + 1);
@@ -600,14 +676,14 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                 compra.setImpuesto(compra.getImpuesto() - cf.getImpuesto());
                 compra.setIva(compra.getIva() - cf.getIva());
                 compra.setTotal(compra.getTotal() - cf.getTotal());
-                if (compra.getTotal() < 0.0) {
-                    contadorCompras += 1;
-                    if (contadorCompras > ultimoCompras - 1) {
-                        repetir = false;
-                    } else {
-                        compra = compras.get(contadorCompras);
-                    }
-                }
+//                if (compra.getTotal() < 0.0) {
+//                    contadorCompras += 1;
+//                    if (contadorCompras > ultimoCompras - 1) {
+//                        repetir = false;
+//                    } else {
+//                        compra = compras.get(contadorCompras);
+//                    }
+//                }
             }
             if (totalFacturas > limiteFacturar) {
                 repetir = false;

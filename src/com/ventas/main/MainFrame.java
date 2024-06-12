@@ -62,6 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
         clientesMnu.setVisible(false);
         tipoDocMnu.setVisible(false);
         notaCreditoBtn.setVisible(false);
+        randomBtn.setVisible(false);
     }
 
     /**
@@ -492,11 +493,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_informeStockMnuActionPerformed
 
     private void duplicadoPdfMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_duplicadoPdfMnuActionPerformed
-//        duplicadoPdf();
+        duplicadoPdf();
     }//GEN-LAST:event_duplicadoPdfMnuActionPerformed
 
     private void backupMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupMnuActionPerformed
-//        backup();
+        backup();
     }//GEN-LAST:event_backupMnuActionPerformed
 
     private void recuperarAfipMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recuperarAfipMnuActionPerformed
@@ -730,11 +731,11 @@ public class MainFrame extends javax.swing.JFrame {
 //        this.dispose();
 //    }
 
-//    private void duplicadoPdf() {
-//        DuplicadoFacturaPdfFrame dff = new DuplicadoFacturaPdfFrame();
-//        dff.setVisible(true);
-//        this.dispose();
-//    }
+    private void duplicadoPdf() {
+        DuplicadoFacturaPdfFrame dff = new DuplicadoFacturaPdfFrame();
+        dff.setVisible(true);
+        this.dispose();
+    }
 
 //    private void borrarTemporales() {
 //        int a = JOptionPane.showConfirmDialog(this, "CONFIRME ELIMINAR TEMPORALES", "Atención", JOptionPane.YES_NO_OPTION);

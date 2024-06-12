@@ -377,7 +377,8 @@ public class DuplicadoFacturaPdfFrame extends javax.swing.JFrame {
 
         if (rf != null && !rf.isEmpty()) {
             pdf(iv, rf);
-            JOptionPane.showMessageDialog(this, "PROCESO TERMINADO");
+            volver();
+//            JOptionPane.showMessageDialog(this, "PROCESO TERMINADO");
         }
     }//GEN-LAST:event_imprimirBtnActionPerformed
 
@@ -508,6 +509,7 @@ public class DuplicadoFacturaPdfFrame extends javax.swing.JFrame {
         clienteTxt.setText("");
         combo.removeAllItems();
         combo.addItem("");
+        pdfTodasBtn.setVisible(false);
         limpiarTabla();
     }
 
@@ -1137,8 +1139,8 @@ public class DuplicadoFacturaPdfFrame extends javax.swing.JFrame {
         String nc = df_matriz.format(iv.getNumeroFactura());
         importe_qr = df.format(iv.getTotal()).replace(",", ".");
         tipoDoc_qr = iv.getCliente().getTipo();
-//        nroCae_qr = iv.getCae().toString();
-        nroCae_qr = pri + med + fin;
+        nroCae_qr = iv.getCae().toString();
+//        nroCae_qr = pri + med + fin;
         String data = "{\"ver\"" + ":" + ver_qr
                 + ",\"fecha\"" + ":" + "\"" + fecha_qr + "\""
                 + ",\"cuit\"" + ":" + cuit_qr
@@ -1160,17 +1162,17 @@ public class DuplicadoFacturaPdfFrame extends javax.swing.JFrame {
             Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (letra.equals("B")) {
-//            try {
-////                File pdf = new PDFBuilder().armarFacturaB(iv, rf);
-////                DesktopApi.open(pdf);
-////                JOptionPane.showMessageDialog(this, "PROCESO TERMINADO");
-//            } catch (FileNotFoundException ex) {
-//                Logger.getLogger(DuplicadoFacturaPdfFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (DocumentException ex) {
-//                Logger.getLogger(DuplicadoFacturaPdfFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(DuplicadoFacturaPdfFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                File pdf = new PDFBuilder().armarFacturaB(iv, rf);
+                DesktopApi.open(pdf);
+                JOptionPane.showMessageDialog(this, "PROCESO TERMINADO");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(DuplicadoFacturaPdfFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DocumentException ex) {
+                Logger.getLogger(DuplicadoFacturaPdfFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(DuplicadoFacturaPdfFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
 //            if (sucursal.equals("10")) {
 //            try {

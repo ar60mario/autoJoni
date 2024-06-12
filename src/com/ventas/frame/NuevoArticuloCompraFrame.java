@@ -187,13 +187,10 @@ public class NuevoArticuloCompraFrame extends javax.swing.JFrame {
             ac.setImpuesto(0.0);
             ac.setIva(0.0);
             ac.setTotal(0.0);
-//            ac.setGravadoTemp(0.0);
-//            ac.setImpuestoTemp(0.0);
-//            ac.setIvaTemp(0.0);
-//            ac.setTotalTemp(0.0);
             ac.setActivo(true);
             try {
                 new ArticuloCompraService().guardarArticuloCompra(ac);
+                volver();
             } catch (Exception ex) {
                 Logger.getLogger(NuevoArticuloCompraFrame.class.getName()).log(Level.SEVERE, null, ex);
             }

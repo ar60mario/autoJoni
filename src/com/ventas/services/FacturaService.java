@@ -7,11 +7,13 @@ package com.ventas.services;
 
 import com.ventas.bo.ArticuloCompraBo;
 import com.ventas.bo.CompraClienteMercadoPagoBo;
+import com.ventas.bo.FacturaCompraReferenciaMercadoPagoBo;
 import com.ventas.bo.IvaVentasBo;
 import com.ventas.bo.RenglonFacturaBo;
 import com.ventas.bo.RenglonNotaCreditoBo;
 import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.IvaVentas;
 import com.ventas.entities.RenglonFactura;
 import com.ventas.entities.RenglonNotaCredito;
@@ -52,7 +54,8 @@ public class FacturaService {
     }
 
     public void saveFacturaCompleta(IvaVentas iv, List<RenglonFactura> rf,
-            ArticuloCompra artCmpr, CompraClienteMercadoPago compra) throws Exception {
+            ArticuloCompra artCmpr, CompraClienteMercadoPago compra,
+            FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         IvaVentasBo ivaBO = new IvaVentasBo();
@@ -67,6 +70,12 @@ public class FacturaService {
                 bo2.updateArticuloCompra(artCmpr);
                 if (compra != null) {
                     new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
+                }
+                if (fcrmp != null) {
+                    fcrmp.setArticuloCompra(artCmpr);
+                    fcrmp.setCompraClienteMercadoPago(compra);
+                    fcrmp.setIvaVentas(ivaVentas);
+                    new FacturaCompraReferenciaMercadoPagoBo().saveFacturaCompraReferenciaMercadoPago(fcrmp);
                 }
                 tx.commit();
             } catch (Exception ex) {

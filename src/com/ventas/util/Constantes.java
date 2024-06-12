@@ -43,4 +43,5 @@ public class Constantes {
     public static final String ruta_fonts = "d:/ventasJo/ttf/PF_I2OF5_TXT.ttf";
     public static final String razon_social_titular = "BELSITO JONATHAN MAXIMILIANO";
     public static final String nombre_fantasia_titular = "BELSITO JONATHAN MAXIMILIANO";
+    public static final String ruta_logo = "d:/ventasJo/logo/logo.jpg";
 }

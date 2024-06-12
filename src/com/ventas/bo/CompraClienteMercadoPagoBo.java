@@ -71,7 +71,7 @@ public class CompraClienteMercadoPagoBo {
                     cli.setSaldo(0.0);
                     cli.setTelefono("");
                     cli.setTieneDescuento(false);
-                    cli.setTipo("99");
+                    cli.setTipo("86");
                     new ClienteBo().saveCliente(cli);
                 }
 //                String p = cuit.substring(0,2);

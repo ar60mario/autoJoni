@@ -108,6 +108,19 @@ public class ArticuloCompraService {
         return articulo;
     }
 
+    public ArticuloCompra updateArticuloCompra(ArticuloCompra articulo) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            ArticuloCompraBo bo = new ArticuloCompraBo();
+            bo.updateArticuloCompra(articulo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return articulo;
+    }
 //    public Producto getProductoPanificadoByCodigo(Integer codigo) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();

@@ -182,18 +182,18 @@ public class BackupFrame extends javax.swing.JFrame {
         boolean status = false;
         try {
             Process p = null;
-            String filepath = "C:/ventasDA/data/backup/bkp_dario_db.sql";
+            String filepath = "D:/ventasJo/backup/bkp_JONI_db.sql";
             String batchCommand = "";
-            batchCommand = "c:/ventasDA/bin/mysqldump.exe" + " -h " + "localhost" + " --port " + "3306" + " -u " + "root" + " --password=root dario" + " -r " + filepath;
+            batchCommand = "D:/ventasJo/bin/mysqldump.exe" + " -h " + "localhost" + " --port " + "3306" + " -u " + "root" + " --password=root joni" + " -r " + filepath;
             Runtime runtime = Runtime.getRuntime();
             p = runtime.exec(batchCommand);
             int processComplete = p.waitFor();
             if (processComplete == 0) {
                 status = true;
-                JOptionPane.showMessageDialog(this,"Backup creado correctamente DB\n" + "DARIO en C:/ventasDA/data/backup");
+                JOptionPane.showMessageDialog(this,"Backup creado correctamente DB\n" + "JONI en D:/ventasJo/backup");
             } else {
                 status = false;
-                JOptionPane.showMessageDialog(this,"Error creando Backup DB " + "DARIO en C:/ventasDA/data/backup");
+                JOptionPane.showMessageDialog(this,"Error creando Backup DB " + "JONI en D:/ventasJo/backup");
             }
 
         } catch (IOException ioe) {

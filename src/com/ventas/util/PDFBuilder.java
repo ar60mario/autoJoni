@@ -922,24 +922,24 @@ public class PDFBuilder {
                 + dfn.format(iv.getNumeroFactura());
         PdfPTable encabezado = new PdfPTable(3);
         encabezado.setWidthPercentage(100);
-        PdfPCell celdaEncabezado1 = new PdfPCell(new Paragraph("ALVAREZ DARIO CESAR", FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
+        PdfPCell celdaEncabezado1 = new PdfPCell(new Paragraph(" ", FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado2 = new PdfPCell(new Paragraph(iv.getLetra(), FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado3 = new PdfPCell(new Paragraph(tdf, FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
-        PdfPCell celdaEncabezado4 = new PdfPCell(new Paragraph("Razón Social: Alvarez Darío Cesar", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
+        PdfPCell celdaEncabezado4 = new PdfPCell(new Paragraph("Razón Social: "+Constantes.razon_social_titular, FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado5 = new PdfPCell(new Paragraph("Cod.: " + cod, FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
         PdfPCell celdaEncabezado6 = new PdfPCell(new Paragraph("Número: " + nro, FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
-        PdfPCell celdaEncabezado7 = new PdfPCell(new Paragraph("Dirección: Williams 2145", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
+        PdfPCell celdaEncabezado7 = new PdfPCell(new Paragraph("Dirección: Cosquin 2626", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado8 = new PdfPCell(new Paragraph(" ", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
         PdfPCell celdaEncabezado9 = new PdfPCell(new Paragraph("Fecha: " + fex, FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
-        PdfPCell celdaEncabezado10 = new PdfPCell(new Paragraph("CP. 1648 - TIGRE", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
+        PdfPCell celdaEncabezado10 = new PdfPCell(new Paragraph("CP. 1814 - LA NORIA", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado11 = new PdfPCell(new Paragraph(" ", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
-        PdfPCell celdaEncabezado12 = new PdfPCell(new Paragraph("C.U.I.T.: 20-24927325-3", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
+        PdfPCell celdaEncabezado12 = new PdfPCell(new Paragraph("C.U.I.T.: 20-30037742-5", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
         PdfPCell celdaEncabezado13 = new PdfPCell(new Paragraph("BUENOS AIRES", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado14 = new PdfPCell(new Paragraph(" ", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
-        PdfPCell celdaEncabezado15 = new PdfPCell(new Paragraph("Ing.Brutos Nro.: 20-24927325-3", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
+        PdfPCell celdaEncabezado15 = new PdfPCell(new Paragraph("Ing.Brutos Nro.: 20-30037742-5", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
         PdfPCell celdaEncabezado16 = new PdfPCell(new Paragraph(" ", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
         PdfPCell celdaEncabezado17 = new PdfPCell(new Paragraph(" ", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
-        PdfPCell celdaEncabezado18 = new PdfPCell(new Paragraph("Inicio Actividad: 05/2023", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
+        PdfPCell celdaEncabezado18 = new PdfPCell(new Paragraph("Inicio Actividad: 09/2020", FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
 
         celdaEncabezado1.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         celdaEncabezado2.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
@@ -978,11 +978,13 @@ public class PDFBuilder {
         encabezado.addCell(celdaEncabezado16).setBorder(PdfPCell.NO_BORDER);
         encabezado.addCell(celdaEncabezado17).setBorder(PdfPCell.NO_BORDER);
         encabezado.addCell(celdaEncabezado18).setBorder(PdfPCell.NO_BORDER);
-
+        pdf.add(new Paragraph(" ", FontFactory.getFont("arial", 8, PLAIN, FONDO_BLANCO)));
+        pdf.add(new Paragraph(" ", FontFactory.getFont("arial", 8, PLAIN, FONDO_BLANCO)));
+        pdf.add(new Paragraph(" ", FontFactory.getFont("arial", 8, PLAIN, FONDO_BLANCO)));
         pdf.add(encabezado);
         // FIN ENCABEZADO
 
-        pdf.add(new Paragraph("ESPACIO EN BLANCO", FontFactory.getFont("arial", 6, PLAIN, FONDO_BLANCO)));
+        pdf.add(new Paragraph(" ", FontFactory.getFont("arial", 6, PLAIN, FONDO_BLANCO)));
 
         String nombre = iv.getCliente().getRazonSocial();
         String direcc = iv.getCliente().getDomicilio().getCalle();
@@ -1116,7 +1118,7 @@ public class PDFBuilder {
             pdf.add(tablaProd);
 //            
         }
-        for (int i = 1; i < 41 - coun; i++) {
+        for (int i = 1; i < 31 - coun; i++) {
             PdfPTable tablaProd = new PdfPTable(6);
             tablaProd.setWidthPercentage(100);
             tablaProd.setWidths(anchos);
@@ -1222,8 +1224,8 @@ public class PDFBuilder {
         PdfPCell pieFc5 = new PdfPCell(new Paragraph("CAE nro.:  " + cae_nro, FontFactory.getFont("arial", 9, Font.PLAIN, NEGRO)));
 
 //        Image imagen = Image.getInstance("c://ventasDA//qr//CodigoQR" + nr0 + ".png");
-        Image imagen = Image.getInstance(Constantes.ruta_qr+"//CodigoQR" + nr0 + ".png");
-//        Image img2 = Image.getInstance("c://ventasDA//qr//afip.png");
+        Image imagen = Image.getInstance(Constantes.ruta_qr+ nr0 + ".png");
+        Image img3 = Image.getInstance(Constantes.ruta_logo);
         Image img2 = Image.getInstance(Constantes.ruta_logo_afip);
 
         com.itextpdf.text.Font font = FontFactory.getFont(Constantes.ruta_fonts,
@@ -1249,8 +1251,10 @@ public class PDFBuilder {
 
         imagen.setAbsolutePosition(10f, 50f);
         img2.setAbsolutePosition(230f, 140f);
+        img3.setAbsolutePosition(10f, 910f);
         pdf.add(imagen);
         pdf.add(img2);
+        pdf.add(img3);
 
         pdf.close();
         return new File(Constantes.ruta_pdf + fileNameFormatted + ".pdf");
