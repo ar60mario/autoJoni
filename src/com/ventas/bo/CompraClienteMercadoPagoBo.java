@@ -96,6 +96,14 @@ public class CompraClienteMercadoPagoBo {
             throw new Exception(ex);
         }
     }
+    
+    public void deleteCompraClienteMP(CompraClienteMercadoPago compra) throws Exception {
+        try {
+            dao.delete(compra);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+    }
 
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
         List<CompraClienteMercadoPago> listCompras = null;

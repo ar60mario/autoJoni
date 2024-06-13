@@ -3,7 +3,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.ventas.entities.ArticuloCompra" schema="joni" table="articulo_compra">
+    <class name="com.ventas.entities.NuevaFactura" schema="joni" table="nueva_factura">
         <id name="id" column="ID">
             <generator class="identity"/>
         </id>
@@ -11,12 +11,22 @@
         <property name="impuesto" type="double" column="IMPUESTO"/>
         <property name="iva" type="double" column="IVA"/>
         <property name="total" type="double" column="TOTAL"/>
-        <property name="porcentual" type="float" column="PORCENTUAL"/>
-        <property name="activo" type="boolean" column="ACTIVO"/>
+        <property name="totalMp" type="double" column="TOTAL_MP"/>
+        <property name="cuitCliente" type="string" column="CUIT_CLIENTE"/>
         <many-to-one name="producto"
                     class="com.ventas.entities.Producto"
                      lazy="false">
                      <column name="ID_PRODUCTO" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="articulo"
+                    class="com.ventas.entities.ArticuloCompra"
+                     lazy="false">
+                     <column name="ID_ARTICULO_COMPRA" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="compraMercadoPago"
+                    class="com.ventas.entities.CompraClienteMercadoPago"
+                     lazy="false">
+                     <column name="ID_COMPRA_CLIENTE_MERCADO_PAGO" not-null="false"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

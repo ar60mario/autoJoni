@@ -20,6 +20,7 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
     private Producto producto;
     private ArticuloCompra articulo;
     private DecimalFormat df = new DecimalFormat("#0.00");
+    private DecimalFormat dfp = new DecimalFormat("#0.000");
 
     /**
      * Creates new form NuevoArticuloVentaFrame
@@ -60,9 +61,11 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
         ivaTxt = new javax.swing.JTextField();
         totalTxt = new javax.swing.JTextField();
         productoTxt = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        porcentualTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("NUEVO ARTICULO POR MONTO");
+        setTitle("MODIFICAR ARTICULO POR MONTO");
 
         volverBtn.setText("VOLVER");
         volverBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +110,12 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
         totalTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         totalTxt.setText("TOT");
 
-        productoTxt.setText("jTextField1");
+        productoTxt.setText("PRODUCTO");
+
+        jLabel7.setText("PORCENTUAL:");
+
+        porcentualTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        porcentualTxt.setText("PORCEN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,35 +126,43 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(grabarBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 366, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 330, Short.MAX_VALUE)
                         .addComponent(volverBtn))
-                    .addComponent(activoChk)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(gravadoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-                            .addComponent(impuestoTxt)
-                            .addComponent(ivaTxt)
-                            .addComponent(totalTxt)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(productoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(activoChk)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                                    .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel6))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(gravadoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                                        .addComponent(impuestoTxt)
+                                        .addComponent(ivaTxt)
+                                        .addComponent(totalTxt))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(productoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(productoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -171,8 +187,12 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(activoChk)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(volverBtn)
                     .addComponent(grabarBtn))
@@ -241,6 +261,8 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField porcentualTxt;
     private javax.swing.JTextField productoTxt;
     private javax.swing.JTextField totalTxt;
     private javax.swing.JButton volverBtn;
@@ -254,10 +276,12 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
             Double impuesto = Double.valueOf(impuestoTxt.getText().replace(",", "."));
             Double iva = Double.valueOf(ivaTxt.getText().replace(",", "."));
             Double total = Double.valueOf(totalTxt.getText().replace(",", "."));
+            Float porcentual = Float.valueOf(porcentualTxt.getText().replace(",", "."));
             articulo.setGravado(gravado);
             articulo.setImpuesto(impuesto);
             articulo.setIva(iva);
             articulo.setTotal(total);
+            articulo.setPorcentual(porcentual);
             if (activoChk.isSelected()) {
                 articulo.setActivo(true);
             } else {
@@ -297,15 +321,18 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
 //            }
 //        }
 //    }
-
     private void buscar(int row) {
         producto = productos.get(row);
         codigoTxt.setText(producto.getCodigo().toString());
     }
 
     private boolean validar() {
-        if(codigoTxt.getText().isEmpty()){
+        if (codigoTxt.getText().isEmpty()) {
             return false;
+        }
+        if(porcentualTxt.getText().isEmpty()){
+            return false;
+            
         }
 //        try {
 //            ArticuloCompra art = new ArticuloCompraService().getArticuloCompraByProducto(producto);
@@ -333,6 +360,11 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
             activoChk.setSelected(true);
         } else {
             activoChk.setSelected(false);
+        }
+        if (articulo.getPorcentual() != null) {
+            porcentualTxt.setText(dfp.format(articulo.getPorcentual()));
+        } else {
+            porcentualTxt.setText(dfp.format(0));
         }
     }
 }

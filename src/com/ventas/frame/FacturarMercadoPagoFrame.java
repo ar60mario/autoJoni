@@ -7,6 +7,7 @@ import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.entities.IvaVentas;
+import com.ventas.entities.NuevaFactura;
 import com.ventas.entities.RenglonFactura;
 import com.ventas.main.MainFrame;
 import com.ventas.services.ArticuloCompraService;
@@ -14,10 +15,18 @@ import com.ventas.services.ClienteService;
 import com.ventas.services.CompraClienteMercadoPagoService;
 import com.ventas.services.FacturaService;
 import com.ventas.services.IvaVentasService;
+import com.ventas.services.NuevaFacturaService;
 import com.ventas.util.Constantes;
 import com.ventas.util.UtilFrame;
 import com.ventas.util.UtilAfip;
 import com.ventas.util.UtilFactura;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.Thread.sleep;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -30,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JProgressBar;
 
 /**
  *
@@ -47,7 +57,6 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
 //    private Integer contadorCompras = 0;
     private Date fechaFacturas;
 //    private List<ArticuloCompra> articulos;
-    private final int tst = 0; // 1 esta en test
 
     /**
      * Creates new form FacturasMercadoPagoFrame
@@ -82,6 +91,7 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
         segAlTxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         combo = new javax.swing.JComboBox<>();
+        barral = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("FACTURACION MERCADO PAGO");
@@ -186,6 +196,7 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(barral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,7 +242,9 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
                     .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(procesarBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(barral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(presentarBtn)
@@ -285,8 +298,10 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
     private void presentarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentarBtnActionPerformed
         int row = combo.getSelectedIndex();
         if (row > 0) {
+
             presentar();
-            volver();
+//            
+
         }
     }//GEN-LAST:event_presentarBtnActionPerformed
 
@@ -297,18 +312,18 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_procesarBtnKeyPressed
 
     private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
-        if(evt.getModifiers()==16){
+        if (evt.getModifiers() == 16) {
             int row = combo.getSelectedIndex();
-            if(row > 0){
+            if (row > 0) {
                 procesarBtn.requestFocus();
             }
         }
     }//GEN-LAST:event_comboActionPerformed
 
     private void comboKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboKeyPressed
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             int row = combo.getSelectedIndex();
-            if(row > 0){
+            if (row > 0) {
                 procesarBtn.requestFocus();
             }
         }
@@ -351,6 +366,7 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barral;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField fechaTxt;
     private javax.swing.JLabel jLabel1;
@@ -406,7 +422,6 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
             Logger.getLogger(FacturarMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
-
         llenarTabla();
     }
 
@@ -436,21 +451,14 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
 
     private void presentar() {
         int row = combo.getSelectedIndex();
-        if(row < 1){
+        if (row < 1) {
             JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR TABACALERA");
             return;
         }
-//        try {
-//            facturas = new ArticuloCompraService().getAllArticulosActivos();
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(this, "ERROR 455");
-//            return;
-//        }
         if (facturas != null && !facturas.isEmpty()) {
-            ArticuloCompra factura = facturas.get(row -1);
+            ArticuloCompra factura = facturas.get(row - 1);
             if (comprasMp != null && !comprasMp.isEmpty()) {
                 nuevasFacturas = new ArrayList<>();
-//                JOptionPane.showMessageDialog(this, "GENERAR NUEVAS FACTURAS");
                 presentarSinSaldos(factura);
             } else {
                 JOptionPane.showMessageDialog(this, "ERROR NO HAY PAGOS MERCADO PAGO PARA PROCESAR");
@@ -486,152 +494,59 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
         int a = JOptionPane.showConfirmDialog(this, "VERIFICO LA FECHA DE LAS FACTURAS???", "Atención",
                 JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            int tim1 = Integer.valueOf(segDeTxt.getText());
-            int tim2 = Integer.valueOf(segAlTxt.getText());
-
-            String cuitTitular = Constantes.cuitTitular;
-            String tipoDocTit = Constantes.tipoDocTit;
-            String puntoVenta = Constantes.puntoVenta;
-            nuevasFacturas = calcularTotalMp(factura); //calcularSinFacturas(limiteFacturar);
+            if(fechaTxt.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "ERROR EN FECHA");
+                return;
+            }
+            try {
+                fechaFacturas = sdf.parse(fechaTxt.getText());
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, "ERROR EN FECHA");
+                return;
+            }
+            nuevasFacturas = calcularTotalMp(factura);
             if (nuevasFacturas != null && !nuevasFacturas.isEmpty()) {
-                for (CalculoFactura ccmp : nuevasFacturas) {
-//                    System.out.println(ccmp.getArticulo().getProducto().getDetalle());
-//                    System.out.println(ccmp.getCuitCliente());
-//                    System.out.println(ccmp.getGravado());
-//                    System.out.println(ccmp.getTotal());
-
-                    String cuit_cliente = ccmp.getCuitCliente();
-                    Cliente cliente;
-                    try {
-                        cliente = new ClienteService().getClienteByCuit(cuit_cliente);
-                        if (cliente == null) {
-                            JOptionPane.showMessageDialog(this, "ERROR nro. 669 - LEYENDO CLIENTE");
-                            return;
+                if (!segDeTxt.getText().isEmpty()) {
+                    if ((!segAlTxt.getText().isEmpty())) {
+                        int tim1 = Integer.valueOf(segDeTxt.getText().trim());
+                        int tim2 = Integer.valueOf(segAlTxt.getText().trim());
+                        List<NuevaFactura> facturasParaBorrar = null;
+                        try {
+                            facturasParaBorrar = new NuevaFacturaService().getAll();
+                            for (NuevaFactura nf : facturasParaBorrar) {
+                                new NuevaFacturaService().delete(nf);
+                            }
+                        } catch (Exception ex) {
+                            Logger.getLogger(FacturarMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, "ERROR nro. 669 - LEYENDO CLIENTE");
-                        return;
-                    }
-                    String pri = cuit_cliente.substring(0, 2);
-                    String med = cuit_cliente.substring(3, 11);
-                    String fin = cuit_cliente.substring(12, 13);
-                    String cuitCliente = pri + med + fin;
-//                    System.out.println(cuitCliente);
-//                    System.out.println(cliente);
-//                    System.out.println(cliente.getTipo());
-
-                    String tipoDocCli = cliente.getTipo();
-                    if (!segDeTxt.getText().isEmpty()) {
-                        if ((!segAlTxt.getText().isEmpty())) {
-                            int tim = 0;
-                            FacturaIvaIntercambio fii;
-                            do {
-                                Random rnd = new Random();
-                                Double segu = rnd.nextDouble() * (tim2 + 1);
-                                tim = segu.intValue();
-                            } while (tim < tim1 || tim > tim2);
+                        for (CalculoFactura cf : nuevasFacturas) {
+                            NuevaFactura nf = new NuevaFactura();
+                            nf.setArticulo(cf.getArticulo());
+                            nf.setCompraMercadoPago(cf.getCompraMercadoPago());
+                            nf.setCuitCliente(cf.getCuitCliente());
+                            nf.setGravado(cf.getGravado());
+                            nf.setImpuesto(cf.getImpuesto());
+                            nf.setIva(cf.getIva());
+                            nf.setProducto(cf.getProducto());
+                            nf.setTotal(cf.getTotal());
+                            nf.setTotalMp(cf.getTotalMp());
                             try {
-                                sleep(tim * 1000);
-                            } catch (InterruptedException ex) {
-                                JOptionPane.showMessageDialog(this, "ERR. con frecuencia de facturas");
-                                continue;
-                            }
-                            if (tst == 0) {
-                                fii = UtilAfip.presentarAfip(cuitTitular, tipoDocTit, cuitCliente,
-                                        tipoDocCli, ccmp.getGravado(), ccmp.getImpuesto(), ccmp.getIva(),
-                                        ccmp.getTotal(), fechaFacturas, puntoVenta);
-                            } else {
-                                fii = new FacturaIvaIntercambio();
-                                fii.setCae(123456789012345L);
-                                fii.setEstado("A");
-                                fii.setFecha(fechaFacturas);
-                                fii.setFechaVencimientoCae(fechaFacturas);
-                                fii.setLetra("B");
-                                Integer nroFc;
-                                try {
-                                    nroFc = new IvaVentasService().getUltimoNumeroFactura();
-                                } catch (Exception ex) {
-                                    nroFc = 0;
-                                }
-                                fii.setNumero(nroFc + 1);
-                                fii.setSucursal(2);
-                            }
-                            if (fii != null) {
-                                RenglonFactura rf = new RenglonFactura();
-                                List<RenglonFactura> listaRf = new ArrayList<>();
-                                rf.setCantidad(1F);
-                                rf.setCostoG(0.0);
-                                rf.setCostoI(0.0);
-                                rf.setDescripcion(ccmp.getProducto().getDetalle());
-                                rf.setDescuento(0.0);
-                                rf.setExento(0.0);
-                                rf.setFabricacion(false);
-                                rf.setGravado(ccmp.getGravado());
-                                rf.setGravado0(0.0);
-                                rf.setGravado10_5(0.0);
-                                rf.setGravado27(0.0);
-                                rf.setImpuesto(ccmp.getImpuesto());
-                                rf.setItemNro(1);
-                                rf.setIva(ccmp.getIva());
-                                rf.setIva0(0.0);
-                                rf.setIva10_5(0.0);
-                                rf.setIva27(0.0);
-                                rf.setNoGravado(0.0);
-                                rf.setProducto(ccmp.getProducto());
-                                rf.setSugerido(0.0);
-                                rf.setTotal(ccmp.getTotal());
-                                IvaVentas iv = new IvaVentas();
-                                iv.setCae(fii.getCae());
-                                iv.setCliente(cliente);
-                                iv.setDescuentoGlobal(0.0);
-                                iv.setExento(0.0);
-                                iv.setFecha(fechaFacturas);
-                                iv.setFechaCae(fii.getFechaVencimientoCae());
-                                iv.setGravado(ccmp.getGravado());
-                                iv.setGravado0(0.0);
-                                iv.setGravado10_5(0.0);
-                                iv.setGravado27(0.0);
-                                iv.setImpuesto(ccmp.getImpuesto());
-                                iv.setIva(ccmp.getIva());
-                                iv.setIva0(0.0);
-                                iv.setIva10_5(0.0);
-                                iv.setIva27(0.0);
-                                iv.setLetra(fii.getLetra());
-                                iv.setLetraReferencia("x");
-                                iv.setNoGravado(0.0);
-                                iv.setNumeroFactura(fii.getNumero());
-                                iv.setNumeroFacturaReferencia(0);
-                                iv.setNumeroSucursal(fii.getSucursal());
-                                iv.setNumeroSucursalReferencia(0);
-                                iv.setTipoDoc(6);
-                                iv.setTotal(ccmp.getTotal());
-                                rf.setIvaVentas(iv);
-                                listaRf.add(rf);
-                                ArticuloCompra artCmpr = ccmp.getArticulo();
-                                artCmpr.setGravado(artCmpr.getGravado() - iv.getGravado());
-                                artCmpr.setImpuesto(artCmpr.getImpuesto() - iv.getImpuesto());
-                                artCmpr.setIva(artCmpr.getIva() - iv.getIva());
-                                artCmpr.setTotal(artCmpr.getTotal() - iv.getTotal());
-                                CompraClienteMercadoPago ccmpProceso = ccmp.getCompraMercadoPago();
-                                ccmpProceso.setProcesado(true);
-                                FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
-                                fcrmp.setArticuloCompra(artCmpr);
-                                fcrmp.setCompraClienteMercadoPago(compraMp);
-                                fcrmp.setIvaVentas(iv);
-                                try {
-                                    new FacturaService().saveFacturaCompleta(iv, listaRf,
-                                            artCmpr, ccmpProceso, fcrmp);
-                                } catch (Exception ex) {
-                                    JOptionPane.showMessageDialog(this, "ERROR 789");
-                                    break;
-                                }
-//                                new CompraClienteMercadoPagoService().saveCompraClientesImportados(comprasMp);
-                            } else {
-                                JOptionPane.showMessageDialog(this, "ERR AFIP");
+                                new NuevaFacturaService().save(nf);
+                            } catch (Exception ex) {
+                                Logger.getLogger(FacturarMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
+                        try (FileWriter fichero = new FileWriter("D:/ventasJo/temp.txt")) {
+                            PrintWriter pw = new PrintWriter(fichero);
+                            pw.println(sdf.format(fechaFacturas));
+                            pw.println(tim1);
+                            pw.println(tim2);
+                            pw.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        barral();
                     }
-
                 }
             }
         }
@@ -641,25 +556,16 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
         List<CalculoFactura> nuevas_fc = new ArrayList<>();
         Boolean repetir = true;
         Integer contadorComprasMP = 0;
-//        Integer contadorFac = 0;
         Integer ultimoCompras = comprasMp.size();
-//        Integer ultimoFacturas = facturas.size();
         do {
             CompraClienteMercadoPago compra = comprasMp.get(contadorComprasMP);
-//            ArticuloCompra fac = compr;
             Double importeTotal = compra.getImporte();
-            CalculoFactura cf = UtilFactura.calcularTotalesAutomatico(importeTotal, fac);
+            CalculoFactura cf = UtilFactura.calcularTotalesAutomatico2(importeTotal, fac);
             System.out.println(cf);
             if (cf != null) {
                 cf.setCuitCliente(compra.getCuit());
                 cf.setCompraMercadoPago(compra);
                 nuevas_fc.add(cf);
-//                if (fac.getTotal() < 0.00) {
-////                    contadorFac += 1;
-////                    if (contadorFac > ultimoFacturas - 1) {
-////                        contadorFac = 0;
-////                    }
-//                }
                 contadorComprasMP += 1;
                 if (contadorComprasMP > ultimoCompras - 1) {
                     repetir = false;
@@ -672,48 +578,221 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
         System.out.println(nuevas_fc);
         return nuevas_fc;
     }
-    /*
-        if (comprasMp != null && !comprasMp.isEmpty()) {
-            Double totalFacturas = 0.00;
-            
-            
-            
 
+    private void barral() {
+        Avanzando avanzando = new Avanzando();
+        avanzando.setBar(barral);
+        Thread hilo = new Thread(avanzando);
+        hilo.start();
+    }
 
-            
-                Random rnd = new Random();
-                Double importeRnd = rnd.nextDouble() * (maximo + 1);
-                importeRnd = importeRedondeado(importeRnd);
-                if (importeRnd > minimo) {
-                    
-                    if (cf != null) {
-                        nuevas_facturas.add(cf);
-                        totalFacturas += cf.getTotal();
-                    } else {
-                        repetir = false;
-                    }
-                    compra.setGravado(compra.getGravado() - cf.getGravado());
-                    compra.setImpuesto(compra.getImpuesto() - cf.getImpuesto());
-                    compra.setIva(compra.getIva() - cf.getIva());
-                    compra.setTotal(compra.getTotal() - cf.getTotal());
-                    if (compra.getTotal() < 0.0) {
-                        contadorCompras += 1;
-                        if (contadorCompras > ultimoCompras - 1) {
-                            contadorCompras = 0;
-                        } else {
-                            compra = compras.get(contadorCompras);
-                        }
-                    }
-                }
-                if (totalFacturas > limiteFacturar) {
-                    repetir = false;
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "NO HAY COMPRAS DISPONIBLES");
-            nuevas_facturas = null;
+}
+
+class Avanzando implements Runnable {
+
+    private JProgressBar bar;
+    private Float incremento;
+    private Float maximo;
+//    private final Date fecha = new Date();
+    //private final String ruta = "d:/informes/inicio.txt";
+//    private DecimalFormat df = new DecimalFormat("#0.00");
+    private final int tst = 0; // 1 esta en test
+
+    @Override
+
+    public void run() {
+        this.getBar().setValue(1);
+        String cuitTitular = Constantes.cuitTitular;
+        String tipoDocTit = Constantes.tipoDocTit;
+        String puntoVenta = Constantes.puntoVenta;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Float posF = 2F;
+        Integer largo;
+        // desde aqui
+        Date fechaFacturas;
+        Integer tim1;
+        Integer tim2;
+        String fechaString;
+        String tim1String;
+        String tim2String;
+        File archivo = new File("D:/ventasJo/temp.txt");
+        FileReader fr;
+        try {
+            fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+
+            fechaString = br.readLine();
+            tim1String = br.readLine();
+            tim2String = br.readLine();
+            br.close();
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "uno 610");
+            return;
         }
-        
-     */
+        try {
+            fechaFacturas = sdf.parse(fechaString);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "DOS 615");
+            return;
+        }
+        tim1 = Integer.valueOf(tim1String);
+        tim2 = Integer.valueOf(tim2String);
+
+        List<NuevaFactura> nuevasFacturas = null;
+        try {
+            nuevasFacturas = new NuevaFacturaService().getAll();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "TRES 625");
+//            Logger.getLogger(Avanzando.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        largo = nuevasFacturas.size();
+        maximo = largo.floatValue();
+        incremento = 100 / maximo;
+//        System.out.println(largo);
+//        System.out.println(incremento);
+//        System.out.println(maximo);
+//        System.exit(0);
+        for (NuevaFactura ccmp : nuevasFacturas) {
+            CompraClienteMercadoPago compraMp = ccmp.getCompraMercadoPago();
+            posF += incremento;
+            Integer pos = posF.intValue();
+//            this.procesarBarra(nuevasFacturas, tim1, tim2, fechaFacturas, compraMp);//
+            getBar().setValue(pos);
+//            JOptionPane.showMessageDialog(null, "VER");
+            String cuit_cliente = ccmp.getCuitCliente();
+            Cliente cliente;
+            try {
+                cliente = new ClienteService().getClienteByCuit(cuit_cliente);
+                if (cliente == null) {
+                    JOptionPane.showMessageDialog(null, "ERROR nro. 669 - LEYENDO CLIENTE");
+                    return;
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "ERROR nro. 669 - LEYENDO CLIENTE");
+                return;
+            }
+            String pri = cuit_cliente.substring(0, 2);
+            String med = cuit_cliente.substring(3, 11);
+            String fin = cuit_cliente.substring(12, 13);
+            String cuitCliente = pri + med + fin;
+            String tipoDocCli = cliente.getTipo();
+            int tim = 0;
+            FacturaIvaIntercambio fii;
+            do {
+                Random rnd = new Random();
+                Double segu = rnd.nextDouble() * (tim2 + 1);
+                tim = segu.intValue();
+            } while (tim < tim1 || tim > tim2);
+            try {
+                sleep(tim * 1000);
+            } catch (InterruptedException ex) {
+                JOptionPane.showMessageDialog(null, "ERR. con frecuencia de facturas");
+                continue;
+            }
+            if (tst == 0) {
+                fii = UtilAfip.presentarAfip(cuitTitular, tipoDocTit, cuitCliente,
+                        tipoDocCli, ccmp.getGravado(), ccmp.getImpuesto(), ccmp.getIva(),
+                        ccmp.getTotal(), fechaFacturas, puntoVenta);
+            } else {
+                fii = new FacturaIvaIntercambio();
+                fii.setCae(123456789012345L);
+                fii.setEstado("A");
+                fii.setFecha(fechaFacturas);
+                fii.setFechaVencimientoCae(fechaFacturas);
+                fii.setLetra("B");
+                Integer nroFc;
+                try {
+                    nroFc = new IvaVentasService().getUltimoNumeroFactura();
+                } catch (Exception ex) {
+                    nroFc = 0;
+                }
+                fii.setNumero(nroFc + 1);
+                fii.setSucursal(2);
+            }
+            if (fii != null) {
+                RenglonFactura rf = new RenglonFactura();
+                List<RenglonFactura> listaRf = new ArrayList<>();
+                rf.setCantidad(1F);
+                rf.setCostoG(0.0);
+                rf.setCostoI(0.0);
+                rf.setDescripcion(ccmp.getProducto().getDetalle());
+                rf.setDescuento(0.0);
+                rf.setExento(0.0);
+                rf.setFabricacion(false);
+                rf.setGravado(ccmp.getGravado());
+                rf.setGravado0(0.0);
+                rf.setGravado10_5(0.0);
+                rf.setGravado27(0.0);
+                rf.setImpuesto(ccmp.getImpuesto());
+                rf.setItemNro(1);
+                rf.setIva(ccmp.getIva());
+                rf.setIva0(0.0);
+                rf.setIva10_5(0.0);
+                rf.setIva27(0.0);
+                rf.setNoGravado(0.0);
+                rf.setProducto(ccmp.getProducto());
+                rf.setSugerido(0.0);
+                rf.setTotal(ccmp.getTotal());
+                IvaVentas iv = new IvaVentas();
+                iv.setCae(fii.getCae());
+                iv.setCliente(cliente);
+                iv.setDescuentoGlobal(0.0);
+                iv.setExento(0.0);
+                iv.setFecha(fechaFacturas);
+                iv.setFechaCae(fii.getFechaVencimientoCae());
+                iv.setGravado(ccmp.getGravado());
+                iv.setGravado0(0.0);
+                iv.setGravado10_5(0.0);
+                iv.setGravado27(0.0);
+                iv.setImpuesto(ccmp.getImpuesto());
+                iv.setIva(ccmp.getIva());
+                iv.setIva0(0.0);
+                iv.setIva10_5(0.0);
+                iv.setIva27(0.0);
+                iv.setLetra(fii.getLetra());
+                iv.setLetraReferencia("x");
+                iv.setNoGravado(0.0);
+                iv.setNumeroFactura(fii.getNumero());
+                iv.setNumeroFacturaReferencia(0);
+                iv.setNumeroSucursal(fii.getSucursal());
+                iv.setNumeroSucursalReferencia(0);
+                iv.setTipoDoc(6);
+                iv.setTotal(ccmp.getTotal());
+                rf.setIvaVentas(iv);
+                listaRf.add(rf);
+                ArticuloCompra artCmpr = ccmp.getArticulo();
+                artCmpr.setGravado(artCmpr.getGravado() - iv.getGravado());
+                artCmpr.setImpuesto(artCmpr.getImpuesto() - iv.getImpuesto());
+                artCmpr.setIva(artCmpr.getIva() - iv.getIva());
+                artCmpr.setTotal(artCmpr.getTotal() - iv.getTotal());
+                CompraClienteMercadoPago ccmpProceso = ccmp.getCompraMercadoPago();
+                ccmpProceso.setProcesado(true);
+                FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
+                fcrmp.setArticuloCompra(artCmpr);
+                fcrmp.setCompraClienteMercadoPago(compraMp);
+                fcrmp.setIvaVentas(iv);
+                try {
+                    new FacturaService().saveFacturaCompleta(iv, listaRf,
+                            artCmpr, ccmpProceso, fcrmp);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "ERROR 789");
+                    break;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "ERR AFIP");
+            }
+        }
+
+    }
+
+    public void setBar(JProgressBar bar) {
+        this.bar = bar;
+    }
+
+    public JProgressBar getBar() {
+        return bar;
+    }
 
 }

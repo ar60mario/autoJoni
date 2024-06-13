@@ -24,6 +24,7 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
 
     private List<ArticuloCompra> articulos;
     private DecimalFormat df = new DecimalFormat("#0.00");
+    private DecimalFormat dfp = new DecimalFormat("#0.000");
 
     /**
      * Creates new form AbmArticulosPorMontoFrame
@@ -67,14 +68,14 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CÓDIGO", "NOMBRE", "TOTAL", "ACTIVO"
+                "CÓDIGO", "NOMBRE", "TOTAL", "PORCENT", "ACTIVO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -88,6 +89,7 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
             tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(20);
         }
 
         jLabel1.setText("NOMBRE:");
@@ -121,7 +123,7 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(nuevoBtn)
                         .addGap(18, 18, 18)
@@ -246,15 +248,20 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
         if (articulos != null && !articulos.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (ArticuloCompra av : articulos) {
-                Object o[] = new Object[4];
+                Object o[] = new Object[5];
                 Producto prod = av.getProducto();
                 o[0] = prod.getCodigo();
                 o[1] = prod.getDetalle();
                 o[2] = df.format(av.getTotal());
-                if (av.getActivo()) {
-                    o[3] = "ACTIVO";
+                if (av.getPorcentual() != null) {
+                    o[3] = dfp.format(av.getPorcentual());
                 } else {
-                    o[3] = "INACTIVO";
+                    o[3] = dfp.format(0);
+                }
+                if (av.getActivo()) {
+                    o[4] = "ACTIVO";
+                } else {
+                    o[4] = "INACTIVO";
                 }
                 tbl.addRow(o);
             }
@@ -270,7 +277,7 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
 
     private void modificar() {
         int row = tabla.getSelectedRow();
-        if(row < 0){
+        if (row < 0) {
             JOptionPane.showMessageDialog(this, "SELECCIONE UN ARTICULO PARA MODIFICAR");
             return;
         }

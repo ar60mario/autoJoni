@@ -52,7 +52,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private Cliente cliente;
     private String cuitCliente;
     private String tipoDocCli;
-    private final int tst = 1; // 1 esta en test
+    private final int tst = 0; // 1 esta en test
 
     /**
      * Creates new form FacturarAutomaticoPorMontoFrame
@@ -528,6 +528,11 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "ERROR 391");
                 return;
             }
+            try {
+                fechaFacturas = sdf.parse(fechaTxt.getText());
+            } catch (ParseException ex) {
+                Logger.getLogger(FacturarAutomaticoPorMontoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (!segDeTxt.getText().isEmpty()) {
                 if ((!segAlTxt.getText().isEmpty())) {
                     int tim = 0;
@@ -657,7 +662,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         List<CalculoFactura> nuevas_facturas = new ArrayList<>();
         Double totalFacturas = 0.00;
         Boolean repetir = true;
-        Integer contadorCompras = 0;
+//        Integer contadorCompras = 0;
 //        Integer ultimoCompras = compras.size();
 //        ArticuloCompra compra = compras.get(contadorCompras);
         do {
@@ -665,7 +670,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             Double importeRnd = rnd.nextDouble() * (maximo + 1);
             importeRnd = importeRedondeado(importeRnd);
             if (importeRnd > minimo) {
-                CalculoFactura cf = UtilFactura.calcularTotalesAutomatico(importeRnd, compra);
+                CalculoFactura cf = UtilFactura.calcularTotalesAutomatico2(importeRnd, compra);
                 if (cf != null) {
                     nuevas_facturas.add(cf);
                     totalFacturas += cf.getTotal();

@@ -99,6 +99,23 @@ public class UtilFactura {
         return null;
     }
 
+    public static Float calcularPorcentualImpuesto(Double impuesto, Double total) {
+        if (impuesto > 0.00) {
+            if (total > 0.00) {
+                Float porcentual;
+                DecimalFormat dfp = new DecimalFormat("#0.000");
+                Double porcentajeCalculo = impuesto / total;
+                String porcentajeCalculoString = dfp.format(porcentajeCalculo);
+                porcentual = Float.valueOf(porcentajeCalculoString.replace(",", "."));
+                return porcentual;
+            } else {
+                return 0F;
+            }
+        } else {
+            return 0F;
+        }
+    }
+
     public static CalculoFactura calcularTotales2(FacturaCompra fc, CompraClienteMercadoPago ccmp) {
         Long id_config = 1L;
         Configuracion cfg = null;
@@ -195,7 +212,57 @@ public class UtilFactura {
             cf.setTotal(totalRedondeado);
             cf.setProducto(compra.getProducto());
             cf.setArticulo(compra);
-            
+
+            return cf;
+        }
+        return null;
+    }
+    
+    public static CalculoFactura calcularTotalesAutomatico2(Double totalGenerado, ArticuloCompra compra) {
+        if (totalGenerado.equals(0.0)) {
+            return null;
+        }
+        if(compra == null){
+            return null;
+        }
+        Float porcentual = compra.getPorcentual();
+        if (porcentual == 0F) {
+            return null;
+        }
+        Long id_config = 1L;
+        Configuracion cfg;
+//        Double impuestoVenta = compra.getImpuesto();
+//        Double totalVenta = compra.getTotal();
+        Double porcentajeCalculo = porcentual.doubleValue();
+        try {
+            cfg = new ConfiguracionService().getFacturas(id_config);
+        } catch (Exception ex) {
+            return null;
+        }
+        if (cfg != null) {
+            Float porcIva = cfg.getIva();
+
+            CalculoFactura cf = new CalculoFactura();
+
+            Double impuestoRedondeado = calcularRedondeo(totalGenerado * porcentajeCalculo);
+
+            Double brutoRedondeado = calcularRedondeo(totalGenerado - impuestoRedondeado);
+
+            Double netoRedondeado = calcularRedondeo(brutoRedondeado / (1 + porcIva / 100));
+
+            Double ivaRedondeado = calcularRedondeo(netoRedondeado * porcIva / 100);
+
+            Double totalRedondeado = calcularRedondeo(netoRedondeado
+                    + impuestoRedondeado
+                    + ivaRedondeado);
+
+            cf.setGravado(netoRedondeado);
+            cf.setImpuesto(impuestoRedondeado);
+            cf.setIva(ivaRedondeado);
+            cf.setTotal(totalRedondeado);
+            cf.setProducto(compra.getProducto());
+            cf.setArticulo(compra);
+
             return cf;
         }
         return null;

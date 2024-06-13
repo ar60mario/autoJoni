@@ -1,10 +1,8 @@
 package com.ventas.services;
 
 import com.ventas.bo.CompraClienteMercadoPagoBo;
-import com.ventas.entities.Cliente;
 import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.util.HibernateUtils;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -66,6 +64,30 @@ public class CompraClienteMercadoPagoService {
         }
     }
 
+    public void deleteCompraClienteMP(CompraClienteMercadoPago compra) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            new CompraClienteMercadoPagoBo().deleteCompraClienteMP(compra);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public void updateCompraClientesImportados(CompraClienteMercadoPago compra) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {
         List<CompraClienteMercadoPago> compras = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

@@ -1,14 +1,17 @@
 package com.ventas.frame;
 
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.NuevaFactura;
 import com.ventas.main.MainFrame;
 import com.ventas.services.CompraClienteMercadoPagoService;
+import com.ventas.services.NuevaFacturaService;
 import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,6 +47,8 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
         volverBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        modificarBtn = new javax.swing.JButton();
+        eliminarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("COMPRAS MERCADO PAGO PENDIENTES DE FACTURAR");
@@ -80,6 +85,20 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
         });
         jScrollPane1.setViewportView(tabla);
 
+        modificarBtn.setText("MODIFICAR");
+        modificarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarBtnActionPerformed(evt);
+            }
+        });
+
+        eliminarBtn.setText("ELIMINAR");
+        eliminarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,7 +107,10 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(modificarBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(eliminarBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(volverBtn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE))
                 .addContainerGap())
@@ -99,7 +121,10 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(volverBtn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(volverBtn)
+                    .addComponent(modificarBtn)
+                    .addComponent(eliminarBtn))
                 .addContainerGap())
         );
 
@@ -109,6 +134,28 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         volver();
     }//GEN-LAST:event_volverBtnActionPerformed
+
+    private void modificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarBtnActionPerformed
+        int row = tabla.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UN MOVIMIENTO PARA MODIFICAR");
+            return;
+        }
+        CompraClienteMercadoPago ccmp = facturasComprasMP.get(row);
+        modificar(ccmp);
+    }//GEN-LAST:event_modificarBtnActionPerformed
+
+    private void eliminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarBtnActionPerformed
+        int row = tabla.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UN MOVIMIENTO PARA ELIMINAR");
+            return;
+        }
+        CompraClienteMercadoPago ccmp = facturasComprasMP.get(row);
+        eliminar(ccmp);
+        cargarFacturas();
+        llenarTabla();
+    }//GEN-LAST:event_eliminarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,7 +193,9 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton eliminarBtn;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton modificarBtn;
     private javax.swing.JTable tabla;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
@@ -180,5 +229,32 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
             }
             tabla.setModel(tbl);
         }
+    }
+
+    private void eliminar(CompraClienteMercadoPago ccmp) {
+        int a = JOptionPane.showConfirmDialog(this, "CONFIRME ELIMINAR MOVIMIENTO", "Atención", JOptionPane.YES_NO_OPTION);
+        if (a == 0) {
+            NuevaFactura nf = null;
+            try {
+                nf = new NuevaFacturaService().getNuevaFacturaByCompraMP(ccmp);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturasMercadoPagoPendientesFacturarFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                if (nf != null) {
+                    new NuevaFacturaService().delete(nf);
+                }
+                new CompraClienteMercadoPagoService().deleteCompraClienteMP(ccmp);
+                JOptionPane.showMessageDialog(this, "ELIMINADO");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "ERROR 234 - NO ELIMINADO");
+            }
+        }
+    }
+
+    private void modificar(CompraClienteMercadoPago ccmp) {
+        ModificarCompraMercadoPagoFrame mcmpf = new ModificarCompraMercadoPagoFrame(ccmp);
+        mcmpf.setVisible(true);
+        this.dispose();
     }
 }

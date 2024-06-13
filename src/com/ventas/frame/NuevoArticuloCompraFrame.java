@@ -188,6 +188,7 @@ public class NuevoArticuloCompraFrame extends javax.swing.JFrame {
             ac.setIva(0.0);
             ac.setTotal(0.0);
             ac.setActivo(true);
+            ac.setPorcentual(0F);
             try {
                 new ArticuloCompraService().guardarArticuloCompra(ac);
                 volver();

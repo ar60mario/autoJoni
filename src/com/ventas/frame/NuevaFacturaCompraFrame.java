@@ -13,6 +13,7 @@ import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.ConfiguracionService;
 import com.ventas.services.FacturaCompraService;
 import com.ventas.services.RubroService;
+import com.ventas.util.UtilFactura;
 import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -32,6 +33,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private List<ArticuloCompra> articulos;
     private ArticuloCompra articulo;
     private DecimalFormat df = new DecimalFormat("#0.00");
+    private DecimalFormat dfp = new DecimalFormat("#0.00");
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Float porceIva = 0F;
 
@@ -91,6 +93,8 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         percepcion_2Txt = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         impuesto_4Txt = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        porcentualTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("NUEVA FACTURA COMPRA X IMPORTE");
@@ -276,6 +280,11 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel17.setText("PORCENTUAL:");
+
+        porcentualTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        porcentualTxt.setText("PORCENT");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -340,7 +349,11 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                                                     .addComponent(totalVentaTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                         .addComponent(jLabel12)
-                                                        .addGap(19, 19, 19)))))))))
+                                                        .addGap(19, 19, 19))))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 55, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -412,7 +425,11 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grabarBtn)
                     .addComponent(volverBtn))
@@ -641,6 +658,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -652,6 +670,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private javax.swing.JTextField netoGravadoTxt;
     private javax.swing.JTextField percepcion_1Txt;
     private javax.swing.JTextField percepcion_2Txt;
+    private javax.swing.JTextField porcentualTxt;
     private javax.swing.JTextField proveedorTxt;
     private javax.swing.JTextField totalTxt;
     private javax.swing.JTextField totalVentaTxt;
@@ -738,15 +757,20 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             Double impuestoVenta = Double.valueOf(impuestoVentaTxt.getText().replace(",", "."));
             Double totalVenta = Double.valueOf(totalVentaTxt.getText().replace(",", "."));
             String proveedor = proveedorTxt.getText();
+            Float porcentual = Float.valueOf(porcentualTxt.getText().replace(",", "."));
             int row = combo.getSelectedIndex();
             articulo = articulos.get(row - 1);
             facturaCompra.setFecha(fecha);
             facturaCompra.setGanancia(ganancia);
             facturaCompra.setGravado(gravado);
             facturaCompra.setIibb(iibb);
+            facturaCompra.setIibb_2(iibb_2);
+            facturaCompra.setPercepcion_1(percepcion_1);
+            facturaCompra.setPercepcion_2(percepcion_2);
             facturaCompra.setImpuesto1(impuesto_1);
             facturaCompra.setImpuesto2(impuesto_2);
             facturaCompra.setImpuesto3(impuesto_3);
+            facturaCompra.setImpuesto4(impuesto_4);
             facturaCompra.setIva(iva);
             facturaCompra.setArticuloCompra(articulo);
             facturaCompra.setProveedor(proveedor);
@@ -768,7 +792,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             articulo.setImpuesto(impuestoArticulo);
             articulo.setIva(ivaArticulo);
             articulo.setTotal(totalArticulo);
-
+            articulo.setPorcentual(porcentual);
             try {
                 new FacturaCompraService().saveFacturaCompraAndArticulo(facturaCompra, articulo);
             } catch (Exception ex) {
@@ -876,8 +900,10 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         impuestoVentaTxt.setText(df.format(impuestoVenta));
         totalVenta = gravadoVenta + ivaVenta + impuestoVenta;
         totalVenta = importeRedondeado(totalVenta);
+        Float porcentual = UtilFactura.calcularPorcentualImpuesto(impuestoVenta, totalVenta);
         totalVentaTxt.setText(df.format(totalVenta));
         gravadoVentaTxt.setText(df.format(gravadoVenta));
+        porcentualTxt.setText(dfp.format(porcentual));
     }
 
     private Double importeRedondeado(Double importeOriginal) {
