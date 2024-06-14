@@ -18,13 +18,12 @@ import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 import jxl.read.biff.BiffException;
 
-
 /**
  *
  * @author Marcela
  */
 public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
-    
+
     private File archivoImportado = null;
     private List<CompraClienteMercadoPago> compras;
     private DecimalFormat df = new DecimalFormat("#0.00");
@@ -32,13 +31,14 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ImportarProducto
+     *
      * @param archivo
      */
     public ImportarClientesMercadoPagoFrame(File archivo) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.archivoImportado = archivo;
-        try{
+        try {
             this.llenarTablaProductoImportado();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -68,12 +68,19 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FECHA", "NOMBRE", "CUIT", "MONTO"
+                "Nro.", "FECHA", "NOMBRE", "CUIT", "MONTO"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -81,10 +88,11 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaProductoImportado);
         if (tablaProductoImportado.getColumnModel().getColumnCount() > 0) {
-            tablaProductoImportado.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tablaProductoImportado.getColumnModel().getColumn(1).setPreferredWidth(300);
-            tablaProductoImportado.getColumnModel().getColumn(2).setPreferredWidth(30);
-            tablaProductoImportado.getColumnModel().getColumn(3).setPreferredWidth(40);
+            tablaProductoImportado.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tablaProductoImportado.getColumnModel().getColumn(1).setPreferredWidth(30);
+            tablaProductoImportado.getColumnModel().getColumn(2).setPreferredWidth(280);
+            tablaProductoImportado.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tablaProductoImportado.getColumnModel().getColumn(4).setPreferredWidth(40);
         }
 
         aceptarBtn.setText("Aceptar");
@@ -108,7 +116,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(aceptarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -214,18 +222,27 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
     private void llenarTablaProductoImportado() throws IOException, BiffException, Exception {
         compras = LectorDeExcel.leerExcelCompraClientesMP(archivoImportado);
         DefaultTableModel modelo = (DefaultTableModel) tablaProductoImportado.getModel();
-        if(compras != null && !compras.isEmpty()){
-            for(CompraClienteMercadoPago compra : compras){
-                Object[] fila = new Object[4];
-                fila[0] = sdf.format(compra.getFecha());
-                fila[1] = compra.getNombre();
-                fila[2] = compra.getCuit();
-                fila[3] = df.format(compra.getImporte());
-                
+        if (compras != null && !compras.isEmpty()) {
+            int nro = 1;
+            Double total = 0.0;
+            for (CompraClienteMercadoPago compra : compras) {
+                Object[] fila = new Object[5];
+                fila[0] = nro;
+                fila[1] = sdf.format(compra.getFecha());
+                fila[2] = compra.getNombre();
+                fila[3] = compra.getCuit();
+                fila[4] = df.format(compra.getImporte());
+                total += compra.getImporte();
+                nro += 1;
                 modelo.addRow(fila);
             }
-            tablaProductoImportado.setModel(modelo);            
-        }else{
+            Object[] fila = new Object[5];
+            fila[0] = "";
+            fila[2]="TOTAL >>>";
+            fila[4] = df.format(total);
+            modelo.addRow(fila);
+            tablaProductoImportado.setModel(modelo);
+        } else {
             Object[] mensaje = new Object[2];
             mensaje[0] = " ";
             mensaje[1] = "No se recuperó ningún PRODUCTO del archivo";
@@ -236,16 +253,16 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
     private void guardarProductos() {
         int confirm = JOptionPane.showConfirmDialog(this, "Se guardarán todos los CLIENTES listados.\n¿Confirma la operación?",
-            "Confirmar", JOptionPane.OK_CANCEL_OPTION);
-        if(confirm == JOptionPane.OK_OPTION){
-            
-            try{
+                "Confirmar", JOptionPane.OK_CANCEL_OPTION);
+        if (confirm == JOptionPane.OK_OPTION) {
+
+            try {
                 new CompraClienteMercadoPagoService().saveCompraClientesImportados(compras);
                 JOptionPane.showMessageDialog(this, "Clientes guardados correctamente.");
                 MainFrame mf = new MainFrame();
                 mf.setVisible(true);
                 this.dispose();
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, ex.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);

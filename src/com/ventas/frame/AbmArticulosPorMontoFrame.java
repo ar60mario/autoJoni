@@ -34,6 +34,8 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
         limpiarCampos();
+        buscarArticulos();
+        llenarTabla();
     }
 
     /**
@@ -68,14 +70,14 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CÓDIGO", "NOMBRE", "TOTAL", "PORCENT", "ACTIVO"
+                "CÓDIGO", "NOMBRE", "TOTAL", "PORC.NETO+IVA", "PORC.IMP.INT.", "ACTIVO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -88,8 +90,12 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(20);
             tabla.getColumnModel().getColumn(3).setPreferredWidth(20);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(20);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(10);
         }
 
         jLabel1.setText("NOMBRE:");
@@ -123,7 +129,7 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(nuevoBtn)
                         .addGap(18, 18, 18)
@@ -145,7 +151,7 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(filtroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(volverBtn)
@@ -248,20 +254,25 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
         if (articulos != null && !articulos.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (ArticuloCompra av : articulos) {
-                Object o[] = new Object[5];
+                Object o[] = new Object[6];
                 Producto prod = av.getProducto();
                 o[0] = prod.getCodigo();
                 o[1] = prod.getDetalle();
                 o[2] = df.format(av.getTotal());
-                if (av.getPorcentual() != null) {
-                    o[3] = dfp.format(av.getPorcentual());
+                if (av.getPorcentBruto() != null) {
+                    o[3] = dfp.format(av.getPorcentBruto());
                 } else {
                     o[3] = dfp.format(0);
                 }
-                if (av.getActivo()) {
-                    o[4] = "ACTIVO";
+                if (av.getPorcentual() != null) {
+                    o[4] = dfp.format(av.getPorcentual());
                 } else {
-                    o[4] = "INACTIVO";
+                    o[4] = dfp.format(0);
+                }
+                if (av.getActivo()) {
+                    o[5] = "ACTIVO";
+                } else {
+                    o[5] = "INACTIVO";
                 }
                 tbl.addRow(o);
             }

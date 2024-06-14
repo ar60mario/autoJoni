@@ -49,6 +49,19 @@ public class IvaVentasDao extends GenericDao {
         fact = (List<IvaVentas>) criteria.list();
         return fact;
     }
+    
+    public List<IvaVentas> getFacturasEntreFechasOrdenNroFc(Date fd, Date fa) {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(IvaVentas.class);
+//        Criteria criteria2 = criteria.createCriteria("cliente");
+        criteria.add(Restrictions.between("fecha", fd, fa));
+        criteria.addOrder(Order.asc("fecha"));
+        criteria.addOrder(Order.asc("letra"));
+        criteria.addOrder(Order.asc("numeroFactura"));
+        fact = (List<IvaVentas>) criteria.list();
+        return fact;
+    }
 
     public String getUltimaFechaFactura() {
         List<IvaVentas> fact = null;

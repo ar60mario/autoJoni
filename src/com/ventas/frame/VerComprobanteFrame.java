@@ -29,15 +29,17 @@ public class VerComprobanteFrame extends javax.swing.JFrame {
     private Date a;
     private Date d;
     private Integer r;
+    private Integer origen;
 
     /**
      * Creates new form VerComprobanteFrame
      */
-    public VerComprobanteFrame(IvaVentas i, Date d, Date a, Integer r) {
+    public VerComprobanteFrame(IvaVentas i, Date d, Date a, Integer r, Integer origen) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
         imprimeBtn.setVisible(false);
+        this.origen = origen;
         this.iv = i;
         this.d = d;
         this.a = a;
@@ -222,7 +224,7 @@ public class VerComprobanteFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VerComprobanteFrame(null, null, null, null).setVisible(true);
+                new VerComprobanteFrame(null, null, null, null, null).setVisible(true);
             }
         });
     }
@@ -297,12 +299,18 @@ public class VerComprobanteFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void volver() {
-        InformeVentasPorPeriodoFrame ivppf = new InformeVentasPorPeriodoFrame(null, null, null);
-        ivppf.setVisible(true);
+        if (origen == 1) {
+            InformeVentasPorPeriodoFrame ivppf = new InformeVentasPorPeriodoFrame(null, null, null);
+            ivppf.setVisible(true);
+        } else {
+            //
+            FacturasDeMercadoPagoFrame ivppf = new FacturasDeMercadoPagoFrame(null, null, null);
+            ivppf.setVisible(true);
+        }
         this.dispose();
     }
 
     private void imprime() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 }

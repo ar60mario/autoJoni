@@ -63,6 +63,7 @@ public class MainFrame extends javax.swing.JFrame {
         tipoDocMnu.setVisible(false);
         notaCreditoBtn.setVisible(false);
         randomBtn.setVisible(false);
+        saldoFacturasCompraPendeintesMnu.setVisible(false);
     }
 
     /**
@@ -79,6 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
         notaCreditoBtn = new javax.swing.JButton();
         facturaMercadoPagoBtn = new javax.swing.JButton();
         facturaAutomPorImporteBtn = new javax.swing.JButton();
+        cargarFcComprasBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         configuracionMnu = new javax.swing.JMenuItem();
@@ -148,6 +150,13 @@ public class MainFrame extends javax.swing.JFrame {
         facturaAutomPorImporteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 facturaAutomPorImporteBtnActionPerformed(evt);
+            }
+        });
+
+        cargarFcComprasBtn.setText("CARGAR FACTURAS COMPRA");
+        cargarFcComprasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarFcComprasBtnActionPerformed(evt);
             }
         });
 
@@ -233,7 +242,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(stockMnu);
 
-        comprasPorImporteMnu.setText("COMPRAS POR IMPORTE");
+        comprasPorImporteMnu.setText("CARGAR FACTURAS COMPRA");
         comprasPorImporteMnu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comprasPorImporteMnuActionPerformed(evt);
@@ -241,7 +250,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(comprasPorImporteMnu);
 
-        articulosPorMontoMnu.setText("ARTÍCULOS POR MONTO");
+        articulosPorMontoMnu.setText("SALDOS A FACTURAR");
         articulosPorMontoMnu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 articulosPorMontoMnuActionPerformed(evt);
@@ -400,22 +409,25 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(facturaMercadoPagoBtn)
                         .addGap(18, 18, 18)
                         .addComponent(facturaAutomPorImporteBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
                         .addComponent(salirBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(randomBtn)
                             .addComponent(notaCreditoBtn)
-                            .addComponent(randomBtn))
+                            .addComponent(cargarFcComprasBtn))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(284, Short.MAX_VALUE)
+                .addContainerGap(243, Short.MAX_VALUE)
                 .addComponent(randomBtn)
                 .addGap(18, 18, 18)
                 .addComponent(notaCreditoBtn)
+                .addGap(18, 18, 18)
+                .addComponent(cargarFcComprasBtn)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(salirBtn)
@@ -560,6 +572,10 @@ public class MainFrame extends javax.swing.JFrame {
         facturaAutomPorImporte();
     }//GEN-LAST:event_facturaAutomPorImporteBtnActionPerformed
 
+    private void cargarFcComprasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarFcComprasBtnActionPerformed
+        comprasPorImporte();
+    }//GEN-LAST:event_cargarFcComprasBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -605,6 +621,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem articulosPorMontoMnu;
     private javax.swing.JMenuItem backupMnu;
+    private javax.swing.JButton cargarFcComprasBtn;
     private javax.swing.JMenuItem clientesMnu;
     private javax.swing.JMenuItem comprasPorImporteMnu;
     private javax.swing.JMenuItem configuracionMnu;
@@ -880,7 +897,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void facturasDeMercadoPago() {
-        FacturasDeMercadoPagoFrame fdmpf = new FacturasDeMercadoPagoFrame();
+        FacturasDeMercadoPagoFrame fdmpf = new FacturasDeMercadoPagoFrame(null, null, null);
         fdmpf.setVisible(true);
         this.dispose();
     }

@@ -76,6 +76,16 @@ public class IvaVentasBo {
         return fact;
     }
     
+    public List<IvaVentas> getFacturasEntreFechasOrdenNroFc(Date fd, Date fa) throws Exception {
+        List<IvaVentas> fact = null;
+        try {
+            fact = (List<IvaVentas>) dao.getFacturasEntreFechasOrdenNroFc(fd, fa);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+    
     public String getUltimaFechaFactura() throws Exception {
         String fe = null;
         try {

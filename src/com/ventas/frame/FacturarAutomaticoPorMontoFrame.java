@@ -900,6 +900,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         Integer nro = 0;
         if (nuevas_facturas != null && !nuevas_facturas.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            Double total = 0.0;
             for (CalculoFactura cf : nuevas_facturas) {
                 Object o[] = new Object[5];
                 nro += 1;
@@ -908,8 +909,14 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                 o[2] = df.format(cf.getImpuesto());
                 o[3] = df.format(cf.getIva());
                 o[4] = df.format(cf.getTotal());
+                total += cf.getTotal();
                 tbl.addRow(o);
             }
+            Object o[] = new Object[5];
+            nro += 1;
+            o[1] = "TOTAL >>>>";
+            o[4] = df.format(total);
+            tbl.addRow(o);
             tabla.setModel(tbl);
         }
     }

@@ -33,7 +33,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private List<ArticuloCompra> articulos;
     private ArticuloCompra articulo;
     private DecimalFormat df = new DecimalFormat("#0.00");
-    private DecimalFormat dfp = new DecimalFormat("#0.00");
+    private DecimalFormat dfp = new DecimalFormat("#0.000");
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Float porceIva = 0F;
 
@@ -95,6 +95,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         impuesto_4Txt = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         porcentualTxt = new javax.swing.JTextField();
+        porcentBrutoTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("NUEVA FACTURA COMPRA X IMPORTE");
@@ -285,6 +286,9 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         porcentualTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         porcentualTxt.setText("PORCENT");
 
+        porcentBrutoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        porcentBrutoTxt.setText("PORC.BRUTO");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -293,17 +297,23 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(grabarBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(volverBtn))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(grabarBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(volverBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel13)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -349,13 +359,16 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                                                     .addComponent(totalVentaTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                         .addComponent(jLabel12)
-                                                        .addGap(19, 19, 19))))))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel17)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 55, Short.MAX_VALUE)))
-                .addContainerGap())
+                                                        .addGap(19, 19, 19)))))))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 1, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(porcentualTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(porcentBrutoTxt))
+                        .addGap(43, 43, 43))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +381,8 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(gananciaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -378,7 +392,8 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(ivaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ivaVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ivaVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(porcentBrutoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -399,7 +414,8 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(impuesto_1Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(impuestoVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(impuestoVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -425,11 +441,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grabarBtn)
                     .addComponent(volverBtn))
@@ -670,6 +682,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private javax.swing.JTextField netoGravadoTxt;
     private javax.swing.JTextField percepcion_1Txt;
     private javax.swing.JTextField percepcion_2Txt;
+    private javax.swing.JTextField porcentBrutoTxt;
     private javax.swing.JTextField porcentualTxt;
     private javax.swing.JTextField proveedorTxt;
     private javax.swing.JTextField totalTxt;
@@ -758,6 +771,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             Double totalVenta = Double.valueOf(totalVentaTxt.getText().replace(",", "."));
             String proveedor = proveedorTxt.getText();
             Float porcentual = Float.valueOf(porcentualTxt.getText().replace(",", "."));
+            Float porcentBruto = Float.valueOf(porcentBrutoTxt.getText().replace(",", "."));
             int row = combo.getSelectedIndex();
             articulo = articulos.get(row - 1);
             facturaCompra.setFecha(fecha);
@@ -793,6 +807,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
             articulo.setIva(ivaArticulo);
             articulo.setTotal(totalArticulo);
             articulo.setPorcentual(porcentual);
+            articulo.setPorcentBruto(porcentBruto);
             try {
                 new FacturaCompraService().saveFacturaCompraAndArticulo(facturaCompra, articulo);
             } catch (Exception ex) {
@@ -901,9 +916,14 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         totalVenta = gravadoVenta + ivaVenta + impuestoVenta;
         totalVenta = importeRedondeado(totalVenta);
         Float porcentual = UtilFactura.calcularPorcentualImpuesto(impuestoVenta, totalVenta);
+        Double bruto = gravadoVenta + ivaVenta;
+        Double porcent_bruto = bruto / totalVenta;
+        String porcent_brutoStr = dfp.format(porcent_bruto);
+        Float porcentBruto = Float.valueOf(porcent_brutoStr.replace(",", "."));
         totalVentaTxt.setText(df.format(totalVenta));
         gravadoVentaTxt.setText(df.format(gravadoVenta));
         porcentualTxt.setText(dfp.format(porcentual));
+        porcentBrutoTxt.setText(dfp.format(porcentBruto));
     }
 
     private Double importeRedondeado(Double importeOriginal) {

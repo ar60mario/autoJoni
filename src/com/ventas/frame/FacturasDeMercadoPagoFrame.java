@@ -7,6 +7,9 @@ import com.ventas.main.MainFrame;
 import com.ventas.services.FacturaCompraReferenciaMercadoPagoService;
 import com.ventas.services.IvaVentasService;
 import com.ventas.util.UtilFrame;
+import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import jxl.Workbook;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
 
 /**
  *
@@ -25,17 +32,40 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
 
     private FacturaCompraReferenciaMercadoPago referenciaMercadoPago;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
     private DecimalFormat df = new DecimalFormat("#0.00");
     private List<IvaVentas> ivaVentas;
+    private Date a;
+    private Date d;
+    private Integer r;
 
     /**
      * Creates new form FacturasDeMercadoPagoFrame
+     *
+     * @param d
+     * @param a
+     * @param r
      */
-    public FacturasDeMercadoPagoFrame() {
+    public FacturasDeMercadoPagoFrame(Date d, Date a, Integer r) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setExtendedState(6);
+        this.d = d;
+        this.a = a;
+        this.r = r;
         limpiarCampos();
+        if (r != null) {
+            this.d = d;
+            this.a = a;
+            this.r = r;
+            deTxt.setText(sdf.format(d));
+            alTxt.setText(sdf.format(a));
+            buscar();
+            Rectangle rect = tabla.getCellRect(r - 1, 0, true);
+            tabla.scrollRectToVisible(rect);
+            tabla.clearSelection();
+            tabla.setRowSelectionInterval(r - 1, r - 1);
+        }
     }
 
     /**
@@ -56,6 +86,8 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
         volverBtn = new javax.swing.JButton();
         verComprobanteBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        verFacturaBtn = new javax.swing.JButton();
+        excelBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("FACTURAS DE VENTA CORRESPONDIENTES A TRANSFERENCIAS DE MERCADO PAGO");
@@ -114,6 +146,20 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
 
         jLabel3.setText("<<< FECHAS DE FACTURAS GENERADAS");
 
+        verFacturaBtn.setText("VER FACTURA");
+        verFacturaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verFacturaBtnActionPerformed(evt);
+            }
+        });
+
+        excelBtn.setText("EXCEL");
+        excelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excelBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,7 +178,11 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                         .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
-                        .addGap(0, 277, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(verFacturaBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(excelBtn)
+                        .addGap(0, 132, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(verComprobanteBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,15 +192,17 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(deTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(verFacturaBtn)
+                    .addComponent(excelBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(volverBtn)
@@ -203,6 +255,30 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_alTxtKeyPressed
 
+    private void excelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excelBtnActionPerformed
+        excel();
+    }//GEN-LAST:event_excelBtnActionPerformed
+
+    private void verFacturaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verFacturaBtnActionPerformed
+        int row = tabla.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "SELECCIONE UNA FACTURA PARA VER DETALLE");
+            return;
+        }
+        IvaVentas iv = ivaVentas.get(row);
+        Date de = new Date();
+        Date al = new Date();
+        try {
+            de = sdf.parse(deTxt.getText());
+            al = sdf.parse(alTxt.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(FacturasDeMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        VerComprobanteFrame vcf = new VerComprobanteFrame(iv, de, al, row, 2);
+        vcf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_verFacturaBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -233,7 +309,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturasDeMercadoPagoFrame().setVisible(true);
+                new FacturasDeMercadoPagoFrame(null, null, null).setVisible(true);
             }
         });
     }
@@ -241,12 +317,14 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField alTxt;
     private javax.swing.JTextField deTxt;
+    private javax.swing.JButton excelBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;
     private javax.swing.JButton verComprobanteBtn;
+    private javax.swing.JButton verFacturaBtn;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
@@ -267,7 +345,6 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
     }
 
     private void buscar() {
-
         UtilFrame.limpiarTabla(tabla);
         if (!deTxt.getText().isEmpty()) {
             if (!alTxt.getText().isEmpty()) {
@@ -282,7 +359,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                 }
                 ivaVentas = null;
                 try {
-                    ivaVentas = new IvaVentasService().getFacturasEntreFechasOrdenCliente(de, al);
+                    ivaVentas = new IvaVentasService().getFacturasEntreFechasOrdenNroFc(de, al);
                 } catch (Exception ex) {
                     Logger.getLogger(FacturasDeMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -332,5 +409,87 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                 }
             }
         }
+    }
+
+    private void excel() {
+        String fech = sdf2.format(new Date());
+        String rutaArchivo = "d:/ventasJo/data/excel/facturas_MP_" + fech + ".xls";
+        File archivo = new File(rutaArchivo);
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+        try {
+            archivo.createNewFile();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "ERROR Nro. 417");
+            return;
+        }
+        WritableWorkbook libro = null;
+        try {
+            libro = Workbook.createWorkbook(archivo);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "ERROR Nro. 427");
+            return;
+        }
+        WritableSheet hoja1 = libro.createSheet("FACTURAS MP", 0);
+        try {
+            hoja1.addCell(new jxl.write.Label(0, 0, "BELSITO JONATHAN MAXIMILIANO"));
+            hoja1.addCell(new jxl.write.Label(0, 1, "FECHA MP"));
+            hoja1.addCell(new jxl.write.Label(1, 1, "RAZON SOCIAL"));
+            hoja1.addCell(new jxl.write.Label(2, 1, "CUIT"));
+            hoja1.addCell(new jxl.write.Label(3, 1, "IMPORTE MP"));
+            hoja1.addCell(new jxl.write.Label(4, 1, "FECHA FC"));
+            hoja1.addCell(new jxl.write.Label(5, 1, "NUMERO FC"));
+            hoja1.addCell(new jxl.write.Label(6, 1, "NETO GRAVADO"));
+            hoja1.addCell(new jxl.write.Label(7, 1, "IVA"));
+            hoja1.addCell(new jxl.write.Label(8, 1, "IMPUESTO"));
+            hoja1.addCell(new jxl.write.Label(9, 1, "TOTAL"));
+            int y = 2;
+            Double tgG = 0.0;
+            Double tgIv = 0.0;
+            Double tgIm = 0.0;
+            Double tgTt = 0.0;
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            for (IvaVentas i : ivaVentas) {
+                String nroFc = i.getLetra() + " " + i.getNumeroSucursal() + "-" + i.getNumeroFactura();
+                tgG += i.getGravado();
+                tgIm += i.getImpuesto();
+                tgIv += i.getIva();
+                tgTt += i.getTotal();
+                if (!tbl.getValueAt(y - 2, 0).toString().isEmpty()) {
+                    String fechaMp = tbl.getValueAt(y - 2, 0).toString();
+                    Double importeMp = Double.valueOf(tbl.getValueAt(y - 2, 0).toString());
+                    hoja1.addCell(new jxl.write.Label(0, y, fechaMp));
+                    hoja1.addCell(new jxl.write.Label(1, y, i.getCliente().getRazonSocial()));
+                    hoja1.addCell(new jxl.write.Label(2, y, i.getCliente().getCuit()));
+                    hoja1.addCell(new jxl.write.Number(3, y, importeMp));
+                }
+                hoja1.addCell(new jxl.write.Label(4, y, sdf.format(i.getFecha())));
+                hoja1.addCell(new jxl.write.Label(5, y, nroFc));
+                hoja1.addCell(new jxl.write.Number(6, y, i.getGravado()));
+                hoja1.addCell(new jxl.write.Number(7, y, i.getIva()));
+                hoja1.addCell(new jxl.write.Number(8, y, i.getImpuesto()));
+                hoja1.addCell(new jxl.write.Number(9, y, i.getTotal()));
+            }
+            hoja1.addCell(new jxl.write.Label(1, y + 1, "TOTALES"));
+            hoja1.addCell(new jxl.write.Number(6, y + 1, tgG));
+            hoja1.addCell(new jxl.write.Number(7, y + 1, tgIv));
+            hoja1.addCell(new jxl.write.Number(8, y + 1, tgIm));
+            hoja1.addCell(new jxl.write.Number(9, y + 1, tgTt));
+        } catch (WriteException ex) {
+            JOptionPane.showMessageDialog(this, "Error configurando Excel");
+        }
+        try {
+            libro.write();
+            libro.close();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error: 483");
+            return;
+        } catch (WriteException ex) {
+            JOptionPane.showMessageDialog(this, "Error: 484");
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "Excel creado correctamente");
+        JOptionPane.showMessageDialog(this, "LO ENCUENTRA EN d:/ventasJo/data/excel/facturas_MP");
     }
 }

@@ -63,6 +63,8 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
         productoTxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         porcentualTxt = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        porcentBrutoTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MODIFICAR ARTICULO POR MONTO");
@@ -117,6 +119,11 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
         porcentualTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         porcentualTxt.setText("PORCEN");
 
+        jLabel8.setText("PORC.BRUTO:");
+
+        porcentBrutoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        porcentBrutoTxt.setText("PORCEN");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,10 +140,6 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
                             .addComponent(activoChk)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                                    .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel3)
                                         .addComponent(jLabel4)
@@ -147,7 +150,15 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
                                         .addComponent(gravadoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                                         .addComponent(impuestoTxt)
                                         .addComponent(ivaTxt)
-                                        .addComponent(totalTxt))))
+                                        .addComponent(totalTxt)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jLabel8))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(porcentualTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                        .addComponent(porcentBrutoTxt))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
@@ -191,8 +202,12 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(porcentualTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(porcentBrutoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(activoChk)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(volverBtn)
                     .addComponent(grabarBtn))
@@ -262,6 +277,8 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField porcentBrutoTxt;
     private javax.swing.JTextField porcentualTxt;
     private javax.swing.JTextField productoTxt;
     private javax.swing.JTextField totalTxt;
@@ -277,11 +294,13 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
             Double iva = Double.valueOf(ivaTxt.getText().replace(",", "."));
             Double total = Double.valueOf(totalTxt.getText().replace(",", "."));
             Float porcentual = Float.valueOf(porcentualTxt.getText().replace(",", "."));
+            Float porcentBruto = Float.valueOf(porcentBrutoTxt.getText().replace(",", "."));
             articulo.setGravado(gravado);
             articulo.setImpuesto(impuesto);
             articulo.setIva(iva);
             articulo.setTotal(total);
             articulo.setPorcentual(porcentual);
+            articulo.setPorcentBruto(porcentBruto);
             if (activoChk.isSelected()) {
                 articulo.setActivo(true);
             } else {
@@ -365,6 +384,11 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
             porcentualTxt.setText(dfp.format(articulo.getPorcentual()));
         } else {
             porcentualTxt.setText(dfp.format(0));
+        }
+        if (articulo.getPorcentBruto() != null) {
+            porcentBrutoTxt.setText(dfp.format(articulo.getPorcentBruto()));
+        } else {
+            porcentBrutoTxt.setText(dfp.format(0));
         }
     }
 }

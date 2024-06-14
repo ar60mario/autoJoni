@@ -606,7 +606,7 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
             return;
         }
         IvaVentas i = facturas.get(row);
-        VerComprobanteFrame vcf = new VerComprobanteFrame(i, de, al, row);
+        VerComprobanteFrame vcf = new VerComprobanteFrame(i, de, al, row, 1);
         vcf.setVisible(true);
         this.dispose();
     }

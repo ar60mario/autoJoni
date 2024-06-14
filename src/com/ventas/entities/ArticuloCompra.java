@@ -14,11 +14,12 @@ public class ArticuloCompra {
     private Boolean activo;
     private Producto producto;
     private Float porcentual;
+    private Float porcentBruto;
 
     public ArticuloCompra() {
     }
 
-    public ArticuloCompra(Long id, Double gravado, Double impuesto, Double iva, Double total, Boolean activo, Producto producto, Float porcentual) {
+    public ArticuloCompra(Long id, Double gravado, Double impuesto, Double iva, Double total, Boolean activo, Producto producto, Float porcentual, Float porcentBruto) {
         this.id = id;
         this.gravado = gravado;
         this.impuesto = impuesto;
@@ -27,6 +28,7 @@ public class ArticuloCompra {
         this.activo = activo;
         this.producto = producto;
         this.porcentual = porcentual;
+        this.porcentBruto = porcentBruto;
     }
 
     public Long getId() {
@@ -93,4 +95,12 @@ public class ArticuloCompra {
         this.porcentual = porcentual;
     }
 
+    public Float getPorcentBruto() {
+        return porcentBruto;
+    }
+
+    public void setPorcentBruto(Float porcentBruto) {
+        this.porcentBruto = porcentBruto;
+    }
+    
 }

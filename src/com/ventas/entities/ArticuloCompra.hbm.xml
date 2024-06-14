@@ -12,6 +12,7 @@
         <property name="iva" type="double" column="IVA"/>
         <property name="total" type="double" column="TOTAL"/>
         <property name="porcentual" type="float" column="PORCENTUAL"/>
+        <property name="porcentBruto" type="float" column="PORCENT_BRUTO"/>
         <property name="activo" type="boolean" column="ACTIVO"/>
         <many-to-one name="producto"
                     class="com.ventas.entities.Producto"

@@ -91,7 +91,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="comprasPorImporteMnu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="COMPRAS POR IMPORTE"/>
+                <Property name="text" type="java.lang.String" value="CARGAR FACTURAS COMPRA"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comprasPorImporteMnuActionPerformed"/>
@@ -99,7 +99,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="articulosPorMontoMnu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ART&#xcd;CULOS POR MONTO"/>
+                <Property name="text" type="java.lang.String" value="SALDOS A FACTURAR"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="articulosPorMontoMnuActionPerformed"/>
@@ -289,13 +289,14 @@
                       <Component id="facturaMercadoPagoBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="facturaAutomPorImporteBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="235" max="32767" attributes="0"/>
+                      <EmptySpace pref="277" max="32767" attributes="0"/>
                       <Component id="salirBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="randomBtn" min="-2" max="-2" attributes="0"/>
                           <Component id="notaCreditoBtn" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="randomBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cargarFcComprasBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -307,10 +308,12 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="284" max="32767" attributes="0"/>
+              <EmptySpace pref="243" max="32767" attributes="0"/>
               <Component id="randomBtn" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="notaCreditoBtn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="cargarFcComprasBtn" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="salirBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -361,6 +364,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="facturaAutomPorImporteBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cargarFcComprasBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CARGAR FACTURAS COMPRA"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cargarFcComprasBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
