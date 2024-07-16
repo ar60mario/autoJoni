@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.dao;
 
 import com.ventas.entities.Cliente;
 import com.ventas.entities.IvaVentas;
 import com.ventas.util.HibernateUtils;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -77,6 +73,54 @@ public class IvaVentasDao extends GenericDao {
         Date fecha = fact.get(0).getFecha();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(fecha);
+    }
+    
+    public String getUltimaNombreEnFactura() {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
+                //                        .add(Restrictions.between("fecha", fd, fa))
+                //  .add(Restrictions.eq("panificado", false))
+                .setMaxResults(3)
+                .addOrder(Order.desc("fecha"))
+                //                        .addOrder(Order.asc("letra"))
+                .addOrder(Order.desc("numeroFactura"))
+                .list();
+        String nombre = fact.get(0).getCliente().getRazonSocial();
+        
+        return nombre;
+    }
+    
+    public String getUltimoCuitEnFactura() {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
+                //                        .add(Restrictions.between("fecha", fd, fa))
+                //  .add(Restrictions.eq("panificado", false))
+                .setMaxResults(3)
+                .addOrder(Order.desc("fecha"))
+                //                        .addOrder(Order.asc("letra"))
+                .addOrder(Order.desc("numeroFactura"))
+                .list();
+        String nombre = fact.get(0).getCliente().getCuit();
+        
+        return nombre;
+    }
+    
+    public String getUltimoImporteFactura() {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
+                //                        .add(Restrictions.between("fecha", fd, fa))
+                //  .add(Restrictions.eq("panificado", false))
+                .setMaxResults(3)
+                .addOrder(Order.desc("fecha"))
+                //                        .addOrder(Order.asc("letra"))
+                .addOrder(Order.desc("numeroFactura"))
+                .list();
+        Double importe = fact.get(0).getTotal();
+        DecimalFormat df = new DecimalFormat("#0.00");
+        return df.format(importe);
     }
 
     public Integer getUltimoNumeroFactura() {

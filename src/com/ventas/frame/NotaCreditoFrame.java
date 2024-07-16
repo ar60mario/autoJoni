@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
 import com.ventas.entities.Cliente;
@@ -44,13 +39,13 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
 
     private final DecimalFormat df = new DecimalFormat("#0.00");
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    private final Integer puntoVta = 5;
+    private final Integer puntoVta = 10;
     private IvaVentas iv;
     private Date ultimaFechaNc;
     private Date fecha = new Date();
     private ActiveXComponent wsaa = new ActiveXComponent("WSAA");
     private String wsdl = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
-    private String userdir = "c:/ventasDA/crt";
+    private String userdir = "d:/ventasJo/crt";
     private TicketTime tkt;
     private String token;
     private String sign;
@@ -340,14 +335,16 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
         try {
             renglo2 = new RenglonFacturaService().getAllRenglonFacturaFromIvaVentas(iv);
         } catch (Exception ex) {
-            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
         int tim = 0;
         Date fws = new Date();
         try {
             fws = sdf.parse(fechaNcTxt.getText());
         } catch (ParseException ex) {
-            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
 
         ultimaFechaNc = fws;
@@ -386,7 +383,7 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
                     solicitarNuevoTicket();
                 }
                 ActiveXComponent wsfev1 = new ActiveXComponent("WSFEv1");
-                Dispatch.put(wsfev1, "Cuit", new Variant("20249273253"));
+                Dispatch.put(wsfev1, "Cuit", new Variant("20300377425"));
                 Dispatch.put(wsfev1, "Token", new Variant(token));
                 Dispatch.put(wsfev1, "Sign", new Variant(sign));
                 String cache = "";
@@ -416,8 +413,8 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
 //                        System.exit(0);
                 String fechaWs = new SimpleDateFormat("yyyyMMdd").format(fws);
                 String concepto = "1";// producto 
-//                String cui = cli.getCuit();
-                String cuit1 = "0"; //cui.substring(0, 2) + cui.substring(3, 11) + cui.substring(12, 13);
+                String cui = cli.getCuit();
+                String cuit1 = cui.substring(0, 2) + cui.substring(3, 11) + cui.substring(12, 13);
                 String tipoD = String.valueOf(cli.getTipo());
                 String tipo_doc = tipoD, nro_doc = cuit1; //tipo y numero
                 int cbte_nro = Integer.parseInt(ult.toString()) + 1,
@@ -429,18 +426,26 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
                 int largo = ("00000000" + numeroFacturaPapel).length();
                 numeroFacturaPapel = ("00000000" + numeroFacturaPapel).substring(largo - 8, largo);
                 Double importeAbono = iv.getTotal(); //100.50
-                String imp_total = df.format(importeAbono).toString().replaceAll("\\,", "\\.");//"124.00";
+                String imp_total = df.format(importeAbono).replaceAll("\\,", "\\.");//"124.00";
                 String imp_tot_conc = "0.00";
-                String imp_neto = df.format(iv.getGravado()).toString().replaceAll("\\,", "\\.");
-                String imp_iva = df.format(iv.getIva()).toString().replaceAll("\\,", "\\.");
+                String imp_neto = df.format(iv.getGravado()).replaceAll("\\,", "\\.");
+                String imp_iva = df.format(iv.getIva()).replaceAll("\\,", "\\.");
                 int internos = (int) rint(iv.getImpuesto() * 100);
                 String imp_trib = "", imp_op_ex = "0";
                 if (internos > 0) {
-                    imp_trib = df.format(iv.getImpuesto()).toString().replaceAll("\\,", "\\.");
+                    imp_trib = df.format(iv.getImpuesto()).replaceAll("\\,", "\\.");
                 } else {
                     imp_trib = "0.00";
                 }
                 System.out.println("");
+                System.out.println(pto_vta);
+                System.out.println(imp_trib);
+                System.out.println(imp_iva);
+                System.out.println(imp_neto);
+                System.out.println(imp_tot_conc);
+                System.out.println(imp_total);
+                System.out.println(imp_op_ex);
+//                System.exit(0);
                 String fecha_cbte = fechaWs, fecha_venc_pago = "";
                 String fecha_serv_desde = "", fecha_serv_hasta = "";
                 String moneda_id = "PES", moneda_ctz = "1.000";
@@ -503,10 +508,10 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
                         String vencCae = vto.substring(6, 8) + "/" + vto.substring(4, 6) + "/" + vto.substring(0, 4);
                     }
                     caeLong = Long.valueOf(cae.toString());
-                    String ruta1 = "c:/ventasDA/cmprbt/" + tipoComprob //cmprbt
+                    String ruta1 = "d:/ventasJo/cmprbt/" + tipoComprob //cmprbt
                             + "B" + sucursalFacturaPapel
                             + numeroFacturaPapel + ".xm1";
-                    String ruta2 = "c:/ventasDA/cmprbt/" + tipoComprob
+                    String ruta2 = "d:/ventasJo/cmprbt/" + tipoComprob
                             + "B" + sucursalFacturaPapel
                             + numeroFacturaPapel + ".xm2";
                     File archivo1 = new File(ruta1);
@@ -555,14 +560,16 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
         try {
             iv2 = new IvaVentasService().saveIvaVentas(iv2);
         } catch (Exception ex) {
-            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
         config.setNumeroNotaCreditoB(numf);
         config.setUltimaFecha(ultimaFechaNc);
         try {
             new ConfiguracionService().updateConfiguracion(config);
         } catch (Exception ex) {
-            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
         int nu = 0;
         for (RenglonFactura r : renglo2) {
@@ -628,10 +635,10 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
         System.out.println("autenticar");
         Dispatch.call(wsaa, "Autenticar",
                 new Variant("wsfe"),
-                new Variant(userdir + "/dario2023_290f8f532bf779a9.crt"),
-                new Variant(userdir + "/clave_privada_20249273253_202305142338.key"),
-//                new Variant("c:/ventasF/crt/fernando2023_3c09a0deb45cc8fa.crt"),
-//                new Variant("c:/ventasF/crt/clave_privada_20250844922_202304144101.key"),
+                new Variant(userdir + "/JONI_2024_22d9a5cec0ec4972.crt"),
+                new Variant(userdir + "/clave_privada_20300377425_202404201217.key"),
+                //                new Variant("c:/ventasF/crt/fernando2023_3c09a0deb45cc8fa.crt"),
+                //                new Variant("c:/ventasF/crt/clave_privada_20250844922_202304144101.key"),
                 new Variant(wsdl));
         System.out.println("autenticado");
         String excepcion = Dispatch.get(wsaa, "Excepcion").toString();

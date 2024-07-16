@@ -9,6 +9,7 @@ import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.Configuracion;
 import com.ventas.entities.FacturaCompra;
 import com.ventas.entities.Rubro;
+import com.ventas.main.MainFrame;
 import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.ConfiguracionService;
 import com.ventas.services.FacturaCompraService;
@@ -36,14 +37,16 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     private DecimalFormat dfp = new DecimalFormat("#0.000");
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Float porceIva = 0F;
+    private Integer opcion;
 
     /**
      * Creates new form NuevaFacturaCompraFrame
      */
-    public NuevaFacturaCompraFrame() {
+    public NuevaFacturaCompraFrame(Integer opcion) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         setLocationRelativeTo(null);
+        this.opcion = opcion;
         limpiarCampos();
     }
 
@@ -577,7 +580,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_grabarBtnKeyPressed
 
     private void iibb_2TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_iibb_2TxtKeyPressed
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             if (iibb_2Txt.getText().isEmpty()) {
                 iibb_2Txt.setText("0.00");
             }
@@ -586,7 +589,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_iibb_2TxtKeyPressed
 
     private void percepcion_1TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_percepcion_1TxtKeyPressed
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             if (percepcion_1Txt.getText().isEmpty()) {
                 percepcion_1Txt.setText("0.00");
             }
@@ -595,7 +598,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_percepcion_1TxtKeyPressed
 
     private void percepcion_2TxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_percepcion_2TxtKeyPressed
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             if (percepcion_2Txt.getText().isEmpty()) {
                 percepcion_2Txt.setText("0.00");
             }
@@ -642,7 +645,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NuevaFacturaCompraFrame().setVisible(true);
+                new NuevaFacturaCompraFrame(null).setVisible(true);
             }
         });
     }
@@ -709,6 +712,8 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         ivaVentaTxt.setText("");
         impuestoVentaTxt.setText("");
         totalVentaTxt.setText("");
+        porcentBrutoTxt.setText("");
+        porcentualTxt.setText("");
         combo.removeAllItems();
         combo.addItem("");
         articulos = null;
@@ -835,9 +840,15 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
     }
 
     private void volver() {
-        AbmFacturasComprasFrame afcf = new AbmFacturasComprasFrame();
-        afcf.setVisible(true);
-        this.dispose();
+        if (opcion == 1) {
+            AbmFacturasComprasFrame afcf = new AbmFacturasComprasFrame();
+            afcf.setVisible(true);
+            this.dispose();
+        } else {
+            MainFrame mf = new MainFrame();
+            mf.setVisible(true);
+            this.dispose();
+        }
     }
 
     private Double redondear(String text) {
@@ -890,7 +901,7 @@ public class NuevaFacturaCompraFrame extends javax.swing.JFrame {
         if (!impuesto_4Txt.getText().isEmpty()) {
             impuestoVenta += redondear(impuesto_4Txt.getText().replace(",", "."));
         }
-        
+
         total += redondear(netoGravadoTxt.getText().replace(",", "."));
         total += redondear(ivaTxt.getText().replace(",", "."));
         total = importeRedondeado(total);

@@ -293,12 +293,14 @@ public class AbmArticulosPorMontoFrame extends javax.swing.JFrame {
             return;
         }
         ArticuloCompra art = articulos.get(row);
-        ModificarArticuloCompraFrame macf = new ModificarArticuloCompraFrame(art);
+        ModificarArticuloCompraFrame macf = new ModificarArticuloCompraFrame(art, 1);
         macf.setVisible(true);
         this.dispose();
     }
 
     private void limpiarCampos() {
         filtroTxt.setText("");
+        jLabel1.setVisible(false);
+        filtroTxt.setVisible(false);
     }
 }

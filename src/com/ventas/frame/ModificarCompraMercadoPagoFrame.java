@@ -55,6 +55,8 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
         cuitTxt = new javax.swing.JTextField();
         importeTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        origenTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MODIFICAR COMPRA CLIENTE MERCADO PAGO");
@@ -94,6 +96,10 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
 
         jLabel5.setText("<<<  COLOQUE LOS GUIONES");
 
+        jLabel6.setText("ORIGEN:");
+
+        origenTxt.setText("ORIGEN");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,17 +116,19 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
                         .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nombreTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(importeTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                                     .addComponent(cuitTxt, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel5)))
+                                .addComponent(jLabel5))
+                            .addComponent(origenTxt))
                         .addGap(0, 31, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -144,7 +152,11 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(importeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(origenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grabarBtn)
                     .addComponent(volverBtn))
@@ -207,7 +219,9 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField nombreTxt;
+    private javax.swing.JTextField origenTxt;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
@@ -223,6 +237,11 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
         nombreTxt.setText(ccmp.getNombre());
         cuitTxt.setText(ccmp.getCuit());
         importeTxt.setText(df.format(ccmp.getImporte()));
+        if (ccmp.getOrigen() != null) {
+            origenTxt.setText(ccmp.getOrigen());
+        } else {
+            origenTxt.setText("");
+        }
     }
 
     private void grabar() {
@@ -238,6 +257,7 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
         ccmp.setNombre(nombreTxt.getText());
         Double importe = Double.valueOf(importeTxt.getText().replace(",", "."));
         ccmp.setImporte(importe);
+        ccmp.setOrigen(origenTxt.getText());
         try {
             new CompraClienteMercadoPagoService().updateCompraClientesImportados(ccmp);
             JOptionPane.showMessageDialog(this, "ACTUALIZADO");

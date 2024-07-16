@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.FacturaCompraReferenciaMercadoPagoDao;
 import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.IvaVentas;
+import java.util.Date;
+import java.util.List;
 import org.hibernate.HibernateException;
 
 /**
@@ -18,8 +15,8 @@ public class FacturaCompraReferenciaMercadoPagoBo {
 
     private final FacturaCompraReferenciaMercadoPagoDao dao = new FacturaCompraReferenciaMercadoPagoDao();
 
-    public FacturaCompraReferenciaMercadoPago saveFacturaCompraReferenciaMercadoPago(FacturaCompraReferenciaMercadoPago fcrmp) 
-    throws Exception {
+    public FacturaCompraReferenciaMercadoPago saveFacturaCompraReferenciaMercadoPago(FacturaCompraReferenciaMercadoPago fcrmp)
+            throws Exception {
         FacturaCompraReferenciaMercadoPago fact = null;
         try {
             fact = (FacturaCompraReferenciaMercadoPago) dao.save(fcrmp);
@@ -28,29 +25,52 @@ public class FacturaCompraReferenciaMercadoPagoBo {
         }
         return fact;
     }
-    
-    public FacturaCompraReferenciaMercadoPago getFacturaById(Long id) 
-    throws Exception {
+
+    public FacturaCompraReferenciaMercadoPago getFacturaById(Long id)
+            throws Exception {
         FacturaCompraReferenciaMercadoPago fact = null;
         try {
-            fact = (FacturaCompraReferenciaMercadoPago) 
-                    dao.getFacturaById(id);
+            fact = (FacturaCompraReferenciaMercadoPago) dao.getFacturaById(id);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
         return fact;
     }
-    
-    public FacturaCompraReferenciaMercadoPago getFacturaByIvaVentas(IvaVentas iv) 
-    throws Exception {
+
+    public FacturaCompraReferenciaMercadoPago getFacturaByIvaVentas(IvaVentas iv)
+            throws Exception {
         FacturaCompraReferenciaMercadoPago fact = null;
         try {
-            fact = (FacturaCompraReferenciaMercadoPago) 
-                    dao.getFacturaByIvaVentas(iv);
+            fact = (FacturaCompraReferenciaMercadoPago) dao.getFacturaByIvaVentas(iv);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
         return fact;
     }
-    
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechas(Date de, Date al)
+            throws Exception {
+        List<FacturaCompraReferenciaMercadoPago> fact;
+        try {
+            fact = (List<FacturaCompraReferenciaMercadoPago>) dao
+                    .getFacturasIvaVentasEntreFechas(de, al);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago>
+            getFacturasIvaVentasEntreFechasAndCuit(Date de, Date al, String cuit)
+            throws Exception {
+        List<FacturaCompraReferenciaMercadoPago> fact;
+        try {
+            fact = (List<FacturaCompraReferenciaMercadoPago>) dao
+                    .getFacturasIvaVentasEntreFechasAndCuit(de, al, cuit);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
 }

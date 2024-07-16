@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.services;
 
 import com.ventas.bo.IvaVentasBo;
@@ -53,6 +48,48 @@ public class IvaVentasService {
         Transaction tx = session.beginTransaction();
         try {
             fe = new IvaVentasBo().getUltimaFechaFactura();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
+    public String getUltimaNombreEnFactura() throws Exception {
+        String fe = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            fe = new IvaVentasBo().getUltimaNombreEnFactura();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
+    public String getUltimoCuitEnFactura() throws Exception {
+        String fe = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            fe = new IvaVentasBo().getUltimoCuitEnFactura();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
+    public String getUltimoImporteFactura() throws Exception {
+        String fe = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            fe = new IvaVentasBo().getUltimoImporteFactura();
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();

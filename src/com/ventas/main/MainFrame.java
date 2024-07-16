@@ -1,5 +1,7 @@
 package com.ventas.main;
 
+import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.Producto;
 import com.ventas.frame.AbmArticulosPorMontoFrame;
 import com.ventas.frame.AbmClienteFrame;
 import com.ventas.frame.AbmFacturasComprasFrame;
@@ -22,33 +24,51 @@ import com.ventas.frame.FacturarAutomaticoPorMontoFrame;
 import com.ventas.frame.FacturasDeMercadoPagoFrame;
 import com.ventas.frame.FacturasMercadoPagoCompletadasFacturarFrame;
 import com.ventas.frame.FacturarMercadoPagoFrame;
+import com.ventas.frame.FacturarMercadoPagoInscriptosFrame;
 import com.ventas.frame.FacturasMercadoPagoPendientesFacturarFrame;
 import com.ventas.frame.ImportarClientesMercadoPagoFrame;
 import com.ventas.frame.ImportarProductoFrame;
+import com.ventas.frame.InformeConsFinalCortePorDiaFrame;
+import com.ventas.frame.InformeMercadoPagoCortePorDiaFrame;
 import com.ventas.frame.InformeStockFrame;
 import com.ventas.frame.InformeVentasPorPeriodoFrame;
+import com.ventas.frame.InformesImpresosFacturasMpFrame;
+import com.ventas.frame.ModificarArticuloCompraFrame;
 import com.ventas.frame.ModificarConfiguracionTopFrame;
 import com.ventas.frame.NotaCreditoFrame;
+import com.ventas.frame.NuevaFacturaCompraFrame;
 import com.ventas.frame.RecuperarDeAfipFrame;
 import com.ventas.frame.RemitoFrame;
 import com.ventas.frame.RemitoPanificadosFrame;
 import com.ventas.frame.StockPeriodoProductoCompraFrame;
 import com.ventas.frame.StockPeriodoProductoFrame;
 import com.ventas.frame.VerificarAfipFrame;
+import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.FacturaService;
 import com.ventas.services.FcService;
+import com.ventas.services.IvaVentasService;
 import com.ventas.services.RenglonFcService;
+import com.ventas.util.UtilFrame;
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import static java.util.Collections.list;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Mario
  */
 public class MainFrame extends javax.swing.JFrame {
+
+    private List<ArticuloCompra> articulos;
+    private DecimalFormat df = new DecimalFormat("#0.00");
+    private DecimalFormat dfp = new DecimalFormat("#0.000");
 
     /**
      * Creates new form MainFrame
@@ -61,9 +81,11 @@ public class MainFrame extends javax.swing.JFrame {
         recuperarAfipMnu.setVisible(true);
         clientesMnu.setVisible(false);
         tipoDocMnu.setVisible(false);
-        notaCreditoBtn.setVisible(false);
+        notaCreditoBtn.setVisible(true);
         randomBtn.setVisible(false);
         saldoFacturasCompraPendeintesMnu.setVisible(false);
+        facturasMercadoPagoCompletadasMnu.setVisible(false);
+        cargarFrame();
     }
 
     /**
@@ -81,6 +103,22 @@ public class MainFrame extends javax.swing.JFrame {
         facturaMercadoPagoBtn = new javax.swing.JButton();
         facturaAutomPorImporteBtn = new javax.swing.JButton();
         cargarFcComprasBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        ultFechaTxt = new javax.swing.JTextField();
+        ultNumTxt = new javax.swing.JTextField();
+        ultImpoTxt = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        cuitTxt = new javax.swing.JTextField();
+        importarMpBtn = new javax.swing.JButton();
+        nombreTxt = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        modificarTabacaleraBtn = new javax.swing.JButton();
+        facturarMercadoPagoInscriptosBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         configuracionMnu = new javax.swing.JMenuItem();
@@ -112,6 +150,9 @@ public class MainFrame extends javax.swing.JFrame {
         saldoFacturasCompraPendeintesMnu = new javax.swing.JMenuItem();
         facturasDeMercadoPagoMnu = new javax.swing.JMenuItem();
         facturasMercadoPagoCompletadasMnu = new javax.swing.JMenuItem();
+        mpCortePorDiaMnu = new javax.swing.JMenuItem();
+        cfCortePorDiaMnu = new javax.swing.JMenuItem();
+        mpFcImpresasMnu = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         versionMnu = new javax.swing.JMenuItem();
 
@@ -153,10 +194,93 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        cargarFcComprasBtn.setText("CARGAR FACTURAS COMPRA");
+        cargarFcComprasBtn.setText("Cargar Facturas Compra");
         cargarFcComprasBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cargarFcComprasBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Ultima Fecha:");
+
+        jLabel2.setText("U.Nro.Fc:");
+
+        jLabel3.setText("U.Importe:");
+
+        ultFechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultFechaTxt.setText("U.FECHA");
+
+        ultNumTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultNumTxt.setText("U.NRO");
+
+        ultImpoTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultImpoTxt.setText("U.IMPORTE");
+
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "CODIGO", "NOMBRE", "TOTAL", "PORC.BRUTO", "PORC.IMPU"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(50);
+        }
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("TABACALERAS");
+
+        jLabel5.setText("CUIT:");
+
+        cuitTxt.setText("CUIT");
+
+        importarMpBtn.setText("Importar Mercado Pago");
+        importarMpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importarMpBtnActionPerformed(evt);
+            }
+        });
+
+        nombreTxt.setText("NOMBRE");
+
+        jLabel6.setText("Nombre:");
+
+        modificarTabacaleraBtn.setText("Modificar Tabacaleras");
+        modificarTabacaleraBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarTabacaleraBtnActionPerformed(evt);
+            }
+        });
+
+        facturarMercadoPagoInscriptosBtn.setText("Facturar MP Inscriptos");
+        facturarMercadoPagoInscriptosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturarMercadoPagoInscriptosBtnActionPerformed(evt);
             }
         });
 
@@ -382,6 +506,30 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu4.add(facturasMercadoPagoCompletadasMnu);
 
+        mpCortePorDiaMnu.setText("MP - CORTE POR DIA ENTRE FECHAS");
+        mpCortePorDiaMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mpCortePorDiaMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mpCortePorDiaMnu);
+
+        cfCortePorDiaMnu.setText("CF - CORTE POR DIA ENTRE FECHAS");
+        cfCortePorDiaMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cfCortePorDiaMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(cfCortePorDiaMnu);
+
+        mpFcImpresasMnu.setText("MP - FACTURAS ENTRE FECHAS X CUIT - IMPRESO");
+        mpFcImpresasMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mpFcImpresasMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(mpFcImpresasMnu);
+
         jMenuBar1.add(jMenu4);
 
         jMenu3.setText("?");
@@ -405,34 +553,87 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(facturaMercadoPagoBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(facturaAutomPorImporteBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
-                        .addComponent(salirBtn))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ultFechaTxt))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(randomBtn)
-                            .addComponent(notaCreditoBtn)
-                            .addComponent(cargarFcComprasBtn))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel5)
+                            .addComponent(cuitTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nombreTxt)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ultImpoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(ultNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cargarFcComprasBtn)
+                            .addComponent(facturaMercadoPagoBtn))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(importarMpBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(modificarTabacaleraBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                                .addComponent(randomBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(facturarMercadoPagoInscriptosBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(facturaAutomPorImporteBtn)))
+                        .addGap(5, 5, 5)
+                        .addComponent(notaCreditoBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(salirBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(243, Short.MAX_VALUE)
-                .addComponent(randomBtn)
-                .addGap(18, 18, 18)
-                .addComponent(notaCreditoBtn)
-                .addGap(18, 18, 18)
-                .addComponent(cargarFcComprasBtn)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ultFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ultImpoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cuitTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ultNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cargarFcComprasBtn)
+                    .addComponent(randomBtn)
+                    .addComponent(importarMpBtn)
+                    .addComponent(modificarTabacaleraBtn))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(salirBtn)
                     .addComponent(facturaMercadoPagoBtn)
-                    .addComponent(facturaAutomPorImporteBtn))
+                    .addComponent(facturaAutomPorImporteBtn)
+                    .addComponent(notaCreditoBtn)
+                    .addComponent(facturarMercadoPagoInscriptosBtn))
                 .addGap(17, 17, 17))
         );
 
@@ -545,7 +746,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_facturaMercadoPagoBtnActionPerformed
 
     private void comprasPorImporteMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprasPorImporteMnuActionPerformed
-        comprasPorImporte();
+        abmComprasPorImporte();
     }//GEN-LAST:event_comprasPorImporteMnuActionPerformed
 
     private void saldoFacturasCompraPendeintesMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saldoFacturasCompraPendeintesMnuActionPerformed
@@ -575,6 +776,30 @@ public class MainFrame extends javax.swing.JFrame {
     private void cargarFcComprasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarFcComprasBtnActionPerformed
         comprasPorImporte();
     }//GEN-LAST:event_cargarFcComprasBtnActionPerformed
+
+    private void mpCortePorDiaMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mpCortePorDiaMnuActionPerformed
+        informeMercadoPagoCortePorDia();
+    }//GEN-LAST:event_mpCortePorDiaMnuActionPerformed
+
+    private void cfCortePorDiaMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cfCortePorDiaMnuActionPerformed
+        informeConsFinalCortePorDia();
+    }//GEN-LAST:event_cfCortePorDiaMnuActionPerformed
+
+    private void mpFcImpresasMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mpFcImpresasMnuActionPerformed
+        informeFacturasMpImpreso();
+    }//GEN-LAST:event_mpFcImpresasMnuActionPerformed
+
+    private void importarMpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarMpBtnActionPerformed
+        importarMercadoPago();
+    }//GEN-LAST:event_importarMpBtnActionPerformed
+
+    private void modificarTabacaleraBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarTabacaleraBtnActionPerformed
+        modificarTabacalera();
+    }//GEN-LAST:event_modificarTabacaleraBtnActionPerformed
+
+    private void facturarMercadoPagoInscriptosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturarMercadoPagoInscriptosBtnActionPerformed
+        facturarInscriptos();
+    }//GEN-LAST:event_facturarMercadoPagoInscriptosBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -622,24 +847,39 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem articulosPorMontoMnu;
     private javax.swing.JMenuItem backupMnu;
     private javax.swing.JButton cargarFcComprasBtn;
+    private javax.swing.JMenuItem cfCortePorDiaMnu;
     private javax.swing.JMenuItem clientesMnu;
     private javax.swing.JMenuItem comprasPorImporteMnu;
     private javax.swing.JMenuItem configuracionMnu;
+    private javax.swing.JTextField cuitTxt;
     private javax.swing.JMenuItem duplicadoPdfMnu;
     private javax.swing.JButton facturaAutomPorImporteBtn;
     private javax.swing.JButton facturaMercadoPagoBtn;
+    private javax.swing.JButton facturarMercadoPagoInscriptosBtn;
     private javax.swing.JMenuItem facturasDeMercadoPagoMnu;
     private javax.swing.JMenuItem facturasMercadoPagoCompletadasMnu;
     private javax.swing.JMenuItem facturasMercadoPagoPendientesMnu;
     private javax.swing.JMenuItem importarMercadoPagoMnu;
     private javax.swing.JMenuItem importarMnu;
+    private javax.swing.JButton importarMpBtn;
     private javax.swing.JMenuItem informeStockMnu;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton modificarTabacaleraBtn;
+    private javax.swing.JMenuItem mpCortePorDiaMnu;
+    private javax.swing.JMenuItem mpFcImpresasMnu;
+    private javax.swing.JTextField nombreTxt;
     private javax.swing.JButton notaCreditoBtn;
     private javax.swing.JMenuItem productosMnu;
     private javax.swing.JMenuItem productosTopInactivosMnu;
@@ -653,7 +893,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem stockPeriodoProductoCompraMnu;
     private javax.swing.JMenuItem stockPeriodoProductoVentaMnu;
     private javax.swing.JMenuItem subRubrosMnu;
+    private javax.swing.JTable tabla;
     private javax.swing.JMenuItem tipoDocMnu;
+    private javax.swing.JTextField ultFechaTxt;
+    private javax.swing.JTextField ultImpoTxt;
+    private javax.swing.JTextField ultNumTxt;
     private javax.swing.JMenuItem ventasPorPeriodoMnu;
     private javax.swing.JMenuItem verInactivosMnu;
     private javax.swing.JMenuItem verificarAfipMnu;
@@ -747,7 +991,6 @@ public class MainFrame extends javax.swing.JFrame {
 //        ff.setVisible(true);
 //        this.dispose();
 //    }
-
     private void duplicadoPdf() {
         DuplicadoFacturaPdfFrame dff = new DuplicadoFacturaPdfFrame();
         dff.setVisible(true);
@@ -879,8 +1122,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void comprasPorImporte() {
-        AbmFacturasComprasFrame afcf = new AbmFacturasComprasFrame();
-        afcf.setVisible(true);
+        NuevaFacturaCompraFrame nfcf = new NuevaFacturaCompraFrame(2);
+        nfcf.setVisible(true);
         this.dispose();
     }
 
@@ -917,6 +1160,110 @@ public class MainFrame extends javax.swing.JFrame {
     private void facturaAutomPorImporte() {
         FacturarAutomaticoPorMontoFrame fapmf = new FacturarAutomaticoPorMontoFrame();
         fapmf.setVisible(true);
+        this.dispose();
+    }
+
+    private void informeMercadoPagoCortePorDia() {
+        InformeMercadoPagoCortePorDiaFrame impcpdf = new InformeMercadoPagoCortePorDiaFrame();
+        impcpdf.setVisible(true);
+        this.dispose();
+    }
+
+    private void informeConsFinalCortePorDia() {
+        InformeConsFinalCortePorDiaFrame icfcpdf = new InformeConsFinalCortePorDiaFrame();
+        icfcpdf.setVisible(true);
+        this.dispose();
+    }
+
+    private void informeFacturasMpImpreso() {
+        InformesImpresosFacturasMpFrame iifmf = new InformesImpresosFacturasMpFrame();
+        iifmf.setVisible(true);
+        this.dispose();
+    }
+
+    private void cargarFrame() {
+        UtilFrame.limpiarTabla(tabla);
+        try {
+            ultFechaTxt.setText(new IvaVentasService().getUltimaFechaFactura());
+            cuitTxt.setText(new IvaVentasService().getUltimoCuitEnFactura());
+            nombreTxt.setText(new IvaVentasService().getUltimaNombreEnFactura());
+            ultImpoTxt.setText(new IvaVentasService().getUltimoImporteFactura());
+            ultNumTxt.setText(new IvaVentasService().getUltimoNumeroFactura().toString());
+        } catch (Exception ex) {
+            ultFechaTxt.setText("");
+            ultNumTxt.setText("");
+            ultImpoTxt.setText("");
+            cuitTxt.setText("");
+            nombreTxt.setText("");
+        }
+        buscarArticulos();
+        llenarTabla();
+        salirBtn.requestFocus();
+    }
+
+    private void buscarArticulos() {
+        articulos = null;
+        try {
+            articulos = new ArticuloCompraService().getAllArticulosCompra();
+        } catch (Exception ex) {
+            articulos = new ArrayList<>();
+            ArticuloCompra av = new ArticuloCompra();
+            Producto prod = new Producto();
+            prod.setDetalle("NO HAY ARTICULOS PARA MOSTRAR");
+            prod.setCodigo(0);
+            av.setProducto(prod);
+            av.setTotal(0.0);
+            av.setActivo(false);
+        }
+    }
+
+    private void llenarTabla() {
+        UtilFrame.limpiarTabla(tabla);
+        if (articulos != null && !articulos.isEmpty()) {
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            for (ArticuloCompra av : articulos) {
+                Object o[] = new Object[5];
+                Producto prod = av.getProducto();
+                o[0] = prod.getCodigo();
+                o[1] = prod.getDetalle();
+                o[2] = df.format(av.getTotal());
+                if (av.getPorcentBruto() != null) {
+                    o[3] = dfp.format(av.getPorcentBruto());
+                } else {
+                    o[3] = dfp.format(0);
+                }
+                if (av.getPorcentual() != null) {
+                    o[4] = dfp.format(av.getPorcentual());
+                } else {
+                    o[4] = dfp.format(0);
+                }
+                tbl.addRow(o);
+            }
+            tabla.setModel(tbl);
+        }
+    }
+
+    private void abmComprasPorImporte() {
+        AbmFacturasComprasFrame afcf = new AbmFacturasComprasFrame();
+        afcf.setVisible(true);
+        this.dispose();
+    }
+
+    private void modificarTabacalera() {
+        int row = tabla.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "SELECCIONE UNA TABACALERA PARA MODIFICAR");
+            return;
+        }
+        ArticuloCompra art = articulos.get(row);
+        ModificarArticuloCompraFrame macf = new ModificarArticuloCompraFrame(art, 2);
+        macf.setVisible(true);
+        this.dispose();
+    }
+
+    private void facturarInscriptos() {
+        FacturarMercadoPagoInscriptosFrame fmpif = new FacturarMercadoPagoInscriptosFrame();
+        fmpif.setVisible(true);
         this.dispose();
     }
 }

@@ -2,6 +2,7 @@ package com.ventas.frame;
 
 import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.Producto;
+import com.ventas.main.MainFrame;
 import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.ProductoService;
 import java.text.DecimalFormat;
@@ -21,16 +22,18 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
     private ArticuloCompra articulo;
     private DecimalFormat df = new DecimalFormat("#0.00");
     private DecimalFormat dfp = new DecimalFormat("#0.000");
+    private Integer opc;
 
     /**
      * Creates new form NuevoArticuloVentaFrame
      *
      * @param ac
      */
-    public ModificarArticuloCompraFrame(ArticuloCompra ac) {
+    public ModificarArticuloCompraFrame(ArticuloCompra ac, Integer opc) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
+        this.opc = opc;
         this.articulo = ac;
         limpiarCampos();
 //        llenarCombo();
@@ -258,7 +261,7 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarArticuloCompraFrame(null).setVisible(true);
+                new ModificarArticuloCompraFrame(null, null).setVisible(true);
             }
         });
     }
@@ -295,12 +298,14 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
             Double total = Double.valueOf(totalTxt.getText().replace(",", "."));
             Float porcentual = Float.valueOf(porcentualTxt.getText().replace(",", "."));
             Float porcentBruto = Float.valueOf(porcentBrutoTxt.getText().replace(",", "."));
+            String nombreP = productoTxt.getText();
             articulo.setGravado(gravado);
             articulo.setImpuesto(impuesto);
             articulo.setIva(iva);
             articulo.setTotal(total);
             articulo.setPorcentual(porcentual);
             articulo.setPorcentBruto(porcentBruto);
+
             if (activoChk.isSelected()) {
                 articulo.setActivo(true);
             } else {
@@ -316,14 +321,24 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
     }
 
     private void volver() {
-        AbmArticulosPorMontoFrame aapmf = new AbmArticulosPorMontoFrame();
-        aapmf.setVisible(true);
+        if (opc == 1) {
+            AbmArticulosPorMontoFrame aapmf = new AbmArticulosPorMontoFrame();
+            aapmf.setVisible(true);
+        } else {
+            MainFrame aapmf = new MainFrame();
+            aapmf.setVisible(true);
+        }
         this.dispose();
     }
 
     private void limpiarCampos() {
         codigoTxt.setText("");
         codigoTxt.setEditable(false);
+        impuestoTxt.setEditable(false);
+        ivaTxt.setEditable(false);
+        totalTxt.setEditable(false);
+        porcentualTxt.setEditable(false);
+        porcentBrutoTxt.setEditable(false);
     }
 
 //    private void llenarCombo() {
@@ -349,9 +364,9 @@ public class ModificarArticuloCompraFrame extends javax.swing.JFrame {
         if (codigoTxt.getText().isEmpty()) {
             return false;
         }
-        if(porcentualTxt.getText().isEmpty()){
+        if (porcentualTxt.getText().isEmpty()) {
             return false;
-            
+
         }
 //        try {
 //            ArticuloCompra art = new ArticuloCompraService().getArticuloCompraByProducto(producto);

@@ -53,9 +53,6 @@ public class CompraClienteMercadoPagoService {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-//            for(CompraClienteMercadoPago ccmp : compra){
-//                
-//            }
             new CompraClienteMercadoPagoBo().saveCompraClientesImportados(compra);
             tx.commit();
         } catch (Exception ex) {
@@ -102,6 +99,19 @@ public class CompraClienteMercadoPagoService {
         return compras;
     }
     
+    public List<CompraClienteMercadoPago> getAllFacturasDeInscriptosPendientesDeProcesar() throws Exception {
+        List<CompraClienteMercadoPago> compras = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            compras = new CompraClienteMercadoPagoBo().getAllFacturasDeInscriptosPendientesDeProcesar();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return compras;
+    }
     
     public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
         List<CompraClienteMercadoPago> compras = null;

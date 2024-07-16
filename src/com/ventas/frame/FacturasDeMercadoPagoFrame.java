@@ -49,7 +49,8 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
     public FacturasDeMercadoPagoFrame(Date d, Date a, Integer r) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
-        this.setExtendedState(6);
+        //this.setExtendedState(6);
+        this.setExtendedState(6); // this.MAXIMIZED_BOTH
         this.d = d;
         this.a = a;
         this.r = r;
@@ -117,11 +118,11 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FECHA", "NOMBRE", "CUIT", "IMPORTE", "FECHA FC", "NRO.FC", "GRAVADO", "IVA", "IMPUESTO", "TOTAL"
+                "FECHA", "NOMBRE", "CUIT", "IMPORTE", "FECHA FC", "NRO.FC", "GRAVADO", "IVA", "IMPUESTO", "TOTAL", "REFERENCIA"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -378,11 +379,13 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                         String cuit = "";
                         String nombre = "";
                         Double importeMP = 0.0;
+                        String origen = "";
                         if (referenciaMercadoPago != null) {
                             fechaMP = referenciaMercadoPago.getCompraClienteMercadoPago().getFecha();
                             cuit = referenciaMercadoPago.getCompraClienteMercadoPago().getCuit();
                             nombre = referenciaMercadoPago.getCompraClienteMercadoPago().getNombre();
                             importeMP = referenciaMercadoPago.getCompraClienteMercadoPago().getImporte();
+                            origen = referenciaMercadoPago.getCompraClienteMercadoPago().getOrigen();
                         }
                         Date fechaFcVenta = iv.getFecha();
                         String nroFc = iv.getLetra() + " " + iv.getNumeroSucursal() + "-" + iv.getNumeroFactura();
@@ -390,7 +393,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                         Double impuesto = iv.getImpuesto();
                         Double iva = iv.getIva();
                         Double totalFc = iv.getTotal();
-                        Object o[] = new Object[10];
+                        Object o[] = new Object[11];
                         if (referenciaMercadoPago != null) {
                             o[0] = sdf.format(fechaMP);
                             o[1] = nombre;
@@ -403,6 +406,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                         o[7] = df.format(impuesto);
                         o[8] = df.format(iva);
                         o[9] = df.format(totalFc);
+                        o[10] = origen;
                         tbl.addRow(o);
                     }
                     tabla.setModel(tbl);
@@ -444,6 +448,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
             hoja1.addCell(new jxl.write.Label(7, 1, "IVA"));
             hoja1.addCell(new jxl.write.Label(8, 1, "IMPUESTO"));
             hoja1.addCell(new jxl.write.Label(9, 1, "TOTAL"));
+            hoja1.addCell(new jxl.write.Label(10, 1, "ORIGEN"));
             int y = 2;
             Double tgG = 0.0;
             Double tgIv = 0.0;
@@ -458,11 +463,16 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                 tgTt += i.getTotal();
                 if (!tbl.getValueAt(y - 2, 0).toString().isEmpty()) {
                     String fechaMp = tbl.getValueAt(y - 2, 0).toString();
+
                     Double importeMp = Double.valueOf(tbl.getValueAt(y - 2, 0).toString());
                     hoja1.addCell(new jxl.write.Label(0, y, fechaMp));
                     hoja1.addCell(new jxl.write.Label(1, y, i.getCliente().getRazonSocial()));
                     hoja1.addCell(new jxl.write.Label(2, y, i.getCliente().getCuit()));
                     hoja1.addCell(new jxl.write.Number(3, y, importeMp));
+                    if (!tbl.getValueAt(y - 2, 10).toString().isEmpty()) {
+                        String origen = tbl.getValueAt(y - 2, 10).toString();
+                        hoja1.addCell(new jxl.write.Label(10, y, origen));
+                    }
                 }
                 hoja1.addCell(new jxl.write.Label(4, y, sdf.format(i.getFecha())));
                 hoja1.addCell(new jxl.write.Label(5, y, nroFc));
@@ -476,6 +486,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
             hoja1.addCell(new jxl.write.Number(7, y + 1, tgIv));
             hoja1.addCell(new jxl.write.Number(8, y + 1, tgIm));
             hoja1.addCell(new jxl.write.Number(9, y + 1, tgTt));
+
         } catch (WriteException ex) {
             JOptionPane.showMessageDialog(this, "Error configurando Excel");
         }

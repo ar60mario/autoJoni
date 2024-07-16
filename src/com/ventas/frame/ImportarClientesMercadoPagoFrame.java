@@ -68,14 +68,14 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nro.", "FECHA", "NOMBRE", "CUIT", "MONTO"
+                "Nro.", "FECHA", "NOMBRE", "CUIT", "MONTO", "ORIGEN", "L.F."
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -93,6 +93,8 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
             tablaProductoImportado.getColumnModel().getColumn(2).setPreferredWidth(280);
             tablaProductoImportado.getColumnModel().getColumn(3).setPreferredWidth(50);
             tablaProductoImportado.getColumnModel().getColumn(4).setPreferredWidth(40);
+            tablaProductoImportado.getColumnModel().getColumn(5).setPreferredWidth(70);
+            tablaProductoImportado.getColumnModel().getColumn(6).setPreferredWidth(10);
         }
 
         aceptarBtn.setText("Aceptar");
@@ -116,7 +118,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 985, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(aceptarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -127,7 +129,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptarBtn)
@@ -226,12 +228,14 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
             int nro = 1;
             Double total = 0.0;
             for (CompraClienteMercadoPago compra : compras) {
-                Object[] fila = new Object[5];
+                Object[] fila = new Object[7];
                 fila[0] = nro;
                 fila[1] = sdf.format(compra.getFecha());
                 fila[2] = compra.getNombre();
                 fila[3] = compra.getCuit();
                 fila[4] = df.format(compra.getImporte());
+                fila[5] = compra.getOrigen();
+                fila[6] = compra.getLetraFactura();
                 total += compra.getImporte();
                 nro += 1;
                 modelo.addRow(fila);

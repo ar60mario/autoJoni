@@ -3,10 +3,13 @@ package com.ventas.frame;
 import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.CalculoFactura;
 import com.ventas.entities.Cliente;
+import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.Configuracion;
 import com.ventas.entities.ConfiguracionTop;
+import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.entities.IvaVentas;
+import com.ventas.entities.NuevaFactura;
 import com.ventas.entities.RenglonFactura;
 import com.ventas.main.MainFrame;
 import com.ventas.services.ArticuloCompraService;
@@ -15,10 +18,17 @@ import com.ventas.services.ConfiguracionService;
 import com.ventas.services.ConfiguracionTopService;
 import com.ventas.services.FacturaService;
 import com.ventas.services.IvaVentasService;
+import com.ventas.services.NuevaFacturaService;
 import com.ventas.util.Constantes;
 import com.ventas.util.UtilAfip;
 import com.ventas.util.UtilFactura;
 import com.ventas.util.UtilFrame;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.Thread.sleep;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -30,6 +40,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -37,7 +48,7 @@ import javax.swing.table.DefaultTableModel;
  * @author argia
  */
 public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
-
+    
     private List<ArticuloCompra> articulos;
 //    private List<FacturaCompra> compras;
     private List<CalculoFactura> nuevasFacturas;
@@ -93,6 +104,11 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         segAlTxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         combo = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        ultimoNumeroTxt = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        ultimoImporteTxt = new javax.swing.JTextField();
+        barral = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("FACTURACION AUTOMATICA POR MONTO");
@@ -183,7 +199,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         ultimaFechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         ultimaFechaTxt.setText("ULTIMA FECHA");
 
-        jLabel5.setText("TOTAL FACTURAR:");
+        jLabel5.setText("TOTAL FC:");
 
         totalFacturarTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         totalFacturarTxt.setText("TOTAL FACTURAR");
@@ -215,6 +231,16 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("ULTIMO NUMERO:");
+
+        ultimoNumeroTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultimoNumeroTxt.setText("U.NUM");
+
+        jLabel9.setText("ULTIMO IMPORTE:");
+
+        ultimoImporteTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        ultimoImporteTxt.setText("U.IMPORTE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -222,6 +248,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(barral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(presentarBtn)
@@ -234,27 +261,6 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(volverBtn))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(58, 58, 58)
-                                .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(ultimaFechaTxt)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,8 +268,35 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(calcularBtn)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ultimoNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ultimoImporteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(calcularBtn)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -271,25 +304,31 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8)
+                    .addComponent(ultimoNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(ultimoImporteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(calcularBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(barral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(volverBtn)
@@ -309,8 +348,8 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
 
     private void presentarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentarBtnActionPerformed
         presentar();
-        JOptionPane.showMessageDialog(this, "PROCESO TRMINADO");
-        volver();
+//        JOptionPane.showMessageDialog(this, "PROCESO TRMINADO");
+//        volver();
     }//GEN-LAST:event_presentarBtnActionPerformed
 
     private void calcularBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularBtnActionPerformed
@@ -349,7 +388,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private void totalFacturarTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalFacturarTxtKeyPressed
         if (evt.getKeyCode() == 10) {
             if (!totalFacturarTxt.getText().isEmpty()) {
-                mostrarImportes();
+                
                 combo.addFocusListener(null);
                 combo.showPopup();
                 combo.requestFocus();
@@ -423,6 +462,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barral;
     private javax.swing.JButton calcularBtn;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField fechaTxt;
@@ -435,6 +475,8 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton presentarBtn;
     private javax.swing.JTextField segAlTxt;
@@ -442,13 +484,16 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
     private javax.swing.JTable tabla;
     private javax.swing.JTextField totalFacturarTxt;
     private javax.swing.JTextField ultimaFechaTxt;
+    private javax.swing.JTextField ultimoImporteTxt;
+    private javax.swing.JTextField ultimoNumeroTxt;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
     private void limpiarCampos() {
         fechaTxt.setText("");
-        segDeTxt.setText("15");
-        segAlTxt.setText("50");
+        fechaTxt.requestFocus();
+        segDeTxt.setText("1");
+        segAlTxt.setText("3");
         importeMinimoTxt.setText("");
         importeMaximoTxt.setText("");
         totalFacturarTxt.setText("");
@@ -456,6 +501,8 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         ultimaFechaTxt.setEditable(false);
         try {
             ultimaFechaTxt.setText(new IvaVentasService().getUltimaFechaFactura());
+            ultimoImporteTxt.setText(new IvaVentasService().getUltimoImporteFactura());
+            ultimoNumeroTxt.setText(new IvaVentasService().getUltimoNumeroFactura().toString());
         } catch (Exception ex) {
             ultimaFechaTxt.setText(sdf.format(new Date()));
         }
@@ -469,12 +516,14 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         }
         minimo = cfgt.getImporteMinimoMercadoPago();
         maximo = cfgt.getImporteMaximo();
-        Configuracion cfg;
-        try {
-            cfg = new ConfiguracionService().getFacturas(1L);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "ERROR NRO.288");
-        }
+        mostrarImportes();
+//        Configuracion cfg;
+//        try {
+//            cfg = new ConfiguracionService().getFacturas(1L);
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(this, "ERROR NRO.288");
+//            return;
+//        }
         try {
             cliente = new ClienteService().getClienteByCodigo("1");
             if (cliente != null) {
@@ -503,7 +552,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private void calcular() {
         Double limiteFacturar = Double.valueOf(totalFacturarTxt.getText());
         UtilFrame.limpiarTabla(tabla);
@@ -516,7 +565,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR TABACALERA");
         }
     }
-
+    
     private void presentar() {
         int a = JOptionPane.showConfirmDialog(this, "VERIFICO LA FECHA DE LAS FACTURAS???", "Atención", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -535,109 +584,149 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             }
             if (!segDeTxt.getText().isEmpty()) {
                 if ((!segAlTxt.getText().isEmpty())) {
-                    int tim = 0;
+                    int tim1 = Integer.valueOf(segDeTxt.getText().trim());
+                    int tim2 = Integer.valueOf(segAlTxt.getText().trim());
+                    List<NuevaFactura> facturasParaBorrar;
+                    try {
+                        facturasParaBorrar = new NuevaFacturaService().getAll();
+                        for (NuevaFactura nf : facturasParaBorrar) {
+                            new NuevaFacturaService().delete(nf);
+                        }
+                    } catch (Exception ex) {
+                        return;
+                    }
                     for (CalculoFactura cf : nuevasFacturas) {
-                        FacturaIvaIntercambio fii;// = new FacturaIvaIntercambio();
-
-                        int tim1 = Integer.valueOf(segDeTxt.getText());
-                        int tim2 = Integer.valueOf(segAlTxt.getText());
-                        do {
-                            Random rnd = new Random();
-                            Double segu = rnd.nextDouble() * (tim2 + 1);
-                            tim = segu.intValue();
-                        } while (tim < tim1 || tim > tim2);
+                        NuevaFactura nf = new NuevaFactura();
+                        nf.setArticulo(cf.getArticulo());
+                        //nf.setCompraMercadoPago();
+                        nf.setCuitCliente(cliente.getCuit());
+                        nf.setGravado(cf.getGravado());
+                        nf.setImpuesto(cf.getImpuesto());
+                        nf.setIva(cf.getIva());
+                        nf.setProducto(cf.getProducto());
+                        nf.setTotal(cf.getTotal());
+                        nf.setTotalMp(cf.getTotalMp());
                         try {
-                            sleep(tim * 1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(FacturarFrame.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        if (tst == 0) {
-                            fii = UtilAfip.presentarAfip(cuitTitular, tipoDocTit, cuitCliente,
-                                    tipoDocCli, cf.getGravado(), cf.getImpuesto(), cf.getIva(),
-                                    cf.getTotal(), fechaFacturas, puntoVenta);
-                        } else {
-                            fii = new FacturaIvaIntercambio();
-                            fii.setCae(123456789012345L);
-                            fii.setEstado("A");
-                            fii.setFecha(fechaFacturas);
-                            fii.setFechaVencimientoCae(fechaFacturas);
-                            fii.setLetra("B");
-                            Integer nroFc;
-                            try {
-                                nroFc = new IvaVentasService().getUltimoNumeroFactura();
-                            } catch (Exception ex) {
-                                nroFc = 0;
-                            }
-                            fii.setNumero(nroFc + 1);
-                            fii.setSucursal(2);
-                        }
-                        if (fii != null) {
-                            RenglonFactura rf = new RenglonFactura();
-                            List<RenglonFactura> listaRf = new ArrayList<>();
-                            rf.setCantidad(1F);
-                            rf.setCostoG(0.0);
-                            rf.setCostoI(0.0);
-                            rf.setDescripcion(cf.getProducto().getDetalle());
-                            rf.setDescuento(0.0);
-                            rf.setExento(0.0);
-                            rf.setFabricacion(false);
-                            rf.setGravado(cf.getGravado());
-                            rf.setGravado0(0.0);
-                            rf.setGravado10_5(0.0);
-                            rf.setGravado27(0.0);
-                            rf.setImpuesto(cf.getImpuesto());
-                            rf.setItemNro(1);
-                            rf.setIva(cf.getIva());
-                            rf.setIva0(0.0);
-                            rf.setIva10_5(0.0);
-                            rf.setIva27(0.0);
-                            rf.setNoGravado(0.0);
-                            rf.setProducto(cf.getProducto());
-                            rf.setSugerido(0.0);
-                            rf.setTotal(cf.getTotal());
-                            IvaVentas iv = new IvaVentas();
-                            iv.setCae(fii.getCae());
-                            iv.setCliente(cliente);
-                            iv.setDescuentoGlobal(0.0);
-                            iv.setExento(0.0);
-                            iv.setFecha(fechaFacturas);
-                            iv.setFechaCae(fii.getFechaVencimientoCae());
-                            iv.setGravado(cf.getGravado());
-                            iv.setGravado0(0.0);
-                            iv.setGravado10_5(0.0);
-                            iv.setGravado27(0.0);
-                            iv.setImpuesto(cf.getImpuesto());
-                            iv.setIva(cf.getIva());
-                            iv.setIva0(0.0);
-                            iv.setIva10_5(0.0);
-                            iv.setIva27(0.0);
-                            iv.setLetra(fii.getLetra());
-                            iv.setLetraReferencia("x");
-                            iv.setNoGravado(0.0);
-                            iv.setNumeroFactura(fii.getNumero());
-                            iv.setNumeroFacturaReferencia(0);
-                            iv.setNumeroSucursal(fii.getSucursal());
-                            iv.setNumeroSucursalReferencia(0);
-                            iv.setTipoDoc(6);
-                            iv.setTotal(cf.getTotal());
-                            rf.setIvaVentas(iv);
-                            listaRf.add(rf);
-                            ArticuloCompra artCmpr = cf.getArticulo();
-                            artCmpr.setGravado(artCmpr.getGravado() - iv.getGravado());
-                            artCmpr.setImpuesto(artCmpr.getImpuesto() - iv.getImpuesto());
-                            artCmpr.setIva(artCmpr.getIva() - iv.getIva());
-                            artCmpr.setTotal(artCmpr.getTotal() - iv.getTotal());
-                            try {
-                                new FacturaService().saveFacturaCompleta(iv, listaRf, artCmpr, null, null);
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(this, "ERROR 466");
-                                break;
-                            }
-
-                        } else {
-                            JOptionPane.showMessageDialog(this, "ERR AFIP");
+                            new NuevaFacturaService().save(nf);
+                        } catch (Exception ex) {
+                            return;
                         }
                     }
+                    try (FileWriter fichero = new FileWriter("D:/ventasJo/temp.txt")) {
+                        PrintWriter pw = new PrintWriter(fichero);
+                        pw.println(sdf.format(fechaFacturas));
+                        pw.println(tim1);
+                        pw.println(tim2);
+                        pw.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    barral();
+
+//                    int tim = 0;
+//                    for (CalculoFactura cf : nuevasFacturas) {
+//                        FacturaIvaIntercambio fii;// = new FacturaIvaIntercambio();
+//
+//                        int tim1 = Integer.valueOf(segDeTxt.getText());
+//                        int tim2 = Integer.valueOf(segAlTxt.getText());
+//                        do {
+//                            Random rnd = new Random();
+//                            Double segu = rnd.nextDouble() * (tim2 + 1);
+//                            tim = segu.intValue();
+//                        } while (tim < tim1 || tim > tim2);
+//                        try {
+//                            sleep(tim * 1000);
+//                        } catch (InterruptedException ex) {
+//                            Logger.getLogger(FacturarFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                        if (tst == 0) {
+//                            fii = UtilAfip.presentarAfip(cuitTitular, tipoDocTit, cuitCliente,
+//                                    tipoDocCli, cf.getGravado(), cf.getImpuesto(), cf.getIva(),
+//                                    cf.getTotal(), fechaFacturas, puntoVenta);
+//                        } else {
+//                            fii = new FacturaIvaIntercambio();
+//                            fii.setCae(123456789012345L);
+//                            fii.setEstado("A");
+//                            fii.setFecha(fechaFacturas);
+//                            fii.setFechaVencimientoCae(fechaFacturas);
+//                            fii.setLetra("B");
+//                            Integer nroFc;
+//                            try {
+//                                nroFc = new IvaVentasService().getUltimoNumeroFactura();
+//                            } catch (Exception ex) {
+//                                nroFc = 0;
+//                            }
+//                            fii.setNumero(nroFc + 1);
+//                            fii.setSucursal(2);
+//                        }
+//                        if (fii != null) {
+//                            RenglonFactura rf = new RenglonFactura();
+//                            List<RenglonFactura> listaRf = new ArrayList<>();
+//                            rf.setCantidad(1F);
+//                            rf.setCostoG(0.0);
+//                            rf.setCostoI(0.0);
+//                            rf.setDescripcion(cf.getProducto().getDetalle());
+//                            rf.setDescuento(0.0);
+//                            rf.setExento(0.0);
+//                            rf.setFabricacion(false);
+//                            rf.setGravado(cf.getGravado());
+//                            rf.setGravado0(0.0);
+//                            rf.setGravado10_5(0.0);
+//                            rf.setGravado27(0.0);
+//                            rf.setImpuesto(cf.getImpuesto());
+//                            rf.setItemNro(1);
+//                            rf.setIva(cf.getIva());
+//                            rf.setIva0(0.0);
+//                            rf.setIva10_5(0.0);
+//                            rf.setIva27(0.0);
+//                            rf.setNoGravado(0.0);
+//                            rf.setProducto(cf.getProducto());
+//                            rf.setSugerido(0.0);
+//                            rf.setTotal(cf.getTotal());
+//                            IvaVentas iv = new IvaVentas();
+//                            iv.setCae(fii.getCae());
+//                            iv.setCliente(cliente);
+//                            iv.setDescuentoGlobal(0.0);
+//                            iv.setExento(0.0);
+//                            iv.setFecha(fechaFacturas);
+//                            iv.setFechaCae(fii.getFechaVencimientoCae());
+//                            iv.setGravado(cf.getGravado());
+//                            iv.setGravado0(0.0);
+//                            iv.setGravado10_5(0.0);
+//                            iv.setGravado27(0.0);
+//                            iv.setImpuesto(cf.getImpuesto());
+//                            iv.setIva(cf.getIva());
+//                            iv.setIva0(0.0);
+//                            iv.setIva10_5(0.0);
+//                            iv.setIva27(0.0);
+//                            iv.setLetra(fii.getLetra());
+//                            iv.setLetraReferencia("x");
+//                            iv.setNoGravado(0.0);
+//                            iv.setNumeroFactura(fii.getNumero());
+//                            iv.setNumeroFacturaReferencia(0);
+//                            iv.setNumeroSucursal(fii.getSucursal());
+//                            iv.setNumeroSucursalReferencia(0);
+//                            iv.setTipoDoc(6);
+//                            iv.setTotal(cf.getTotal());
+//                            rf.setIvaVentas(iv);
+//                            listaRf.add(rf);
+//                            ArticuloCompra artCmpr = cf.getArticulo();
+//                            artCmpr.setGravado(artCmpr.getGravado() - iv.getGravado());
+//                            artCmpr.setImpuesto(artCmpr.getImpuesto() - iv.getImpuesto());
+//                            artCmpr.setIva(artCmpr.getIva() - iv.getIva());
+//                            artCmpr.setTotal(artCmpr.getTotal() - iv.getTotal());
+//                            try {
+//                                new FacturaService().saveFacturaCompleta(iv, listaRf, artCmpr, null, null);
+//                            } catch (Exception ex) {
+//                                JOptionPane.showMessageDialog(this, "ERROR 466");
+//                                break;
+//                            }
+//
+//                        } else {
+//                            JOptionPane.showMessageDialog(this, "ERR AFIP");
+//                        }
+//                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "DEBE INGRESAR LOS SEGUNDOS ENTRE FACTURAS");
                 }
@@ -646,18 +735,27 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private void volver() {
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
     }
-
+    
+    private void barral() {
+        Avanzando2 avanzando = new Avanzando2();
+        presentarBtn.setEnabled(false);
+        calcularBtn.setEnabled(false);
+        avanzando.setBar(barral);
+        Thread hilo = new Thread(avanzando);
+        hilo.start();
+    }
+    
     private void mostrarImportes() {
         importeMinimoTxt.setText(df.format(minimo));
         importeMaximoTxt.setText(df.format(maximo));
     }
-
+    
     private List<CalculoFactura> calcularConFacturas(Double limiteFacturar, ArticuloCompra compra) {
         List<CalculoFactura> nuevas_facturas = new ArrayList<>();
         Double totalFacturas = 0.00;
@@ -696,10 +794,10 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         } while (repetir);
         return nuevas_facturas;
     }
-
+    
     private List<CalculoFactura> calcularSinFacturas(Double limiteFacturar) {
         List<CalculoFactura> nuevas_facturas = new ArrayList<>();
-
+        
         List<ArticuloCompra> compras = null;
         try {
             compras = new ArticuloCompraService().getAllArticulosActivos();
@@ -711,7 +809,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             Boolean repetir = true;
             Integer contadorCompras = 0;
             Integer ultimoCompras = compras.size();
-
+            
             ArticuloCompra compra = compras.get(contadorCompras);
             do {
                 Random rnd = new Random();
@@ -749,8 +847,7 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
         return nuevas_facturas;
     }
 
-    private Boolean generarFactura(Date fecha) {
-
+//    private Boolean generarFactura(Date fecha) {
 //        compra = compras.get(contadorCompras);
 //        factura = facturas.get(contadorFacturas);
 //        Double totalCompraMP = compra.getImporte() - compra.getImporteUtilizado();
@@ -887,15 +984,14 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
 //                }
 //            }
 //        }
-        return true;
-    }
-
+//        return true;
+//    }
     private Double importeRedondeado(Double importeRnd) {
         String importeStr = df.format(importeRnd);
         Double importeRedondeado = Double.valueOf(importeStr.replace(",", "."));
         return importeRedondeado;
     }
-
+    
     private void llenarTabla(List<CalculoFactura> nuevas_facturas) {
         Integer nro = 0;
         if (nuevas_facturas != null && !nuevas_facturas.isEmpty()) {
@@ -920,4 +1016,213 @@ public class FacturarAutomaticoPorMontoFrame extends javax.swing.JFrame {
             tabla.setModel(tbl);
         }
     }
+}
+
+class Avanzando2 implements Runnable {
+    
+    private JProgressBar bar;
+    private Float incremento;
+    private Float maximo;
+    private final int tst = 0; // 1 esta en test
+
+    @Override
+    
+    public void run() {
+        this.getBar().setValue(1);
+        
+        String cuitTitular = Constantes.cuitTitular;
+        String tipoDocTit = Constantes.tipoDocTit;
+        String puntoVenta = Constantes.puntoVenta;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Float posF = 2F;
+        Integer largo;
+        // desde aqui
+        Date fechaFacturas;
+        Integer tim1;
+        Integer tim2;
+        String fechaString;
+        String tim1String;
+        String tim2String;
+        File archivo = new File("D:/ventasJo/temp.txt");
+        FileReader fr;
+        try {
+            fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+            
+            fechaString = br.readLine();
+            tim1String = br.readLine();
+            tim2String = br.readLine();
+            br.close();
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "uno 610");
+            return;
+        }
+        try {
+            fechaFacturas = sdf.parse(fechaString);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "DOS 615");
+            return;
+        }
+        tim1 = Integer.valueOf(tim1String);
+        tim2 = Integer.valueOf(tim2String);
+        
+        List<NuevaFactura> nuevasFacturas = null;
+        try {
+            nuevasFacturas = new NuevaFacturaService().getAll();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "TRES 625");
+//            Logger.getLogger(Avanzando.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        largo = nuevasFacturas.size();
+        maximo = largo.floatValue();
+        incremento = 100 / maximo;
+//        System.out.println(largo);
+//        System.out.println(incremento);
+//        System.out.println(maximo);
+//        System.exit(0);
+        for (NuevaFactura ccmp : nuevasFacturas) {
+//            CompraClienteMercadoPago compraMp = ccmp.getCompraMercadoPago();
+            posF += incremento;
+            Integer pos = posF.intValue();
+//            this.procesarBarra(nuevasFacturas, tim1, tim2, fechaFacturas, compraMp);//
+            getBar().setValue(pos);
+//            JOptionPane.showMessageDialog(null, "VER");
+            String cuit_cliente = ccmp.getCuitCliente();
+//            System.out.println(cuit_cliente);
+//            System.exit(0);
+            Cliente cliente;
+            try {
+                cliente = new ClienteService().getClienteByCuit(cuit_cliente);
+                if (cliente == null) {
+                    JOptionPane.showMessageDialog(null, "ERROR nro. 669 - LEYENDO CLIENTE");
+                    return;
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "ERROR nro. 669 - LEYENDO CLIENTE");
+                return;
+            }
+            String pri = cuit_cliente.substring(0, 2);
+            String med = cuit_cliente.substring(3, 11);
+            String fin = cuit_cliente.substring(12, 13);
+            String cuitCliente = pri + med + fin;
+            String tipoDocCli = cliente.getTipo();
+            int tim = 0;
+            FacturaIvaIntercambio fii;
+            do {
+                Random rnd = new Random();
+                Double segu = rnd.nextDouble() * (tim2 + 1);
+                tim = segu.intValue();
+            } while (tim < tim1 || tim > tim2);
+            try {
+                sleep(tim * 1000);
+            } catch (InterruptedException ex) {
+                JOptionPane.showMessageDialog(null, "ERR. con frecuencia de facturas");
+                continue;
+            }
+            if (tst == 0) {
+                fii = UtilAfip.presentarAfip(cuitTitular, tipoDocTit, cuitCliente,
+                        tipoDocCli, ccmp.getGravado(), ccmp.getImpuesto(), ccmp.getIva(),
+                        ccmp.getTotal(), fechaFacturas, puntoVenta);
+            } else {
+                fii = new FacturaIvaIntercambio();
+                fii.setCae(123456789012345L);
+                fii.setEstado("A");
+                fii.setFecha(fechaFacturas);
+                fii.setFechaVencimientoCae(fechaFacturas);
+                fii.setLetra("B");
+                Integer nroFc;
+                try {
+                    nroFc = new IvaVentasService().getUltimoNumeroFactura();
+                } catch (Exception ex) {
+                    nroFc = 0;
+                }
+                fii.setNumero(nroFc + 1);
+                fii.setSucursal(2);
+            }
+            if (fii != null) {
+                RenglonFactura rf = new RenglonFactura();
+                List<RenglonFactura> listaRf = new ArrayList<>();
+                rf.setCantidad(1F);
+                rf.setCostoG(0.0);
+                rf.setCostoI(0.0);
+                rf.setDescripcion(ccmp.getProducto().getDetalle());
+                rf.setDescuento(0.0);
+                rf.setExento(0.0);
+                rf.setFabricacion(false);
+                rf.setGravado(ccmp.getGravado());
+                rf.setGravado0(0.0);
+                rf.setGravado10_5(0.0);
+                rf.setGravado27(0.0);
+                rf.setImpuesto(ccmp.getImpuesto());
+                rf.setItemNro(1);
+                rf.setIva(ccmp.getIva());
+                rf.setIva0(0.0);
+                rf.setIva10_5(0.0);
+                rf.setIva27(0.0);
+                rf.setNoGravado(0.0);
+                rf.setProducto(ccmp.getProducto());
+                rf.setSugerido(0.0);
+                rf.setTotal(ccmp.getTotal());
+                IvaVentas iv = new IvaVentas();
+                iv.setCae(fii.getCae());
+                iv.setCliente(cliente);
+                iv.setDescuentoGlobal(0.0);
+                iv.setExento(0.0);
+                iv.setFecha(fechaFacturas);
+                iv.setFechaCae(fii.getFechaVencimientoCae());
+                iv.setGravado(ccmp.getGravado());
+                iv.setGravado0(0.0);
+                iv.setGravado10_5(0.0);
+                iv.setGravado27(0.0);
+                iv.setImpuesto(ccmp.getImpuesto());
+                iv.setIva(ccmp.getIva());
+                iv.setIva0(0.0);
+                iv.setIva10_5(0.0);
+                iv.setIva27(0.0);
+                iv.setLetra(fii.getLetra());
+                iv.setLetraReferencia("x");
+                iv.setNoGravado(0.0);
+                iv.setNumeroFactura(fii.getNumero());
+                iv.setNumeroFacturaReferencia(0);
+                iv.setNumeroSucursal(fii.getSucursal());
+                iv.setNumeroSucursalReferencia(0);
+                iv.setTipoDoc(6);
+                iv.setTotal(ccmp.getTotal());
+                rf.setIvaVentas(iv);
+                listaRf.add(rf);
+                ArticuloCompra artCmpr = ccmp.getArticulo();
+                artCmpr.setGravado(artCmpr.getGravado() - iv.getGravado());
+                artCmpr.setImpuesto(artCmpr.getImpuesto() - iv.getImpuesto());
+                artCmpr.setIva(artCmpr.getIva() - iv.getIva());
+                artCmpr.setTotal(artCmpr.getTotal() - iv.getTotal());
+//                CompraClienteMercadoPago ccmpProceso = ccmp.getCompraMercadoPago();
+//                ccmpProceso.setProcesado(true);
+//                FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
+//                fcrmp.setArticuloCompra(artCmpr);
+//                fcrmp.setCompraClienteMercadoPago(compraMp);
+//                fcrmp.setIvaVentas(iv);
+                try {
+                    new FacturaService().saveFacturaCompleta(iv, listaRf,
+                            artCmpr, null, null);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "ERROR 789");
+                    break;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "ERR AFIP");
+            }
+        }
+        JOptionPane.showMessageDialog(null, "FINALIZADO");
+    }
+    
+    public void setBar(JProgressBar bar) {
+        this.bar = bar;
+    }
+    
+    public JProgressBar getBar() {
+        return bar;
+    }
+    
 }

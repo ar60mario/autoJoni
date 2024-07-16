@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.IvaVentasDao;
@@ -65,7 +60,7 @@ public class IvaVentasBo {
         }
         return fact;
     }
-    
+
     public List<IvaVentas> getFacturasEntreFechasOrdenCliente(Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
         try {
@@ -75,7 +70,7 @@ public class IvaVentasBo {
         }
         return fact;
     }
-    
+
     public List<IvaVentas> getFacturasEntreFechasOrdenNroFc(Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
         try {
@@ -85,7 +80,7 @@ public class IvaVentasBo {
         }
         return fact;
     }
-    
+
     public String getUltimaFechaFactura() throws Exception {
         String fe = null;
         try {
@@ -95,7 +90,38 @@ public class IvaVentasBo {
         }
         return fe;
     }
+
     
+    public String getUltimaNombreEnFactura() throws Exception {
+        String fe = null;
+        try {
+            fe = (String) dao.getUltimaNombreEnFactura();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+
+    public String getUltimoCuitEnFactura() throws Exception {
+        String fe = null;
+        try {
+            fe = (String) dao.getUltimoCuitEnFactura();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+    
+    public String getUltimoImporteFactura() throws Exception {
+        String fe = null;
+        try {
+            fe = (String) dao.getUltimoImporteFactura();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fe;
+    }
+
     public Integer getUltimoNumeroFactura() throws Exception {
         Integer fe = null;
         try {
@@ -105,7 +131,7 @@ public class IvaVentasBo {
         }
         return fe;
     }
-    
+
     public List<IvaVentas> getFacturasPanificadosEntreFechas(Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
         try {
@@ -115,6 +141,7 @@ public class IvaVentasBo {
         }
         return fact;
     }
+
     //
     public List<IvaVentas> getFacturasCigarrillosEntreFechas(Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
@@ -125,7 +152,7 @@ public class IvaVentasBo {
         }
         return fact;
     }
-    
+
     public List<IvaVentas> getFacturasByCodigoAndFechas(Cliente cliente, Date fd, Date fa) throws Exception {
         List<IvaVentas> fact = null;
         try {
@@ -135,23 +162,24 @@ public class IvaVentasBo {
         }
         return fact;
     }
+
     //
     public void saveListaFacturas(List<IvaVentas> facturas) throws Exception {
-        if(facturas != null && !facturas.isEmpty()){
-            for(IvaVentas iv: facturas){
-                try{
+        if (facturas != null && !facturas.isEmpty()) {
+            for (IvaVentas iv : facturas) {
+                try {
                     dao.save(iv);
-                }catch(HibernateException ex){
+                } catch (HibernateException ex) {
                     throw new Exception("Ha ocurrido un problema intentando guardar Factura.\nPor favor intente nuevamente mas tarde.");
                 }
             }
         }
     }
-    
+
     public IvaVentas getFacturaByNumero(String letra, Integer sucursal, Integer numero) throws Exception {
         IvaVentas ivaVentas = null;
         try {
-            ivaVentas = (IvaVentas) dao.getByLetraNumero(letra,sucursal,numero);
+            ivaVentas = (IvaVentas) dao.getByLetraNumero(letra, sucursal, numero);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

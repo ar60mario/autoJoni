@@ -204,6 +204,8 @@ public class LectorDeExcel {
 //                    System.exit(0);
                     compra.setFecha(sdf.parse(fecha4));
                     compra.setNombre(hoja.getCell(2, i).getContents());
+                    compra.setOrigen(hoja.getCell(4, i).getContents());
+                    compra.setOrigen(hoja.getCell(4, i).getContents());
                     String cui = hoja.getCell(1, i).getContents();
                     int largo = cui.length();
                     String pri;
@@ -235,6 +237,7 @@ public class LectorDeExcel {
                     compra.setImporte(importeMP);
                     compra.setProcesado(false);
                     compra.setImporteUtilizado(0.0);
+                    
                     if (cui.equals("0")) {
                         if (importeMP > maximo) {
                             JOptionPane.showMessageDialog(null, "CONSUMIDOR FINAL CON IMPORTE MAYOR AL MAXIMO" + i);

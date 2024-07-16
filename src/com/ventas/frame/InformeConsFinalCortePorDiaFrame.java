@@ -1,8 +1,15 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.ventas.frame;
 
-import com.ventas.entities.FacturaCompra;
+import com.ventas.entities.Cliente;
+import com.ventas.entities.IvaVentas;
 import com.ventas.main.MainFrame;
-import com.ventas.services.FacturaCompraService;
+import com.ventas.services.ClienteService;
+import com.ventas.services.IvaVentasService;
 import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -18,16 +25,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author argia
  */
-public class AbmFacturasComprasFrame extends javax.swing.JFrame {
+public class InformeConsFinalCortePorDiaFrame extends javax.swing.JFrame {
 
-    private List<FacturaCompra> facturas;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private DecimalFormat df = new DecimalFormat("#0.00");
-
+    private Date de = new Date();
+    private Date al = new Date();
+    private List<IvaVentas> facturas;
+    
     /**
-     * Creates new form AbmFacturasComprasFrame
+     * Creates new form InformeConsFinalCortePorDiaFrame
      */
-    public AbmFacturasComprasFrame() {
+    public InformeConsFinalCortePorDiaFrame() {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
@@ -45,32 +54,31 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        volverBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         deTxt = new javax.swing.JTextField();
-        nuevaBtn = new javax.swing.JButton();
-        filtrarProveedorBtn = new javax.swing.JButton();
-        importarExcelBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         alTxt = new javax.swing.JTextField();
-        soloPendientesBtn = new javax.swing.JButton();
-        volverBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("ABM FACTURAS DE COMPRA X IMPORTES");
+        setTitle("INFORME TOTAL DIARIO CONS.FINAL ENTRE FECHAS");
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "FECHA", "PROVEEDOR", "TOTAL", "TOTAL_VENTA"
+                "FECHA", "T.NETO GV.", "T.IMP.", "T.IVA", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -82,62 +90,31 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tabla);
-        if (tabla.getColumnModel().getColumnCount() > 0) {
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
-        }
 
-        jLabel1.setText("FECHA:");
+        volverBtn.setText("VOLVER");
+        volverBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("DESDE:");
 
         deTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        deTxt.setText("FECHA");
+        deTxt.setText("DE");
         deTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 deTxtKeyPressed(evt);
             }
         });
 
-        nuevaBtn.setText("NUEVA");
-        nuevaBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nuevaBtnActionPerformed(evt);
-            }
-        });
-
-        filtrarProveedorBtn.setText("FILTRAR PROVEEDOR");
-        filtrarProveedorBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtrarProveedorBtnActionPerformed(evt);
-            }
-        });
-
-        importarExcelBtn.setText("IMPORTAR EXCEL");
-        importarExcelBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importarExcelBtnActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("HASTA:");
 
         alTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        alTxt.setText("HASTA");
+        alTxt.setText("AL");
         alTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 alTxtKeyPressed(evt);
-            }
-        });
-
-        soloPendientesBtn.setText("SOLO PENDIENTES");
-        soloPendientesBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                soloPendientesBtnActionPerformed(evt);
-            }
-        });
-
-        volverBtn.setText("VOLVER");
-        volverBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                volverBtnActionPerformed(evt);
             }
         });
 
@@ -148,26 +125,19 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(volverBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(deTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(deTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(nuevaBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(filtrarProveedorBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(importarExcelBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(soloPendientesBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(volverBtn)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -180,41 +150,26 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(alTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nuevaBtn)
-                    .addComponent(filtrarProveedorBtn)
-                    .addComponent(importarExcelBtn)
-                    .addComponent(soloPendientesBtn)
-                    .addComponent(volverBtn))
-                .addGap(14, 14, 14))
+                .addComponent(volverBtn)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void importarExcelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarExcelBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_importarExcelBtnActionPerformed
-
-    private void filtrarProveedorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtrarProveedorBtnActionPerformed
-        int row = tabla.getSelectedRow();
-        if (row < 0) {
-
-        }
-
-    }//GEN-LAST:event_filtrarProveedorBtnActionPerformed
-
-    private void nuevaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaBtnActionPerformed
-        nuevaFacturaCompra();
-    }//GEN-LAST:event_nuevaBtnActionPerformed
 
     private void deTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_deTxtKeyPressed
         if (evt.getKeyCode() == 10) {
             String fe = deTxt.getText();
             int largo = fe.length();
             if (largo == 10) {
+                try {
+                    de = sdf.parse(deTxt.getText());
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR 252");
+                    return;
+                }
                 alTxt.requestFocus();
             } else {
                 if (largo > 10) {
@@ -232,6 +187,12 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
             String fe = alTxt.getText();
             int largo = fe.length();
             if (largo == 10) {
+                try {
+                    al = sdf.parse(alTxt.getText());
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR 252");
+                    return;
+                }
                 buscar();
             } else {
                 if (largo > 10) {
@@ -247,10 +208,6 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         volver();
     }//GEN-LAST:event_volverBtnActionPerformed
-
-    private void soloPendientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloPendientesBtnActionPerformed
-        soloPendientes();
-    }//GEN-LAST:event_soloPendientesBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,20 +226,20 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InformeConsFinalCortePorDiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InformeConsFinalCortePorDiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InformeConsFinalCortePorDiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InformeConsFinalCortePorDiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AbmFacturasComprasFrame().setVisible(true);
+                new InformeConsFinalCortePorDiaFrame().setVisible(true);
             }
         });
     }
@@ -290,69 +247,102 @@ public class AbmFacturasComprasFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField alTxt;
     private javax.swing.JTextField deTxt;
-    private javax.swing.JButton filtrarProveedorBtn;
-    private javax.swing.JButton importarExcelBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton nuevaBtn;
-    private javax.swing.JButton soloPendientesBtn;
     private javax.swing.JTable tabla;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
-    private void nuevaFacturaCompra() {
-        NuevaFacturaCompraFrame nfcf = new NuevaFacturaCompraFrame(1);
-        nfcf.setVisible(true);
-        this.dispose();
+    private void limpiarCampos() {
+        UtilFrame.limpiarTabla(tabla);
+        deTxt.setText("");
+        alTxt.setText("");
+    }
+
+    private void buscar() {
+        facturas = null;
+        Cliente cliente;
+        try {
+            cliente = new ClienteService().getClienteByCodigo("1");
+        } catch (Exception ex) {
+            return;
+        }
+//        System.out.println(de);
+//        System.out.println(al);
+//        System.exit(0);
+        try {
+            facturas = new IvaVentasService().getAllIvaVentasByCodigoYFecha(cliente, de, al);
+        } catch (Exception ex) {
+            return;
+        }
+        llenarTabla();
+    }
+
+    private void llenarTabla() {
+        UtilFrame.limpiarTabla(tabla);
+//        System.out.println(facturas);
+//        System.exit(0);
+        if (facturas != null && !facturas.isEmpty()) {
+            Date fecha = facturas.get(0).getFecha();
+            Double totalNetoGravadoDia = 0.0;
+            Double totalImpuestoDia = 0.0;
+            Double totalIvaDia = 0.0;
+            Double totalDia = 0.0;
+
+            Double totalNetoGravado = 0.0;
+            Double totalImpuesto = 0.0;
+            Double totalIva = 0.0;
+            Double total = 0.0;
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            for (IvaVentas iv : facturas) {
+//                IvaVentas iv = fcmp.getIvaVentas();
+                Date fecha2 = iv.getFecha();
+                if (fecha.equals(fecha2)) {
+                    totalNetoGravadoDia += iv.getGravado();
+                    totalImpuestoDia += iv.getImpuesto();
+                    totalIvaDia += iv.getIva();
+                    totalDia += iv.getTotal();
+                } else {
+                    Object o[] = new Object[5];
+                    o[0] = sdf.format(fecha);
+                    o[1] = df.format(totalNetoGravadoDia);
+                    o[2] = df.format(totalImpuestoDia);;
+                    o[3] = df.format(totalIvaDia);
+                    o[4] = df.format(totalDia);
+                    tbl.addRow(o);
+                    totalNetoGravadoDia = 0.0;
+                    totalImpuestoDia = 0.0;
+                    totalIvaDia = 0.0;
+                    totalDia = 0.0;
+                    fecha = fecha2;
+                }
+                totalNetoGravado += iv.getGravado();
+                totalImpuesto += iv.getImpuesto();
+                totalIva += iv.getIva();
+                total += iv.getTotal();
+            }
+            Object o[] = new Object[5];
+            o[0] = sdf.format(fecha);
+            o[1] = df.format(totalNetoGravadoDia);
+            o[2] = df.format(totalImpuestoDia);
+            o[3] = df.format(totalIvaDia);
+            o[4] = df.format(totalDia);
+            tbl.addRow(o);
+            Object o1[] = new Object[5];
+            o1[0] = "TOTAL >>";
+            o1[1] = df.format(totalNetoGravado);
+            o1[2] = df.format(totalImpuesto);
+            o1[3] = df.format(totalIva);
+            o1[4] = df.format(total);
+            tbl.addRow(o1);
+            tabla.setModel(tbl);
+        }
     }
 
     private void volver() {
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
-    }
-
-    private void soloPendientes() {
-
-    }
-
-    private void limpiarCampos() {
-        deTxt.setText("");
-        alTxt.setText("");
-        importarExcelBtn.setVisible(false);
-        filtrarProveedorBtn.setVisible(false);
-        soloPendientesBtn.setVisible(false);
-    }
-
-    private void buscar() {
-        facturas = null;
-        Date de = new Date();
-        Date al = new Date();
-        try {
-            de = sdf.parse(deTxt.getText());
-            al = sdf.parse(alTxt.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(Level.SEVERE, null, ex);
-            return;
-        }
-        try {
-            facturas = new FacturaCompraService().getFacturasEntreFechas(de, al);
-        } catch (Exception ex) {
-            Logger.getLogger(AbmFacturasComprasFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        UtilFrame.limpiarTabla(tabla);
-        if (facturas != null && !facturas.isEmpty()) {
-            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
-            for (FacturaCompra facturaCompra : facturas) {
-                Object o[] = new Object[4];
-                o[0] = sdf.format(facturaCompra.getFecha());
-                o[1] = facturaCompra.getProveedor();
-                o[2] = df.format(facturaCompra.getTotal());
-                o[3] = df.format(facturaCompra.getTotalVenta());
-                tbl.addRow(o);
-            }
-            tabla.setModel(tbl);
-        }
     }
 }

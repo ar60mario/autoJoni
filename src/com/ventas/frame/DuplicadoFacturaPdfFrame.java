@@ -58,7 +58,7 @@ public class DuplicadoFacturaPdfFrame extends javax.swing.JFrame {
     private final String ver_qr = "1";
     private String fecha_qr;
     private final String cuit_qr = Constantes.cuitTitular;
-    private String puntoVenta_qr = "5";
+    private String puntoVenta_qr = "10";
     private String tipoComprobante_qr;
     private String numeroComprobante_qr;
     private String importe_qr;

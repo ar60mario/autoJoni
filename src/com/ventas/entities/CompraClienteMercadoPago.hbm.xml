@@ -13,5 +13,7 @@
         <property name="importe" type="double" column="IMPORTE"/>
         <property name="importeUtilizado" type="double" column="IMPORTE_UTILIZADO"/>
         <property name="procesado" type="boolean" column="PROCESADO"/>
+        <property name="origen" type="string" column="ORIGEN"/>
+        <property name="letraFactura" type="string" column="LETRA_FACTURA"/>
     </class>
 </hibernate-mapping>

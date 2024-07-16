@@ -65,14 +65,14 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
 
             },
             new String [] {
-                "FECHA", "CUIT", "CLIENTE", "IMPORTE"
+                "FECHA", "CUIT", "CLIENTE", "IMPORTE", "ORIGEN", "LETR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -112,7 +112,7 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
                         .addComponent(eliminarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(volverBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 906, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -220,11 +220,17 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
         if (facturasComprasMP != null && !facturasComprasMP.isEmpty()) {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (CompraClienteMercadoPago ccmp : facturasComprasMP) {
-                Object o[] = new Object[4];
+                Object o[] = new Object[6];
                 o[0] = sdf.format(ccmp.getFecha());
                 o[1] = ccmp.getCuit();
                 o[2] = ccmp.getNombre();
                 o[3] = df.format(ccmp.getImporte());
+                o[4] = ccmp.getOrigen();
+                if (ccmp.getLetraFactura() != null) {
+                    o[5] = ccmp.getLetraFactura();
+                } else {
+                    o[5] = "B";
+                }
                 tbl.addRow(o);
             }
             tabla.setModel(tbl);

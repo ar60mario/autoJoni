@@ -14,11 +14,14 @@ public class CompraClienteMercadoPago {
     private Double importe;
     private Double importeUtilizado;
     private Boolean procesado;
+    private String origen;
+    private String letraFactura;
 
     public CompraClienteMercadoPago() {
     }
 
-    public CompraClienteMercadoPago(Long id, Date fecha, String nombre, String cuit, Double importe, Double importeUtilizado, Boolean procesado) {
+    public CompraClienteMercadoPago(Long id, Date fecha, String nombre, String cuit, Double importe, 
+            Double importeUtilizado, Boolean procesado, String origen, String letraFactura) {
         this.id = id;
         this.fecha = fecha;
         this.nombre = nombre;
@@ -26,6 +29,8 @@ public class CompraClienteMercadoPago {
         this.importe = importe;
         this.importeUtilizado = importeUtilizado;
         this.procesado = procesado;
+        this.origen = origen;
+        this.letraFactura = letraFactura;
     }
 
     public Long getId() {
@@ -84,4 +89,20 @@ public class CompraClienteMercadoPago {
         this.procesado = procesado;
     }
 
+    public String getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(String origen) {
+        this.origen = origen;
+    }
+
+    public String getLetraFactura() {
+        return letraFactura;
+    }
+
+    public void setLetraFactura(String letraFactura) {
+        this.letraFactura = letraFactura;
+    }
+    
 }

@@ -60,14 +60,14 @@ public class FacturasMercadoPagoCompletadasFacturarFrame extends javax.swing.JFr
 
             },
             new String [] {
-                "FECHA", "CUIT", "CLIENTE", "IMPORTE"
+                "FECHA", "CUIT", "CLIENTE", "IMPORTE", "ORIGEN"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -90,7 +90,7 @@ public class FacturasMercadoPagoCompletadasFacturarFrame extends javax.swing.JFr
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(volverBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -177,6 +177,11 @@ public class FacturasMercadoPagoCompletadasFacturarFrame extends javax.swing.JFr
                 o[1] = ccmp.getCuit();
                 o[2] = ccmp.getNombre();
                 o[3] = df.format(ccmp.getImporte());
+                if (ccmp.getOrigen() != null) {
+                    o[4] = ccmp.getOrigen();
+                } else {
+                    o[4] = "";
+                }
                 tbl.addRow(o);
             }
             tabla.setModel(tbl);

@@ -115,6 +115,16 @@ public class CompraClienteMercadoPagoBo {
         return listCompras;
     }
     
+    public List<CompraClienteMercadoPago> getAllFacturasDeInscriptosPendientesDeProcesar() throws Exception {
+        List<CompraClienteMercadoPago> listCompras = null;
+        try {
+            listCompras = dao.getAllFacturasDeInscriptosPendientesDeProcesar();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return listCompras;
+    }
+    
     public List<CompraClienteMercadoPago> getComprasParaProcesar(Double limiteCompras) throws Exception {
         List<CompraClienteMercadoPago> listCompras = null;
         List<CompraClienteMercadoPago> comprasParaFacturar = new ArrayList<>();
