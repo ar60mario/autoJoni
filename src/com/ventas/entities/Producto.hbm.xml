@@ -21,6 +21,7 @@
         <property name="auto" type="boolean" column="AUTO"/>
         <property name="panificado" type="boolean" column="PANIFICADO"/>
         <property name="fabricado" type="boolean" column="FABRICADO"/>
+        <property name="esLogistica" type="boolean" column="ES_LOGISTICA"/>
         <many-to-one name="rubro"
                     class="com.ventas.entities.Rubro"
                      lazy="false">

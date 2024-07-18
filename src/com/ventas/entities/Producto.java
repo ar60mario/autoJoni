@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.entities;
 
 /**
@@ -28,11 +23,12 @@ public class Producto {
     private Boolean panificado;
     private AlicuotaIva alicuotaIva;
     private Boolean fabricado;
+    private Boolean esLogistica;
 
     public Producto() {
     }
 
-    public Producto(Long id, Integer codigo, Long codigoBarras, String detalle, Double precio, Float impuesto, Double sugerido, Boolean inactivo, Float stock, Float stockMinimo, Rubro rubro, SubRubro subRubro, Double costoP, Double costoI, Boolean auto, Boolean panificado, AlicuotaIva alicuotaIva, Boolean fabricado) {
+    public Producto(Long id, Integer codigo, Long codigoBarras, String detalle, Double precio, Float impuesto, Double sugerido, Boolean inactivo, Float stock, Float stockMinimo, Rubro rubro, SubRubro subRubro, Double costoP, Double costoI, Boolean auto, Boolean panificado, AlicuotaIva alicuotaIva, Boolean fabricado, Boolean esLogistica) {
         this.id = id;
         this.codigo = codigo;
         this.codigoBarras = codigoBarras;
@@ -48,9 +44,10 @@ public class Producto {
         this.costoP = costoP;
         this.costoI = costoI;
         this.auto = auto;
-        this.panificado=panificado;
-        this.alicuotaIva=alicuotaIva;
-        this.fabricado=fabricado;
+        this.panificado = panificado;
+        this.alicuotaIva = alicuotaIva;
+        this.fabricado = fabricado;
+        this.esLogistica = esLogistica;
     }
 
     public Long getId() {
@@ -172,7 +169,7 @@ public class Producto {
     public void setAuto(Boolean auto) {
         this.auto = auto;
     }
-    
+
     public Boolean getPanificado() {
         return panificado;
     }
@@ -180,7 +177,7 @@ public class Producto {
     public void setPanificado(Boolean panificado) {
         this.panificado = panificado;
     }
-    
+
     public AlicuotaIva getAlicuotaIva() {
         return alicuotaIva;
     }
@@ -188,7 +185,7 @@ public class Producto {
     public void setAlicuotaIva(AlicuotaIva alicuotaIva) {
         this.alicuotaIva = alicuotaIva;
     }
-    
+
     public Boolean getFabricado() {
         return fabricado;
     }
@@ -196,4 +193,13 @@ public class Producto {
     public void setFabricado(Boolean fabricado) {
         this.fabricado = fabricado;
     }
+
+    public Boolean getEsLogistica() {
+        return esLogistica;
+    }
+
+    public void setEsLogistica(Boolean esLogistica) {
+        this.esLogistica = esLogistica;
+    }
+    
 }

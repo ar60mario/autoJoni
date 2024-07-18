@@ -17,6 +17,11 @@
         <property name="detalle" type="string" column="DETALLE"/>
         <property name="precio" type="double" column="PRECIO"/>
         <property name="impuesto" type="float" column="IMPUESTO"/>
+        <property name="porcentualMaximoVentaAutomatica" type="float" 
+                  column="PORCENTUAL_MAXIMO_VENTA_AUTOMATICA"/>
+        <property name="cantidadMinimaVenta" type="integer" column="CANTIDAD_MINIMA_VENTA"/>
+        <property name="cantidadMaximaVenta" type="integer" column="CANTIDAD_MAXIMA_VENTA"/>
+        <property name="ventaSinStock" type="boolean" column="VENTA_SIN_STOCK"/>
         <many-to-one name="rubro"
                     class="com.ventas.entities.Rubro"
                      lazy="false">

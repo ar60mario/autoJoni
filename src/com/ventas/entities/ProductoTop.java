@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.entities;
 
 /**
@@ -23,11 +18,15 @@ public class ProductoTop {
     private Float impuesto;
     private Rubro rubro;
     private SubRubro subRubro;
+    private Float porcentualMaximoVentaAutomatica;
+    private Integer cantidadMinimaVenta;
+    private Integer cantidadMaximaVenta;
+    private Boolean ventaSinStock;
 
     public ProductoTop() {
     }
 
-    public ProductoTop(Long id, Integer codigo, Boolean activo, Boolean usado, Integer orden, Integer cantidad, Boolean panificado, Float stock, String detalle, Double precio, Float impuesto, Rubro rubro, SubRubro subRubro) {
+    public ProductoTop(Long id, Integer codigo, Boolean activo, Boolean usado, Integer orden, Integer cantidad, Boolean panificado, Float stock, String detalle, Double precio, Float impuesto, Rubro rubro, SubRubro subRubro, Float porcentualMaximoVentaAutomatica, Integer cantidadMinimaVenta, Integer cantidadMaximaVenta, Boolean ventaSinStock) {
         this.id = id;
         this.codigo = codigo;
         this.activo = activo;
@@ -41,6 +40,10 @@ public class ProductoTop {
         this.impuesto = impuesto;
         this.rubro = rubro;
         this.subRubro = subRubro;
+        this.porcentualMaximoVentaAutomatica = porcentualMaximoVentaAutomatica;
+        this.cantidadMinimaVenta = cantidadMinimaVenta;
+        this.cantidadMaximaVenta = cantidadMaximaVenta;
+        this.ventaSinStock = ventaSinStock;
     }
 
     public Long getId() {
@@ -147,4 +150,36 @@ public class ProductoTop {
         this.subRubro = subRubro;
     }
 
+    public Float getPorcentualMaximoVentaAutomatica() {
+        return porcentualMaximoVentaAutomatica;
+    }
+
+    public void setPorcentualMaximoVentaAutomatica(Float porcentualMaximoVentaAutomatica) {
+        this.porcentualMaximoVentaAutomatica = porcentualMaximoVentaAutomatica;
+    }
+
+    public Integer getCantidadMinimaVenta() {
+        return cantidadMinimaVenta;
+    }
+
+    public void setCantidadMinimaVenta(Integer cantidadMinimaVenta) {
+        this.cantidadMinimaVenta = cantidadMinimaVenta;
+    }
+
+    public Integer getCantidadMaximaVenta() {
+        return cantidadMaximaVenta;
+    }
+
+    public void setCantidadMaximaVenta(Integer cantidadMaximaVenta) {
+        this.cantidadMaximaVenta = cantidadMaximaVenta;
+    }
+
+    public Boolean getVentaSinStock() {
+        return ventaSinStock;
+    }
+
+    public void setVentaSinStock(Boolean ventaSinStock) {
+        this.ventaSinStock = ventaSinStock;
+    }
+    
 }

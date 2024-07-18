@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
 import com.ventas.entities.AlicuotaIva;
@@ -93,6 +88,7 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
         comboAlic = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         fabricacionChk = new javax.swing.JCheckBox();
+        esLogisticaChk = new javax.swing.JCheckBox();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -114,18 +110,8 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
         });
 
         idTxt.setText("CODIGO");
-        idTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idTxtActionPerformed(evt);
-            }
-        });
 
         codigoBarrasTxt.setText("Codigo de Barras");
-        codigoBarrasTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codigoBarrasTxtActionPerformed(evt);
-            }
-        });
 
         impuestoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         impuestoTxt.setText("Impuesto");
@@ -191,6 +177,8 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
 
         fabricacionChk.setText("Fabricación");
 
+        esLogisticaChk.setText("Es Logística");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -208,7 +196,8 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
                         .addComponent(jLabel10)
                         .addComponent(jLabel5)
                         .addComponent(jLabel6)
-                        .addComponent(jLabel15)))
+                        .addComponent(jLabel15)
+                        .addComponent(esLogisticaChk)))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -225,42 +214,41 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
                                             .addComponent(precioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(jLabel11)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGap(93, 93, 93)
                                             .addComponent(jLabel2)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel14)))
-                            .addComponent(precioCostoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(10, 10, 10)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(comboSubRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboRubro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12)
                                     .addComponent(jLabel13)
-                                    .addComponent(volerBtn))))
-                        .addContainerGap())
+                                    .addComponent(volerBtn)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel12)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(panificadoChk)
+                                            .addComponent(fabricacionChk))))))
+                        .addContainerGap(10, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(idTxt, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(impuestoTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                             .addComponent(sugeridoTxt, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(57, 57, 57)
-                                .addComponent(impuestoCostoTxt)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel8)
+                                .addGap(0, 240, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel8))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(137, 137, 137)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(fabricacionChk)
-                                            .addComponent(panificadoChk))))
-                                .addGap(0, 34, Short.MAX_VALUE))))
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(precioCostoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                                    .addComponent(impuestoCostoTxt))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(comboAlic, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -278,48 +266,47 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
                     .addComponent(codigoBarrasTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(inactivoChk))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel14))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(precioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel2)
-                            .addComponent(precioCostoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(precioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(impuestoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(impuestoCostoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(precioCostoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(sugeridoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panificadoChk))
+                    .addComponent(impuestoCostoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboAlic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(fabricacionChk))
+                    .addComponent(panificadoChk))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel9))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(comboRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel12)
+                        .addComponent(jLabel9))
+                    .addComponent(fabricacionChk))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(comboSubRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(esLogisticaChk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarBtn)
                     .addComponent(volerBtn))
@@ -330,22 +317,14 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void volerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volerBtnActionPerformed
-        AbmProductosInactivosFrame abmProductoFrame = new AbmProductosInactivosFrame(filtro);
+        AbmProductoFrame abmProductoFrame = new AbmProductoFrame(filtro);
         abmProductoFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_volerBtnActionPerformed
 
-    private void idTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idTxtActionPerformed
-
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         this.guardar();
     }//GEN-LAST:event_guardarBtnActionPerformed
-
-    private void codigoBarrasTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoBarrasTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codigoBarrasTxtActionPerformed
 
     private void comboRubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRubroActionPerformed
         // TODO add your handling code here:
@@ -398,6 +377,7 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboAlic;
     private javax.swing.JComboBox comboRubro;
     private javax.swing.JComboBox comboSubRubro;
+    private javax.swing.JCheckBox esLogisticaChk;
     private javax.swing.JCheckBox fabricacionChk;
     private javax.swing.JButton guardarBtn;
     private javax.swing.JTextField idTxt;
@@ -484,6 +464,11 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
             }
             producto.setStock(0F);
             producto.setStockMinimo(0F);
+            if(esLogisticaChk.isSelected()){
+                producto.setEsLogistica(true);
+            }else{
+                producto.setEsLogistica(false);
+            }
             if (asignarRubro(producto)) {
                 if (asignarSubRubro(producto)) {
                     try {
@@ -504,6 +489,8 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
             llenarComboRubro();
             llenarComboSubRubro();
             nombreTxt.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR GUARDANDO PRODUCTO");
         }
     }
 
@@ -526,6 +513,7 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
         impuestoCostoTxt.setVisible(false);
         jLabel7.setVisible(false);
         sugeridoTxt.setVisible(false);
+        esLogisticaChk.setSelected(false);
     }
 
     private void llenarComboRubro() {
@@ -606,7 +594,20 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
             comboAlic.requestFocus();
             return false;
         }
-        return true;
+        Producto pr2 = null;
+        Integer codigo = Integer.valueOf(idTxt.getText());
+        try {
+            pr2 = new ProductoService().getProductoByCodigo(codigo);
+        } catch (Exception ex) {
+            return true;
+        }
+        try{
+            int r = pr2.getCodigo();
+            System.out.println(r);
+            return false;
+        } catch (Exception ex){
+            return true;
+        }
     }
 
     private boolean asignarRubro(Producto prod) {
@@ -636,6 +637,7 @@ public class NuevoProductoFrame extends javax.swing.JFrame {
         try {
             sig = new ProductoService().getUltimoCodigo();
         } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(this, "ERROR OBTENIENDO");
 //            Logger.getLogger(NuevoProductoFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (sig != null) {

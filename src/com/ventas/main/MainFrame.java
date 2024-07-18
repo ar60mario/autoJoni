@@ -646,7 +646,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void productosUtilizadosMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosUtilizadosMnuActionPerformed
         productosUtilizados();
-
     }//GEN-LAST:event_productosUtilizadosMnuActionPerformed
 
     private void salirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirBtnActionPerformed
