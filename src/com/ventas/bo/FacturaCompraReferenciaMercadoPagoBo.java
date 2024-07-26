@@ -15,7 +15,8 @@ public class FacturaCompraReferenciaMercadoPagoBo {
 
     private final FacturaCompraReferenciaMercadoPagoDao dao = new FacturaCompraReferenciaMercadoPagoDao();
 
-    public FacturaCompraReferenciaMercadoPago saveFacturaCompraReferenciaMercadoPago(FacturaCompraReferenciaMercadoPago fcrmp)
+    public FacturaCompraReferenciaMercadoPago 
+        saveFacturaCompraReferenciaMercadoPago(FacturaCompraReferenciaMercadoPago fcrmp)
             throws Exception {
         FacturaCompraReferenciaMercadoPago fact = null;
         try {

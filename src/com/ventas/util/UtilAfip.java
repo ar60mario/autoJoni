@@ -69,7 +69,7 @@ public class UtilAfip {
                             new Variant(tipo_cbte),
                             new Variant(puntoVenta));
                     String excepcion = Dispatch.get(wsfev1, "Excepcion").toString();
-//                        System.out.println(wsfev1);
+                        System.out.println(wsfev1);
 //                        //JOptionPane.showMessageDialog(this, "Ult.Comprb." + ult.toString());
 //                        System.out.println("Ult.Comprb." + ult.toString());
 //                    Integer numf = Integer.valueOf(ult.toString());
@@ -200,6 +200,7 @@ public class UtilAfip {
                     return null;
                 }
             } else {
+                JOptionPane.showMessageDialog(null, "ERROR TOKEN");
                 return null;
             }
         } else {
@@ -212,31 +213,40 @@ public class UtilAfip {
             String tipoDocCli, Double gravado, Double impuesto, Double iva, Double total,
             Date fechaFactura) {
         if (cuitTitular.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 1");
             return false;
         }
         if (tipoDocTit.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 2");
             return false;
         }
         if (cuitCliente.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 3");
             return false;
         }
         if (tipoDocCli.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 4");
             return false;
         }
         if (gravado < 0.01) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 5");
             return false;
         }
         if (impuesto < 0.01) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 6");
             return false;
         }
         if (iva < 0.01) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 7");
             return false;
         }
         if (total < 0.01) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 8");
             return false;
         }
         Date hoy = new Date();
         if (hoy.before(fechaFactura)) {
+            JOptionPane.showMessageDialog(null, "ERR VALIDAR 9");
             return false;
         }
         return true;

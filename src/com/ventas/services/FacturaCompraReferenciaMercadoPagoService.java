@@ -74,19 +74,19 @@ public class FacturaCompraReferenciaMercadoPagoService {
         return fc;
     }
 
-//    public void saveFacturaCompra(FacturaCompra fc) throws Exception {
-//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-//        Transaction tx = session.beginTransaction();
-//        FacturaCompraBo fBo = new FacturaCompraBo();
-//        try {
-//            fBo.saveFacturaCompra(fc);
-//            tx.commit();
-//        } catch (Exception ex) {
-//            tx.rollback();
-//            throw new Exception(ex);
-//        }
-//    }
-//    
+    public void saveFacturaCompraRmp(FacturaCompraReferenciaMercadoPago fc) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+        try {
+            fBo.saveFacturaCompraReferenciaMercadoPago(fc);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
 //    public void updateFacturaCompra(FacturaCompra fc) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();

@@ -72,7 +72,43 @@ public class FacturaService {
                     new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
                 }
                 if (fcrmp != null) {
-                    fcrmp.setArticuloCompra(artCmpr);
+//                    fcrmp.setArticuloCompra(artCmpr);
+                    fcrmp.setCompraClienteMercadoPago(compra);
+                    fcrmp.setIvaVentas(ivaVentas);
+                    new FacturaCompraReferenciaMercadoPagoBo().saveFacturaCompraReferenciaMercadoPago(fcrmp);
+                }
+                tx.commit();
+            } catch (Exception ex) {
+//                bolean = false;
+                tx.rollback();
+                throw new Exception(ex);
+            }
+        }
+//        if (bolean) {
+//            
+//        }
+    }
+    
+    public void saveFacturaCompleta2(IvaVentas iv, List<RenglonFactura> rf,
+            CompraClienteMercadoPago compra,
+            FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        IvaVentasBo ivaBO = new IvaVentasBo();
+        IvaVentas ivaVentas = ivaBO.saveIvaVentas(iv);
+//        Boolean bolean = true;
+        for (RenglonFactura renglon : rf) {
+            renglon.setIvaVentas(ivaVentas);
+            try {
+                RenglonFacturaBo bo = new RenglonFacturaBo();
+                bo.saveRenglon(renglon);
+//                ArticuloCompraBo bo2 = new ArticuloCompraBo();
+//                bo2.updateArticuloCompra(artCmpr);
+                if (compra != null) {
+                    compra = new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
+                }
+                if (fcrmp != null) {
+//                    fcrmp.setArticuloCompra(artCmpr);
                     fcrmp.setCompraClienteMercadoPago(compra);
                     fcrmp.setIvaVentas(ivaVentas);
                     new FacturaCompraReferenciaMercadoPagoBo().saveFacturaCompraReferenciaMercadoPago(fcrmp);

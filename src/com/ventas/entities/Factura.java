@@ -29,11 +29,12 @@ public class Factura {
     private Double total;
     private Boolean anulado;
     private Boolean fabricacion;
+    private CompraClienteMercadoPago compraClienteMercadoPago;
 
     public Factura() {
     }
 
-    public Factura(Long id, Date fecha, Cliente cliente, Double gravado, Double gravado0, Double gravado10, Double gravado27, Double exento, Double noGravado, Double impuesto, Double iva, Double iva0, Double iva10, Double iva27, Double total, Boolean anulado, Boolean fabricacion) {
+    public Factura(Long id, Date fecha, Cliente cliente, Double gravado, Double gravado0, Double gravado10, Double gravado27, Double exento, Double noGravado, Double impuesto, Double iva, Double iva0, Double iva10, Double iva27, Double total, Boolean anulado, Boolean fabricacion, CompraClienteMercadoPago compraClienteMercadoPago) {
         this.id = id;
         this.fecha = fecha;
         this.cliente = cliente;
@@ -51,6 +52,7 @@ public class Factura {
         this.total = total;
         this.anulado = anulado;
         this.fabricacion = fabricacion;
+        this.compraClienteMercadoPago = compraClienteMercadoPago;
     }
 
     public Long getId() {
@@ -188,4 +190,13 @@ public class Factura {
     public void setFabricacion(Boolean fabricacion) {
         this.fabricacion = fabricacion;
     }
+
+    public CompraClienteMercadoPago getCompraClienteMercadoPago() {
+        return compraClienteMercadoPago;
+    }
+
+    public void setCompraClienteMercadoPago(CompraClienteMercadoPago compraClienteMercadoPago) {
+        this.compraClienteMercadoPago = compraClienteMercadoPago;
+    }
+    
 }

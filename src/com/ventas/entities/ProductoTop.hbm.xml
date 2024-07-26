@@ -21,6 +21,7 @@
                   column="PORCENTUAL_MAXIMO_VENTA_AUTOMATICA"/>
         <property name="cantidadMinimaVenta" type="integer" column="CANTIDAD_MINIMA_VENTA"/>
         <property name="cantidadMaximaVenta" type="integer" column="CANTIDAD_MAXIMA_VENTA"/>
+        <property name="fraccion" type="integer" column="FRACCION"/>
         <property name="ventaSinStock" type="boolean" column="VENTA_SIN_STOCK"/>
         <many-to-one name="rubro"
                     class="com.ventas.entities.Rubro"

@@ -20,11 +20,12 @@ public class Compra {
     private Float cantidad;
     private Double nuevoPrecio;
     private Float nuevoImpuesto;
+    private Fabricante fabricante;
 
     public Compra() {
     }
 
-    public Compra(Long id, String proveedor, String comprobante, Date fecha, Producto producto, Float cantidad, Double nuevoPrecio, Float nuevoImpuesto) {
+    public Compra(Long id, String proveedor, String comprobante, Date fecha, Producto producto, Float cantidad, Double nuevoPrecio, Float nuevoImpuesto, Fabricante fabricante) {
         this.id = id;
         this.proveedor = proveedor;
         this.comprobante = comprobante;
@@ -33,6 +34,7 @@ public class Compra {
         this.cantidad = cantidad;
         this.nuevoPrecio = nuevoPrecio;
         this.nuevoImpuesto = nuevoImpuesto;
+        this.fabricante = fabricante;
     }
 
     public Long getId() {
@@ -99,4 +101,12 @@ public class Compra {
         this.nuevoImpuesto = nuevoImpuesto;
     }
 
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
+    }
+    
 }

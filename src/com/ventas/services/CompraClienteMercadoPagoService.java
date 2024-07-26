@@ -73,16 +73,18 @@ public class CompraClienteMercadoPagoService {
         }
     }
     
-    public void updateCompraClientesImportados(CompraClienteMercadoPago compra) throws Exception {
+    public CompraClienteMercadoPago updateCompraClientesImportados(CompraClienteMercadoPago compra) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
+        CompraClienteMercadoPago coCliMePa;
         try {
-            new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
+            coCliMePa = new CompraClienteMercadoPagoBo().updateCompraClientesImportados(compra);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
+        return coCliMePa;
     }
     
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() throws Exception {

@@ -51,7 +51,7 @@ public class ProductoService {
 
         return productoLista;
     }
-    
+
     public void guardarProducto(Producto producto) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -78,7 +78,21 @@ public class ProductoService {
         }
         return producto;
     }
-    
+
+    public Producto getProductoLogistica() throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Producto producto = null;
+        try {
+            producto = new ProductoBo().getProductoLogistica();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+
     public Producto getProductoPanificadoByCodigo(Integer codigo) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -92,7 +106,7 @@ public class ProductoService {
         }
         return producto;
     }
-    
+
     public Producto getProductoByCodigoC(Integer codigo) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -106,7 +120,7 @@ public class ProductoService {
         }
         return producto;
     }
-    
+
     public Producto getProductoByCodigoV(Integer codigo) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -121,6 +135,7 @@ public class ProductoService {
         return producto;
     }
 //
+
     public Producto getByCodigoPanificadoV(Integer codigo) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -134,6 +149,7 @@ public class ProductoService {
         }
         return producto;
     }
+
     public Producto updateProducto(Producto producto) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -184,7 +200,7 @@ public class ProductoService {
         }
         return productos;
     }
-    
+
     public List<Producto> getProductosByFiltroAndRubro(String filtro, Rubro rubro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -198,7 +214,7 @@ public class ProductoService {
         }
         return productos;
     }
-    
+
     public List<Producto> getProductosByFiltroAndRubroEliminados(String filtro, Rubro rubro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -212,7 +228,7 @@ public class ProductoService {
         }
         return productos;
     }
-    
+
     public List<Producto> getProductosPanificadosByFiltro(String filtro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -256,7 +272,7 @@ public class ProductoService {
         }
         return productoLista;
     }
-    
+
     public List<Producto> getAllProductosOrdenadoByNombre(String filtro) throws Exception {
         List<Producto> productoLista = new ArrayList();
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -331,7 +347,7 @@ public class ProductoService {
         }
         return productoLista;
     }
-    
+
     public Producto getProductoByCodigoBarras(Long codigoBarras) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -345,7 +361,7 @@ public class ProductoService {
         }
         return producto;
     }
-    
+
     public Producto getProductoPanificadoByCodigoBarras(Long codigoBarras) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -359,7 +375,7 @@ public class ProductoService {
         }
         return producto;
     }
-    
+
     public Integer getUltimoCodigo() throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -373,7 +389,7 @@ public class ProductoService {
         }
         return c;
     }
-    
+
     public List<Producto> getProductosEntreCodigos(Integer de, Integer a) throws Exception {
         List<Producto> productos = new ArrayList();
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -388,5 +404,5 @@ public class ProductoService {
         }
         return productos;
     }
-    
+
 }

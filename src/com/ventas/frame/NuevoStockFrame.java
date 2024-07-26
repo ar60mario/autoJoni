@@ -6,11 +6,14 @@
 package com.ventas.frame;
 
 import com.ventas.entities.Compra;
+import com.ventas.entities.Fabricante;
 import com.ventas.entities.Producto;
 import com.ventas.entities.ProductoTop;
 import com.ventas.services.CompraService;
+import com.ventas.services.FabricanteService;
 import com.ventas.services.ProductoService;
 import com.ventas.services.ProductoTopService;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +29,9 @@ import javax.swing.JOptionPane;
 public class NuevoStockFrame extends javax.swing.JFrame {
 
     private List<Producto> productos = null;
+    private List<Fabricante> fabricantes;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private DecimalFormat df = new DecimalFormat("#0.00");
 
     /**
      * Creates new form NuevoStockFrame
@@ -53,7 +58,6 @@ public class NuevoStockFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         filtroTxt = new javax.swing.JTextField();
         combo = new javax.swing.JComboBox<>();
-        proveedorTxt = new javax.swing.JTextField();
         comprobanteTxt = new javax.swing.JTextField();
         fechaTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -68,11 +72,14 @@ public class NuevoStockFrame extends javax.swing.JFrame {
         impuestoTxt = new javax.swing.JTextField();
         actualizarChk = new javax.swing.JCheckBox();
         jLabel8 = new javax.swing.JLabel();
+        comboF = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        finalTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("NUEVO STOCK");
 
-        jLabel1.setText("Proveedor:");
+        jLabel1.setText("Fabricante:");
 
         jLabel2.setText("Comprobante:");
 
@@ -83,8 +90,11 @@ public class NuevoStockFrame extends javax.swing.JFrame {
         filtroTxt.setText("FILTRO");
 
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        proveedorTxt.setText("PROVEEDOR");
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
 
         comprobanteTxt.setText("COMPROBANTE");
 
@@ -124,12 +134,12 @@ public class NuevoStockFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Nuevo Precio:");
+        jLabel6.setText("Neto:");
 
         precioTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         precioTxt.setText("PRECIO");
 
-        jLabel7.setText("Nuevo Impuesto:");
+        jLabel7.setText("Imp. Int.:");
 
         impuestoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         impuestoTxt.setText("IMPUESTO");
@@ -142,6 +152,13 @@ public class NuevoStockFrame extends javax.swing.JFrame {
         });
 
         jLabel8.setText("<<< FORMATO DD/MM/AAAA");
+
+        comboF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel9.setText("Final c/Iva:");
+
+        finalTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        finalTxt.setText("FINAL");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,49 +176,56 @@ public class NuevoStockFrame extends javax.swing.JFrame {
                         .addComponent(volverBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboF, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(filtroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(buscarBtn))
-                                        .addComponent(proveedorTxt)
-                                        .addComponent(comprobanteTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
+                                    .addComponent(comprobanteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel8))))
+                                        .addComponent(jLabel8))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(filtroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buscarBtn)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(24, 24, 24)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cantidadTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                                    .addComponent(precioTxt))
-                                .addGap(79, 79, 79)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(71, 71, 71)
+                                        .addComponent(cantidadTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5))
+                                .addGap(194, 194, 194)
                                 .addComponent(actualizarChk))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(impuestoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 106, Short.MAX_VALUE)))
+                                .addGap(275, 275, 275)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(finalTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                                    .addComponent(precioTxt)
+                                    .addComponent(impuestoTxt))))
+                        .addGap(0, 27, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(proveedorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -216,7 +240,7 @@ public class NuevoStockFrame extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(filtroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscarBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(21, 21, 21)
                 .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -231,7 +255,11 @@ public class NuevoStockFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(impuestoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(finalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarBtn)
                     .addComponent(nuevoBtn)
@@ -267,6 +295,13 @@ public class NuevoStockFrame extends javax.swing.JFrame {
             impuestoTxt.setEditable(false);
         }
     }//GEN-LAST:event_actualizarChkActionPerformed
+
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+        int row = combo.getSelectedIndex();
+        if (row > 0) {
+            calcularPrecios();
+        }
+    }//GEN-LAST:event_comboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,9 +344,11 @@ public class NuevoStockFrame extends javax.swing.JFrame {
     private javax.swing.JButton buscarBtn;
     private javax.swing.JTextField cantidadTxt;
     private javax.swing.JComboBox<String> combo;
+    private javax.swing.JComboBox<String> comboF;
     private javax.swing.JTextField comprobanteTxt;
     private javax.swing.JTextField fechaTxt;
     private javax.swing.JTextField filtroTxt;
+    private javax.swing.JTextField finalTxt;
     private javax.swing.JButton guardarBtn;
     private javax.swing.JTextField impuestoTxt;
     private javax.swing.JLabel jLabel1;
@@ -322,17 +359,20 @@ public class NuevoStockFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JButton nuevoBtn;
     private javax.swing.JTextField precioTxt;
-    private javax.swing.JTextField proveedorTxt;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
     private void guardar() {
         if (validar()) {
             Compra co = new Compra();
-            co.setProveedor(proveedorTxt.getText());
+            int row = comboF.getSelectedIndex();
+            co.setProveedor("");
+            Fabricante fa = fabricantes.get(row - 1);
             co.setComprobante(comprobanteTxt.getText());
+            co.setFabricante(fa);
             Date fe1 = new Date();
             try {
                 fe1 = sdf.parse(fechaTxt.getText());
@@ -348,7 +388,7 @@ public class NuevoStockFrame extends javax.swing.JFrame {
             if (co.getCantidad() != null) {
                 Float cani = co.getCantidad();
                 co.setCantidad(cani + Float.valueOf(cantidadTxt.getText().replace(",", ".")));
-            }else{
+            } else {
                 co.setCantidad(Float.valueOf(cantidadTxt.getText().replace(",", ".")));
             }
             co.setFecha(fe1);
@@ -380,8 +420,10 @@ public class NuevoStockFrame extends javax.swing.JFrame {
             } catch (Exception ex) {
 //                Logger.getLogger(NuevoStockFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if(pt != null){
+            if (pt != null) {
                 pt.setStock(producto.getStock());
+                pt.setPrecio(co.getNuevoPrecio());
+                pt.setImpuesto(co.getNuevoImpuesto());
             }
 ////            System.out.println(producto);
 ////            System.out.println(co);
@@ -390,7 +432,7 @@ public class NuevoStockFrame extends javax.swing.JFrame {
                 producto = new ProductoService().updateProducto(producto);
                 co.setProducto(producto);
                 new CompraService().saveCompra(co);
-                if(pt != null){
+                if (pt != null) {
                     new ProductoTopService().updateProductoTop(pt);
                 }
                 limpiarAbajo();
@@ -412,11 +454,23 @@ public class NuevoStockFrame extends javax.swing.JFrame {
     }
 
     private void limpiarCampos() {
-        proveedorTxt.setText("");
+        fabricantes = null;
+        try {
+            fabricantes = new FabricanteService().getAllFabricantesOrdenadoActivos();
+        } catch (Exception ex) {
+            Logger.getLogger(NuevoStockFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        comboF.removeAllItems();
+        comboF.addItem("");
+        for (Fabricante f : fabricantes) {
+            comboF.addItem(f.getNombre());
+        }
+//        proveedorTxt.setText("");
         comprobanteTxt.setText("");
         fechaTxt.setText("");
         combo.removeAllItems();
         filtroTxt.setText("");
+        finalTxt.setText("");
         cantidadTxt.setText("");
         actualizarChk.setSelected(false);
         precioTxt.setText("");
@@ -449,10 +503,14 @@ public class NuevoStockFrame extends javax.swing.JFrame {
     }
 
     private boolean validar() {
-        if (proveedorTxt.getText().isEmpty()) {
-            proveedorTxt.requestFocus();
+        int row = comboF.getSelectedIndex();
+        if (row < 1) {
             return false;
         }
+//        if (proveedorTxt.getText().isEmpty()) {
+//            proveedorTxt.requestFocus();
+//            return false;
+//        }
         if (comprobanteTxt.getText().isEmpty()) {
             comprobanteTxt.requestFocus();
             return false;
@@ -502,7 +560,24 @@ public class NuevoStockFrame extends javax.swing.JFrame {
         cantidadTxt.setText("");
         precioTxt.setText("");
         impuestoTxt.setText("");
+        finalTxt.setText("");
         actualizarChk.setSelected(false);
         filtroTxt.requestFocus();
+    }
+
+    private void calcularPrecios() {
+        int row = combo.getSelectedIndex();
+        if (row < 1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un item para cargar en factura");
+            return;
+        }
+        Producto pr = productos.get(row - 1);
+        Double neto = pr.getPrecio();
+        Float impuesto = pr.getImpuesto();
+        Float porcIva = pr.getAlicuotaIva().getAlicuota();
+        Double precioFinal = (neto * (1 + porcIva / 100)) + impuesto;
+        precioTxt.setText(df.format(neto));
+        impuestoTxt.setText(df.format(impuesto));
+        finalTxt.setText(df.format(precioFinal));
     }
 }

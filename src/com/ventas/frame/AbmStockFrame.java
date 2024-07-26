@@ -77,7 +77,7 @@ public class AbmStockFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Proveedor", "Fecha", "Comprobante", "Producto", "Cantidad", "IMPU", "Rubro", "SubRubro"
+                "Fabricante", "Fecha", "Comprobante", "Producto", "Cantidad", "IMPU", "Rubro", "SubRubro"
             }
         ) {
             Class[] types = new Class [] {
@@ -261,7 +261,7 @@ public class AbmStockFrame extends javax.swing.JFrame {
             Double total = 0.0;
             for (Compra c : comprxs) {
                 Object o[] = new Object[8];
-                o[0] = c.getProveedor();
+                o[0] = c.getFabricante().getNombre();
                 o[1] = sdf.format(c.getFecha());
                 o[2] = c.getComprobante();
                 o[3] = c.getProducto().getDetalle();

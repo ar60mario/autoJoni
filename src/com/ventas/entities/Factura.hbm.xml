@@ -27,5 +27,10 @@
                      lazy="false">
                      <column name="ID_CLIENTE" not-null="false"/>
         </many-to-one>
+        <many-to-one name="compraClienteMercadoPago"
+                    class="com.ventas.entities.CompraClienteMercadoPago"
+                     lazy="false">
+                     <column name="ID_COMPRA_CLIENTE_MERCADO_PAGO" not-null="false"/>
+        </many-to-one>
     </class>
 </hibernate-mapping>

@@ -8,20 +8,16 @@
         <id name="id" column="ID">
             <generator class="identity"/>
         </id>
-        <many-to-one name="articuloCompra"
-                    class="com.ventas.entities.ArticuloCompra"
-                     lazy="false">
-                     <column name="ID_ARTICULO_COMPRA" not-null="true"/>
-        </many-to-one>
+        
         <many-to-one name="compraClienteMercadoPago"
-                    class="com.ventas.entities.CompraClienteMercadoPago"
+                     class="com.ventas.entities.CompraClienteMercadoPago"
                      lazy="false">
-                     <column name="ID_COMPRA_CLIENTE_MERCADO_PAGO" not-null="true"/>
+            <column name="ID_COMPRA_CLIENTE_MERCADO_PAGO" not-null="true"/>
         </many-to-one>
         <many-to-one name="ivaVentas"
-                    class="com.ventas.entities.IvaVentas"
+                     class="com.ventas.entities.IvaVentas"
                      lazy="false">
-                     <column name="ID_IVA_VENTAS" not-null="true"/>
+            <column name="ID_IVA_VENTAS" not-null="true"/>
         </many-to-one>
         
     </class>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
 import com.ventas.entities.Configuracion;
@@ -14,6 +9,7 @@ import com.ventas.services.ConfiguracionService;
 import com.ventas.services.ConfiguracionTopService;
 import com.ventas.services.ProductoService;
 import com.ventas.services.ProductoTopService;
+import com.ventas.util.UtilFrame;
 import com.ventas.util.UtilTabla;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -67,11 +63,11 @@ public class AbmProductosTopFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Orden", "Código", "Detalle", "Activo", "Precio", "Cnt_vta", "Stk_ant", "Stk_actual"
+                "Detalle", "Neto", "Imp. Int.", "Final c/Iva", "Final Calculado", "Mínimo Vta.", "Máximo Vta.", "Fraccionado", "Stock"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -80,7 +76,7 @@ public class AbmProductosTopFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaProductos);
         if (tablaProductos.getColumnModel().getColumnCount() > 0) {
-            tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(270);
+            tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(270);
         }
 
         nuevoBtn.setText("Nuevo");
@@ -118,7 +114,7 @@ public class AbmProductosTopFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevoBtn)
                         .addGap(18, 18, 18)
@@ -159,7 +155,7 @@ public class AbmProductosTopFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void panificadosChkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_panificadosChkActionPerformed
-        limpiarTabla();
+        UtilFrame.limpiarTabla(tablaProductos);
         if (panificadosChk.isSelected()) {
             llenarTablaPan();
         } else {
@@ -233,31 +229,40 @@ public class AbmProductosTopFrame extends javax.swing.JFrame {
         }
         if (productos != null && !productos.isEmpty()) {
             UtilTabla ut = new UtilTabla();
-            
+
             tablaProductos.setDefaultRenderer(Object.class, ut);
             DefaultTableModel tbl = (DefaultTableModel) tablaProductos.getModel();
             for (ProductoTop p : productos) {
-                Object ob[] = new Object[8];
-                ob[0] = p.getOrden();
-                ob[1] = p.getCodigo();
+                Object ob[] = new Object[9];
+//                ob[0] = p.getOrden();
+//                ob[1] = p.getCodigo();
                 Producto prd = null;
+
                 try {
                     prd = new ProductoService().getProductoByCodigo(p.getCodigo());
                 } catch (Exception ex) {
                     Logger.getLogger(AbmProductosTopFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (prd != null) {
-                    ob[2] = prd.getDetalle();
-                    if (prd.getInactivo()) {
-                        ob[3] = "Inactivo";
-                    } else {
-                        ob[3] = "Activo";
-                    }
-                    ob[4] = df.format((prd.getPrecio() * (1 + pIva / 100)) + prd.getImpuesto());
+                    ob[0] = prd.getDetalle();
+//                    if (prd.getInactivo()) {
+//                        ob[3] = "Inactivo";
+//                    } else {
+//                        ob[3] = "Activo";
+//                    }
+                    Double prec = (prd.getPrecio() * (1 + pIva / 100)) + prd.getImpuesto();
+                    Double neto = prd.getPrecio();
+                    Float impInt = prd.getImpuesto();
+                    ob[1] = df.format(neto);
+                    ob[2] = df.format(impInt);
+                    ob[3] = df.format(prec);
+                    ob[4] = df.format(prec * p.getCantidadMinimaVenta());
+                    ob[8] = prd.getStock();
                 }
-                ob[5] = p.getCantidad();
-                ob[6] = p.getStock();
-                ob[7] = prd.getStock();
+                ob[5] = p.getCantidadMinimaVenta();
+                ob[6] = p.getCantidadMaximaVenta();
+                ob[7] = p.getFraccion();
+
                 tbl.addRow(ob);
             }
             tablaProductos.setModel(tbl);
@@ -362,14 +367,5 @@ public class AbmProductosTopFrame extends javax.swing.JFrame {
         }
     }
 
-    private void limpiarTabla() {
-        int rows = tablaProductos.getRowCount();
-        if (rows > 0) {
-            DefaultTableModel tbl = (DefaultTableModel) tablaProductos.getModel();
-            for (int i = 0; i < rows; i++) {
-                tbl.removeRow(0);
-            }
-            tablaProductos.setModel(tbl);
-        }
-    }
+    
 }

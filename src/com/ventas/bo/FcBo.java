@@ -49,10 +49,10 @@ public class FcBo {
 //
     public void saveFacturaCompleta(Factura f, List<RenglonFc> renglones) throws Exception {
         FcBo fBo = new FcBo();
+        RenglonFcBo rBo = new RenglonFcBo();
         Factura fa = fBo.saveFactura(f);
         for (RenglonFc r : renglones) {
             r.setFactura(fa);
-            RenglonFcBo rBo = new RenglonFcBo();
             rBo.saveRenglon(r);
         }
     }

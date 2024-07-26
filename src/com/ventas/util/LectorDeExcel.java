@@ -82,15 +82,20 @@ public class LectorDeExcel {
         int cantidadFilas = archivoExcel.getSheet(0).getRows();
         Sheet hoja = archivoExcel.getSheet(0);
         AlicuotaIva alicuotaIva = null;
-        alicuotaIva = new AlicuotaIvaService().getAlicuotaIvaByCodigo(3);
+        alicuotaIva = new AlicuotaIvaService().getAlicuotaIvaByCodigo(5);
         List<Producto> listaProductos = new ArrayList<Producto>();
         Boolean salir = false;
+        Rubro ru = null;
+        ru = new RubroService().getRubroByCodigo(1);
+        SubRubro sru = null;
+        sru = new SubRubroService().getSubRubroByCodigo(1);
         for (int i = 1; i < cantidadFilas; i++) {
             try {
                 Producto prod = new Producto();
-                prod.setRubro(new Rubro());
-                prod.setSubRubro(new SubRubro());
+                prod.setRubro(ru);
+                prod.setSubRubro(sru);
                 prod.setInactivo(false);
+                prod.setEsLogistica(false);
                 /*
                  0- Codigo
                  1- Detalle
@@ -102,59 +107,59 @@ public class LectorDeExcel {
                  7- Impuesto
                  */
                 prod.setCodigo(Integer.valueOf(hoja.getCell(0, i).getContents()));
-                prod.setCodigoBarras(Long.valueOf(hoja.getCell(1, i).getContents()));
-                prod.setDetalle(hoja.getCell(2, i).getContents());
+                prod.setCodigoBarras(0L);
+                prod.setDetalle(hoja.getCell(1, i).getContents());
                 prod.setPrecio(Double.valueOf(hoja.getCell(3, i).getContents().replaceAll("\\,", "\\.")));
                 prod.setImpuesto(Float.valueOf(hoja.getCell(4, i).getContents().replaceAll("\\,", "\\.")));
                 prod.setSugerido(0.0);
                 prod.setPanificado(false);
                 prod.setFabricado(false);
                 prod.setAlicuotaIva(alicuotaIva);
-                Rubro rubro = prod.getRubro();
-                RubroService rubroService = new RubroService();
-                Integer rub;
-                if (hoja.getCell(6, i).getContents() != null) {
-                    rub = Integer.valueOf(hoja.getCell(6, i).getContents());
-                    rubro = rubroService.getRubroByCodigo(rub);
-                    if (rubro == null) {
-                        //throw new Exception("Producto en fila " + i + " no existe, Rubro.");
-                        JOptionPane.showMessageDialog(null, "Producto en fila " + i + " no existe Rubro.");
-                        Rubro newRubro = new Rubro();
-                        newRubro.setCodigo(rub);
-                        String st = hoja.getCell(6, i).getContents();
-                        newRubro.setNombre(st);
-                        rubroService.saveRubro(newRubro);
-                        rubro = rubroService.getRubroByCodigo(rub);
-                    }
-                } else {
-                    throw new Exception("Producto en fila " + i + " vacio el Rubro.");
-                }
-                SubRubro subRubro = prod.getSubRubro();
-                SubRubroService subRubroService = new SubRubroService();
-                Integer subRub;
-                if (hoja.getCell(7, i).getContents() != null) {
-                    subRub = Integer.valueOf(hoja.getCell(7, i).getContents());
-                    subRubro = subRubroService.getSubRubroByCodigo(subRub);
-                    if (subRubro == null) {
-                        int x = i + 1;
-                        JOptionPane.showMessageDialog(null, "Producto en fila " + x + " no existe Sub-Rubro.");
-                        SubRubro newSubRubro = new SubRubro();
-                        newSubRubro.setCodigo(subRub);
-                        String st = hoja.getCell(7, i).getContents();
-                        newSubRubro.setDetalle(st);
-                        subRubroService.saveSubRubro(newSubRubro);
-                        subRubro = subRubroService.getSubRubroByCodigo(rub);
-                    }
-                } else {
-                    throw new Exception("Producto en fila " + i + " no existe, Sub-Rubro.");
-                }
-                prod.setRubro(rubro);
-                prod.setSubRubro(subRubro);
+//                Rubro rubro = prod.getRubro();
+//                RubroService rubroService = new RubroService();
+//                Integer rub;
+//                if (hoja.getCell(6, i).getContents() != null) {
+//                    rub = Integer.valueOf(hoja.getCell(6, i).getContents());
+//                    rubro = rubroService.getRubroByCodigo(rub);
+//                    if (rubro == null) {
+//                        //throw new Exception("Producto en fila " + i + " no existe, Rubro.");
+//                        JOptionPane.showMessageDialog(null, "Producto en fila " + i + " no existe Rubro.");
+//                        Rubro newRubro = new Rubro();
+//                        newRubro.setCodigo(rub);
+//                        String st = hoja.getCell(6, i).getContents();
+//                        newRubro.setNombre(st);
+//                        rubroService.saveRubro(newRubro);
+//                        rubro = rubroService.getRubroByCodigo(rub);
+//                    }
+//                } else {
+//                    throw new Exception("Producto en fila " + i + " vacio el Rubro.");
+//                }
+//                SubRubro subRubro = prod.getSubRubro();
+//                SubRubroService subRubroService = new SubRubroService();
+//                Integer subRub;
+//                if (hoja.getCell(7, i).getContents() != null) {
+//                    subRub = Integer.valueOf(hoja.getCell(7, i).getContents());
+//                    subRubro = subRubroService.getSubRubroByCodigo(subRub);
+//                    if (subRubro == null) {
+//                        int x = i + 1;
+//                        JOptionPane.showMessageDialog(null, "Producto en fila " + x + " no existe Sub-Rubro.");
+//                        SubRubro newSubRubro = new SubRubro();
+//                        newSubRubro.setCodigo(subRub);
+//                        String st = hoja.getCell(7, i).getContents();
+//                        newSubRubro.setDetalle(st);
+//                        subRubroService.saveSubRubro(newSubRubro);
+//                        subRubro = subRubroService.getSubRubroByCodigo(rub);
+//                    }
+//                } else {
+//                    throw new Exception("Producto en fila " + i + " no existe, Sub-Rubro.");
+//                }
+//                prod.setRubro(rubro);
+//                prod.setSubRubro(subRubro);
                 prod.setInactivo(false);
-                prod.setStock((Float.valueOf("0.0")));
-                prod.setStockMinimo(Float.valueOf("0.0"));
+                prod.setStock(0F);
+                prod.setStockMinimo(0F);
                 prod.setCostoI(0.0);
-                prod.setCostoP(0.0);
+                prod.setCostoP(Double.valueOf(hoja.getCell(2, i).getContents().replaceAll("\\,", "\\.")));
                 prod.setAuto(false);
                 listaProductos.add(prod);
                 salir = false;
@@ -205,7 +210,7 @@ public class LectorDeExcel {
                     compra.setFecha(sdf.parse(fecha4));
                     compra.setNombre(hoja.getCell(2, i).getContents());
                     compra.setOrigen(hoja.getCell(4, i).getContents());
-                    compra.setOrigen(hoja.getCell(4, i).getContents());
+                    compra.setLetraFactura(hoja.getCell(5, i).getContents());
                     String cui = hoja.getCell(1, i).getContents();
                     int largo = cui.length();
                     String pri;

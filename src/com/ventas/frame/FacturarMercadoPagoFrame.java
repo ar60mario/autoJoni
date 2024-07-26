@@ -864,7 +864,7 @@ class Avanzando implements Runnable {
                 CompraClienteMercadoPago ccmpProceso = ccmp.getCompraMercadoPago();
                 ccmpProceso.setProcesado(true);
                 FacturaCompraReferenciaMercadoPago fcrmp = new FacturaCompraReferenciaMercadoPago();
-                fcrmp.setArticuloCompra(artCmpr);
+//                fcrmp.setArticuloCompra(artCmpr);
                 fcrmp.setCompraClienteMercadoPago(compraMp);
                 fcrmp.setIvaVentas(iv);
                 try {

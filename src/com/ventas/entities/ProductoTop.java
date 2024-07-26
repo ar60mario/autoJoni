@@ -21,12 +21,13 @@ public class ProductoTop {
     private Float porcentualMaximoVentaAutomatica;
     private Integer cantidadMinimaVenta;
     private Integer cantidadMaximaVenta;
+    private Integer fraccion;
     private Boolean ventaSinStock;
 
     public ProductoTop() {
     }
 
-    public ProductoTop(Long id, Integer codigo, Boolean activo, Boolean usado, Integer orden, Integer cantidad, Boolean panificado, Float stock, String detalle, Double precio, Float impuesto, Rubro rubro, SubRubro subRubro, Float porcentualMaximoVentaAutomatica, Integer cantidadMinimaVenta, Integer cantidadMaximaVenta, Boolean ventaSinStock) {
+    public ProductoTop(Long id, Integer codigo, Boolean activo, Boolean usado, Integer orden, Integer cantidad, Boolean panificado, Float stock, String detalle, Double precio, Float impuesto, Rubro rubro, SubRubro subRubro, Float porcentualMaximoVentaAutomatica, Integer cantidadMinimaVenta, Integer cantidadMaximaVenta, Integer fraccion, Boolean ventaSinStock) {
         this.id = id;
         this.codigo = codigo;
         this.activo = activo;
@@ -43,6 +44,7 @@ public class ProductoTop {
         this.porcentualMaximoVentaAutomatica = porcentualMaximoVentaAutomatica;
         this.cantidadMinimaVenta = cantidadMinimaVenta;
         this.cantidadMaximaVenta = cantidadMaximaVenta;
+        this.fraccion = fraccion;
         this.ventaSinStock = ventaSinStock;
     }
 
@@ -172,6 +174,14 @@ public class ProductoTop {
 
     public void setCantidadMaximaVenta(Integer cantidadMaximaVenta) {
         this.cantidadMaximaVenta = cantidadMaximaVenta;
+    }
+
+    public Integer getFraccion() {
+        return fraccion;
+    }
+
+    public void setFraccion(Integer fraccion) {
+        this.fraccion = fraccion;
     }
 
     public Boolean getVentaSinStock() {

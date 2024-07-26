@@ -189,4 +189,20 @@ public class IvaVentasDao extends GenericDao {
         factura = (IvaVentas) query.uniqueResult();
         return factura;
     }
+    
+    public IvaVentas getByLetraNumero2(String letra, Integer sucursal, Integer numero) {
+        IvaVentas factura = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        factura = (IvaVentas) session.createCriteria(IvaVentas.class)
+//                .add(Restrictions.between("fecha", fd, fa))
+                .add(Restrictions.eq("letra", letra))
+                .add(Restrictions.eq("numeroSucursal", sucursal))
+                .add(Restrictions.eq("numeroFactura", numero))
+                .add(Restrictions.eq("tipoDoc", 6))
+//                .addOrder(Order.asc("fecha"))
+//                .addOrder(Order.asc("letra"))
+//                .addOrder(Order.asc("numeroFactura"))
+                .uniqueResult();
+        return factura;
+    }
 }

@@ -84,14 +84,14 @@ public class AbmProductoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Codigo de barra", "Detalle", "Precio", "Impuesto", "Rubro", "Sub rubro", "Sugerido", "Activo", "Stock"
+                "Detalle", "Neto", "Imp. Int.", "Final c/iva", "Stock"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -104,16 +104,11 @@ public class AbmProductoFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaProductos);
         if (tablaProductos.getColumnModel().getColumnCount() > 0) {
-            tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(75);
+            tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(75);
             tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(75);
-            tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(75);
-            tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(50);
-            tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(50);
-            tablaProductos.getColumnModel().getColumn(7).setPreferredWidth(50);
-            tablaProductos.getColumnModel().getColumn(8).setPreferredWidth(50);
-            tablaProductos.getColumnModel().getColumn(9).setPreferredWidth(45);
+            tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(45);
         }
 
         modificarBtn.setText("Modificar");
@@ -385,32 +380,7 @@ public class AbmProductoFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "error con la base de datos");
             }
         }
-        tbl = (DefaultTableModel) tablaProductos.getModel();
-        if (listadoProducto != null && !listadoProducto.isEmpty()) {
-            for (Producto producto : listadoProducto) { // Recorro la lista de productos y lleno la tabla.
-                Object[] fila = new Object[10];
-                fila[0] = producto.getCodigo();
-                fila[1] = producto.getCodigoBarras();
-                fila[2] = producto.getDetalle();
-                fila[3] = dfp.format(producto.getPrecio());
-                fila[4] = dfp.format(producto.getImpuesto());
-                fila[5] = producto.getRubro().getCodigo();
-                fila[6] = producto.getSubRubro().getCodigo();
-                fila[7] = dfp.format(producto.getSugerido());
-                if (producto.getStock() != null) {
-                    fila[9] = df.format(producto.getStock());
-                } else {
-                    fila[9] = df.format(0);
-                }
-                if (producto.getInactivo()) {
-                    fila[8] = "Inactivo";
-                } else {
-                    fila[8] = "Activo";
-                }
-                tbl.addRow(fila); // Agrego la fila a la tabla
-            }
-        }
-        tablaProductos.setModel(tbl); // Pongo la tabla visible.
+        llenarTablaFinal();
     }
 
     private Producto productoSeleccionado() {
@@ -534,27 +504,62 @@ public class AbmProductoFrame extends javax.swing.JFrame {
             }
         }
         tbl = (DefaultTableModel) tablaProductos.getModel();
+        llenarTablaFinal();
+//        if (listadoProducto != null && !listadoProducto.isEmpty()) {
+//            for (Producto producto : listadoProducto) { // Recorro la lista de productos y lleno la tabla.
+//                Object[] fila = new Object[10];
+//                fila[0] = producto.getCodigo();
+//                fila[1] = producto.getCodigoBarras();
+//                fila[2] = producto.getDetalle();
+//                fila[3] = dfp.format(producto.getPrecio());
+//                fila[4] = dfp.format(producto.getImpuesto());
+//                fila[5] = producto.getRubro().getCodigo();
+//                fila[6] = producto.getSubRubro().getCodigo();
+//                fila[7] = dfp.format(producto.getSugerido());
+//                if (producto.getStock() != null) {
+//                    fila[9] = df.format(producto.getStock());
+//                } else {
+//                    fila[9] = df.format(0);
+//                }
+//                if (producto.getInactivo()) {
+//                    fila[8] = "Inactivo";
+//                } else {
+//                    fila[8] = "Activo";
+//                }
+//                tbl.addRow(fila); // Agrego la fila a la tabla
+//            }
+//        }
+//        tablaProductos.setModel(tbl); // Pongo la tabla visible.
+    }
+
+    private void llenarTablaFinal() {
+        tbl = (DefaultTableModel) tablaProductos.getModel();
         if (listadoProducto != null && !listadoProducto.isEmpty()) {
             for (Producto producto : listadoProducto) { // Recorro la lista de productos y lleno la tabla.
-                Object[] fila = new Object[10];
-                fila[0] = producto.getCodigo();
-                fila[1] = producto.getCodigoBarras();
-                fila[2] = producto.getDetalle();
-                fila[3] = dfp.format(producto.getPrecio());
-                fila[4] = dfp.format(producto.getImpuesto());
-                fila[5] = producto.getRubro().getCodigo();
-                fila[6] = producto.getSubRubro().getCodigo();
-                fila[7] = dfp.format(producto.getSugerido());
+                Object[] fila = new Object[5];
+//                fila[0] = producto.getCodigo();
+//                fila[1] = producto.getCodigoBarras();
+                fila[0] = producto.getDetalle();
+                fila[1] = dfp.format(producto.getPrecio());
+                fila[2] = dfp.format(producto.getImpuesto());
+                Double precioFinal;
+                Float porIva = producto.getAlicuotaIva().getAlicuota();
+                precioFinal = producto.getPrecio()* (1+porIva/100);
+                precioFinal += producto.getImpuesto();
+                fila[3]=dfp.format(precioFinal);
+//                fila[6] = producto.getRubro().getCodigo();
+//                fila[7] = producto.getSubRubro().getCodigo();
+//                fila[8] = dfp.format(producto.getSugerido());
                 if (producto.getStock() != null) {
-                    fila[9] = df.format(producto.getStock());
+                    fila[4] = df.format(producto.getStock());
                 } else {
-                    fila[9] = df.format(0);
+                    fila[4] = df.format(0);
                 }
-                if (producto.getInactivo()) {
-                    fila[8] = "Inactivo";
-                } else {
-                    fila[8] = "Activo";
-                }
+//                if (producto.getInactivo()) {
+//                    fila[9] = "Inactivo";
+//                } else {
+//                    fila[9] = "Activo";
+//                }
                 tbl.addRow(fila); // Agrego la fila a la tabla
             }
         }

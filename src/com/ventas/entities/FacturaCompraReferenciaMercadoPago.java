@@ -6,16 +6,14 @@ package com.ventas.entities;
  */
 public class FacturaCompraReferenciaMercadoPago {
     private Long id;
-    private ArticuloCompra articuloCompra;
     private CompraClienteMercadoPago compraClienteMercadoPago;
     private IvaVentas ivaVentas;
 
     public FacturaCompraReferenciaMercadoPago() {
     }
 
-    public FacturaCompraReferenciaMercadoPago(Long id, ArticuloCompra articuloCompra, CompraClienteMercadoPago compraClienteMercadoPago, IvaVentas ivaVentas) {
+    public FacturaCompraReferenciaMercadoPago(Long id, CompraClienteMercadoPago compraClienteMercadoPago, IvaVentas ivaVentas) {
         this.id = id;
-        this.articuloCompra = articuloCompra;
         this.compraClienteMercadoPago = compraClienteMercadoPago;
         this.ivaVentas = ivaVentas;
     }
@@ -26,14 +24,6 @@ public class FacturaCompraReferenciaMercadoPago {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ArticuloCompra getArticuloCompra() {
-        return articuloCompra;
-    }
-
-    public void setArticuloCompra(ArticuloCompra articuloCompra) {
-        this.articuloCompra = articuloCompra;
     }
 
     public CompraClienteMercadoPago getCompraClienteMercadoPago() {

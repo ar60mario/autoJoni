@@ -82,7 +82,7 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("IMPORTE MINIMO PARA FACTURAS MERCADO PAGO:");
+        jLabel2.setText("Importe Máximo de Logística:");
 
         minimoFacturaMercadoPagoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         minimoFacturaMercadoPagoTxt.setText("MINIMO FC");
@@ -102,7 +102,7 @@ public class ModificarConfiguracionTopFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maximoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                             .addComponent(minimoFacturaMercadoPagoTxt))))

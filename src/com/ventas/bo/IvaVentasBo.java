@@ -179,7 +179,7 @@ public class IvaVentasBo {
     public IvaVentas getFacturaByNumero(String letra, Integer sucursal, Integer numero) throws Exception {
         IvaVentas ivaVentas = null;
         try {
-            ivaVentas = (IvaVentas) dao.getByLetraNumero(letra, sucursal, numero);
+            ivaVentas = (IvaVentas) dao.getByLetraNumero2(letra, sucursal, numero);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

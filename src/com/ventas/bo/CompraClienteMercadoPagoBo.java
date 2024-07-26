@@ -89,12 +89,14 @@ public class CompraClienteMercadoPagoBo {
         }
     }
 
-    public void updateCompraClientesImportados(CompraClienteMercadoPago compra) throws Exception {
+    public CompraClienteMercadoPago updateCompraClientesImportados(CompraClienteMercadoPago compra) throws Exception {
+        CompraClienteMercadoPago compCli;
         try {
-            dao.update(compra);
+            compCli = (CompraClienteMercadoPago) dao.update(compra);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
+        return compCli;
     }
     
     public void deleteCompraClienteMP(CompraClienteMercadoPago compra) throws Exception {

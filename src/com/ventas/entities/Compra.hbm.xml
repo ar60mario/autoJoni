@@ -18,5 +18,10 @@
                      lazy="false">
                      <column name="ID_PRODUCTO" not-null="false"/>
         </many-to-one>
+        <many-to-one name="fabricante"
+                    class="com.ventas.entities.Fabricante"
+                     lazy="false">
+                     <column name="ID_FABRICANTE" not-null="false"/>
+        </many-to-one>
     </class>
 </hibernate-mapping>

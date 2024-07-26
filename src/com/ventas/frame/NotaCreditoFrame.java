@@ -211,6 +211,7 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
             String fe = fechaNcTxt.getText();
             int largo = fe.length();
             if (largo == 10) {
+//                cargarDatos();
                 JOptionPane.showMessageDialog(this, "CONFIRME LA NOTA DE CREDITO\n    CON EL BOTON DE ABAJO");
             } else {
                 if (largo > 10) {
@@ -282,6 +283,7 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(NotaCreditoFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+            System.out.println(iv);
             if (iv != null) {
                 fechaTxt.setText(sdf.format(iv.getFecha()));
                 totalTxt.setText(df.format(iv.getTotal()));
@@ -657,5 +659,9 @@ public class NotaCreditoFrame extends javax.swing.JFrame {
             Logger.getLogger(FacturarFrame.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "No se pudo guardar nuevo Ticket");
         }
+    }
+
+    private void cargarDatos() {
+        
     }
 }
