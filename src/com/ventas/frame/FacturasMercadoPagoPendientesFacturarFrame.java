@@ -1,10 +1,14 @@
 package com.ventas.frame;
 
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.Factura;
 import com.ventas.entities.NuevaFactura;
+import com.ventas.entities.RenglonFc;
 import com.ventas.main.MainFrame;
 import com.ventas.services.CompraClienteMercadoPagoService;
+import com.ventas.services.FacturaService;
 import com.ventas.services.NuevaFacturaService;
+import com.ventas.services.RenglonFcService;
 import com.ventas.util.UtilFrame;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -146,15 +150,25 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
     }//GEN-LAST:event_modificarBtnActionPerformed
 
     private void eliminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarBtnActionPerformed
-        int row = tabla.getSelectedRow();
-        if (row < 0) {
+        int rows = tabla.getSelectedRowCount();
+        int a[] = tabla.getSelectedRows();
+        if (rows < 1) {
             JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UN MOVIMIENTO PARA ELIMINAR");
             return;
         }
-        CompraClienteMercadoPago ccmp = facturasComprasMP.get(row);
-        eliminar(ccmp);
-        cargarFacturas();
-        llenarTabla();
+        int ax = JOptionPane.showConfirmDialog(this, "CONFIRME ELIMINAR MOVIMIENTOS SELECCIONADOS", "Atención", JOptionPane.YES_NO_OPTION);
+        if (ax == 0) {
+            for (int n = rows - 1; n > -1; n--) {
+                if (a[n] < facturasComprasMP.size()) {
+                    CompraClienteMercadoPago ccmp = facturasComprasMP.get(a[n]);
+                    facturasComprasMP.remove(a[n]);
+                    eliminar(ccmp);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "PROCESO TERMINADO");
+            cargarFacturas();
+            llenarTabla();
+        }
     }//GEN-LAST:event_eliminarBtnActionPerformed
 
     /**
@@ -221,16 +235,16 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (CompraClienteMercadoPago ccmp : facturasComprasMP) {
                 Object o[] = new Object[6];
-                o[0] = sdf.format(ccmp.getFecha());
+                o[0] = ccmp.getFecha();
                 o[1] = ccmp.getCuit();
                 o[2] = ccmp.getNombre();
                 o[3] = df.format(ccmp.getImporte());
-                o[4] = ccmp.getOrigen();
-                if (ccmp.getLetraFactura() != null) {
-                    o[5] = ccmp.getLetraFactura();
-                } else {
-                    o[5] = "B";
-                }
+                o[4] = ccmp.getOperacion();
+//                if (ccmp.getLetraFactura() != null) {
+//                    o[5] = ccmp.getLetraFactura();
+//                } else {
+//                    o[5] = "B";
+//                }
                 tbl.addRow(o);
             }
             tabla.setModel(tbl);
@@ -238,24 +252,41 @@ public class FacturasMercadoPagoPendientesFacturarFrame extends javax.swing.JFra
     }
 
     private void eliminar(CompraClienteMercadoPago ccmp) {
-        int a = JOptionPane.showConfirmDialog(this, "CONFIRME ELIMINAR MOVIMIENTO", "Atención", JOptionPane.YES_NO_OPTION);
-        if (a == 0) {
-            NuevaFactura nf = null;
+//        int a = JOptionPane.showConfirmDialog(this, "CONFIRME ELIMINAR MOVIMIENTO", "Atención", JOptionPane.YES_NO_OPTION);
+//        if (a == 0) {
+            List<Factura> lnf = null;
             try {
-                nf = new NuevaFacturaService().getNuevaFacturaByCompraMP(ccmp);
+                lnf = new FacturaService().getFacturaByCompraClienteMp(ccmp);
             } catch (Exception ex) {
-                Logger.getLogger(FacturasMercadoPagoPendientesFacturarFrame.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "ERROR nro. 247");
+                return;
+            }
+            if (lnf != null && !lnf.isEmpty()) {
+                for (Factura fa : lnf) {
+                    List<RenglonFc> renglns = null;
+                    try {
+                        renglns = new RenglonFcService().getRenglonesByFc(fa);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "ERROR nro. 258");
+                        return;
+                    }
+                    if (renglns != null && !renglns.isEmpty()) {
+                        try {
+                            new RenglonFcService().deleteFacturaAndRenglones(fa, renglns);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "ERROR nro. 265");
+                            return;
+                        }
+                    }
+                }
             }
             try {
-                if (nf != null) {
-                    new NuevaFacturaService().delete(nf);
-                }
                 new CompraClienteMercadoPagoService().deleteCompraClienteMP(ccmp);
-                JOptionPane.showMessageDialog(this, "ELIMINADO");
+                
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "ERROR 234 - NO ELIMINADO");
             }
-        }
+//        }
     }
 
     private void modificar(CompraClienteMercadoPago ccmp) {

@@ -8,20 +8,19 @@ import java.util.Date;
  */
 public class CompraClienteMercadoPago {
     private Long id;
-    private Date fecha;
+    private String fecha;
     private String nombre;
     private String cuit;
     private Double importe;
     private Double importeUtilizado;
     private Boolean procesado;
     private String origen;
-    private String letraFactura;
+    private String operacion;
 
     public CompraClienteMercadoPago() {
     }
 
-    public CompraClienteMercadoPago(Long id, Date fecha, String nombre, String cuit, Double importe, 
-            Double importeUtilizado, Boolean procesado, String origen, String letraFactura) {
+    public CompraClienteMercadoPago(Long id, String fecha, String nombre, String cuit, Double importe, Double importeUtilizado, Boolean procesado, String origen, String operacion) {
         this.id = id;
         this.fecha = fecha;
         this.nombre = nombre;
@@ -30,7 +29,7 @@ public class CompraClienteMercadoPago {
         this.importeUtilizado = importeUtilizado;
         this.procesado = procesado;
         this.origen = origen;
-        this.letraFactura = letraFactura;
+        this.operacion = operacion;
     }
 
     public Long getId() {
@@ -41,11 +40,11 @@ public class CompraClienteMercadoPago {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -97,12 +96,12 @@ public class CompraClienteMercadoPago {
         this.origen = origen;
     }
 
-    public String getLetraFactura() {
-        return letraFactura;
+    public String getOperacion() {
+        return operacion;
     }
 
-    public void setLetraFactura(String letraFactura) {
-        this.letraFactura = letraFactura;
+    public void setOperacion(String operacion) {
+        this.operacion = operacion;
     }
     
 }

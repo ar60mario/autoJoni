@@ -8,17 +8,21 @@ package com.ventas.services;
 import com.ventas.bo.ArticuloCompraBo;
 import com.ventas.bo.CompraClienteMercadoPagoBo;
 import com.ventas.bo.FacturaCompraReferenciaMercadoPagoBo;
+import com.ventas.bo.FcBo;
 import com.ventas.bo.IvaVentasBo;
 import com.ventas.bo.RenglonFacturaBo;
 import com.ventas.bo.RenglonNotaCreditoBo;
 import com.ventas.entities.ArticuloCompra;
 import com.ventas.entities.CompraClienteMercadoPago;
+import com.ventas.entities.Factura;
 import com.ventas.entities.FacturaCompraReferenciaMercadoPago;
 import com.ventas.entities.IvaVentas;
 import com.ventas.entities.RenglonFactura;
 import com.ventas.entities.RenglonNotaCredito;
 import com.ventas.util.HibernateUtils;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -27,6 +31,21 @@ import org.hibernate.Transaction;
  * @author Mario
  */
 public class FacturaService {
+
+    public List<Factura> getFacturaByCompraClienteMp(CompraClienteMercadoPago ccmp) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Factura> fc = null;
+        FcBo fcBo = new FcBo();
+        try {
+            fc = fcBo.getFacturaByCompraClienteMp(ccmp);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fc;
+    }
 
     public void saveFactura(IvaVentas iv, List<RenglonFactura> rf) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -88,7 +107,7 @@ public class FacturaService {
 //            
 //        }
     }
-    
+
     public void saveFacturaCompleta2(IvaVentas iv, List<RenglonFactura> rf,
             CompraClienteMercadoPago compra,
             FacturaCompraReferenciaMercadoPago fcrmp) throws Exception {

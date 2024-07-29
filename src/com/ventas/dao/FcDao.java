@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.dao;
 
+import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.Factura;
 import com.ventas.util.HibernateUtils;
 import java.util.Date;
@@ -38,6 +34,16 @@ public class FcDao extends GenericDao {
         fact = (List<Factura>) 
                 session.createCriteria(Factura.class)
                         .add(Restrictions.eq("anulado", false))
+                        .list();
+        return fact;
+    }
+    
+    public List<Factura> getFacturaByCompraClienteMp(CompraClienteMercadoPago ccmp) {
+        List<Factura> fact;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<Factura>) 
+                session.createCriteria(Factura.class)
+                        .add(Restrictions.eq("compraClienteMercadoPago", ccmp))
                         .list();
         return fact;
     }

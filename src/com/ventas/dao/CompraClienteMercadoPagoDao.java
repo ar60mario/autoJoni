@@ -40,8 +40,8 @@ public class CompraClienteMercadoPagoDao extends GenericDao {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
         criteria.add(Restrictions.eq("procesado", false));
-        criteria.add(Restrictions.eq("letraFactura", "B"));
-        criteria.addOrder(Order.asc("fecha"));
+//        criteria.add(Restrictions.eq("letraFactura", "B"));
+        //criteria.addOrder(Order.asc("fecha"));
         return (List<CompraClienteMercadoPago>) criteria.list();
     }
     

@@ -5,6 +5,7 @@
  */
 package com.ventas.services;
 
+import com.ventas.bo.FcBo;
 import com.ventas.bo.RenglonFcBo;
 import com.ventas.entities.Factura;
 import com.ventas.entities.RenglonFc;
@@ -18,86 +19,102 @@ import org.hibernate.Transaction;
  * @author Mario
  */
 public class RenglonFcService {
-    
-    
+
     public void saveRenglon(RenglonFc renglon) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             RenglonFcBo bo = new RenglonFcBo();
             bo.saveRenglon(renglon);
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
-            throw new Exception (ex);
+            throw new Exception(ex);
         }
     }
-    
+
     public void deleteRenglon(RenglonFc renglon) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             RenglonFcBo bo = new RenglonFcBo();
             bo.deleteRenglon(renglon);
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
-            throw new Exception (ex);
+            throw new Exception(ex);
         }
     }
-    
+
+    public void deleteFacturaAndRenglones(Factura factura, List<RenglonFc> renglones) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            RenglonFcBo bo = new RenglonFcBo();
+            FcBo fcBo = new FcBo();
+            for (RenglonFc renglon : renglones) {
+                bo.deleteRenglon(renglon);
+            }
+            fcBo.deleteFactura(factura);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+
     public List<RenglonFc> getAllrenglones() throws Exception {
         List<RenglonFc> renglones = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             renglones = new RenglonFcBo().getAllrenglones();
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
-            throw new Exception (ex);
+            throw new Exception(ex);
         }
         return renglones;
     }
-    
+
     public List<RenglonFc> getAllRenglonesActivos() throws Exception {
         List<RenglonFc> renglones = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             renglones = new RenglonFcBo().getAllrenglonesActivos();
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
-            throw new Exception (ex);
+            throw new Exception(ex);
         }
         return renglones;
     }
-    
+
     public List<RenglonFc> getRenglonesByFc(Factura f) throws Exception {
         List<RenglonFc> renglones = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             renglones = new RenglonFcBo().getRenglonesByFc(f);
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
-            throw new Exception (ex);
+            throw new Exception(ex);
         }
         return renglones;
     }
-    
+
     public void updateRenglon(RenglonFc renglon) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             RenglonFcBo bo = new RenglonFcBo();
             bo.updateRenglon(renglon);
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
-            throw new Exception (ex);
+            throw new Exception(ex);
         }
     }
     /*
@@ -128,5 +145,5 @@ public class RenglonFcService {
         }
         return renglonNc;
     }
-*/
+     */
 }

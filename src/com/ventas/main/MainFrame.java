@@ -229,6 +229,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel5.setText("CUIT:");
 
+        cuitTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cuitTxt.setText("CUIT");
 
         importarMpBtn.setText("Importar Mercado Pago");
@@ -238,6 +239,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        nombreTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         nombreTxt.setText("NOMBRE");
 
         jLabel6.setText("Nombre:");
@@ -599,10 +601,10 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cuitTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(nombreTxt))))
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57))))
+                        .addGap(38, 38, 38))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -644,7 +646,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(facturarMercadoPagoInscriptosBtn))
                         .addGap(17, 17, 17))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
+                        .addGap(8, 8, 8)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );

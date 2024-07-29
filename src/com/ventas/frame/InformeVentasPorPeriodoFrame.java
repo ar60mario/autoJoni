@@ -117,7 +117,7 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
             tabla.clearSelection();
             tabla.setRowSelectionInterval(nro - 1, nro - 1);
         }
-        
+
     }
 
     /**
@@ -192,14 +192,14 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Número", "Grv 0%", "Grv 10.5%", "Grv 21%", "Grv 27%", "Impuesto", "Iva 0%", "Iva 10.5%", "Iva 21%", "Iva 27%", "Total"
+                "Fecha", "Nro.FC", "CUIT", "NOMBRE", "Grv 21%", "Impuesto", "Iva 21%", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -497,88 +497,82 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             for (IvaVentas fc : facturas) {
                 Double valor;
-                Object o[] = new Object[12];
+                Object o[] = new Object[9];
                 o[0] = sdf.format(fc.getFecha());
                 String t;
                 if (fc.getTipoDoc().equals(6)) {
                     valor = 1.0;
-                    t = "FC ";
+                    t = "FC B ";
                 } else {
-                    valor = -1.0;
-                    t = "NC ";
+                    if (fc.getTipoDoc().equals(8)) {
+                        valor = -1.0;
+                        t = "NC B ";
+                    } else {
+                        if (fc.getTipoDoc().equals(1)) {
+                            valor = 1.0;
+                            t = "FC A ";
+                        } else {
+                            if (fc.getTipoDoc().equals(3)) {
+                                valor = -1.0;
+                                t = "NC A ";
+                            } else {
+                                t = "";
+                                valor = 1.0;
+                            }
+                        }
+                    }
                 }
                 o[1] = t + df1.format(fc.getNumeroFactura());
-                if (fc.getGravado0() != null) {
-                    o[2] = df.format(fc.getGravado0() * valor);
-                } else {
-                    o[2] = df.format(0);
-                }
-                if (fc.getGravado10_5() != null) {
-                    o[3] = df.format(fc.getGravado10_5() * valor);
-                } else {
-                    o[3] = df.format(0);
-                }
+                o[2] = fc.getCliente().getCuit();
+                o[3] = fc.getCliente().getRazonSocial();
                 o[4] = df.format(fc.getGravado() * valor);
-                if (fc.getGravado27() != null) {
-                    o[5] = df.format(fc.getGravado27() * valor);
-                } else {
-                    o[5] = df.format(0);
-                }
-                o[6] = df.format(fc.getImpuesto() * valor);
-                if (fc.getIva0() != null) {
-                    o[7] = df.format(fc.getIva0() * valor);
-                } else {
-                    o[7] = df.format(0);
-                }
-                if (fc.getIva10_5() != null) {
-                    o[8] = df.format(fc.getIva10_5() * valor);
-                } else {
-                    o[8] = df.format(0);
-                }
-                o[9] = df.format(fc.getIva() * valor);
-                if (fc.getIva27() != null) {
-                    o[10] = df.format(fc.getIva27() * valor);
-                } else {
-                    o[10] = df.format(0);
-                }
-                o[11] = df.format(fc.getTotal() * valor);
-                if (fc.getGravado0() != null) {
-                    totalGravado0 += fc.getGravado0() * valor;
-                }
-                if (fc.getGravado10_5() != null) {
-                    totalGravado10_5 += fc.getGravado10_5() * valor;
-                }
+                o[5] = df.format(fc.getImpuesto() * valor);
+                
+                o[6] = df.format(fc.getIva() * valor);
+//                if (fc.getIva27() != null) {
+//                    o[10] = df.format(fc.getIva27() * valor);
+//                } else {
+//                    o[10] = df.format(0);
+//                }
+                o[7] = df.format(fc.getTotal() * valor);
+//                o[8] = fc.get
+//                if (fc.getGravado0() != null) {
+//                    totalGravado0 += fc.getGravado0() * valor;
+//                }
+//                if (fc.getGravado10_5() != null) {
+//                    totalGravado10_5 += fc.getGravado10_5() * valor;
+//                }
                 totalGravado += fc.getGravado() * valor;
-                if (fc.getGravado27() != null) {
-                    totalGravado27 += fc.getGravado27() * valor;
-                }
+//                if (fc.getGravado27() != null) {
+//                    totalGravado27 += fc.getGravado27() * valor;
+//                }
                 totalImpuesto += fc.getImpuesto() * valor;
-                if (fc.getIva0() != null) {
-                    totalIva0 += fc.getIva0() * valor;
-                }
-                if (fc.getIva10_5() != null) {
-                    totalIva10_5 += fc.getIva10_5() * valor;
-                }
+//                if (fc.getIva0() != null) {
+//                    totalIva0 += fc.getIva0() * valor;
+//                }
+//                if (fc.getIva10_5() != null) {
+//                    totalIva10_5 += fc.getIva10_5() * valor;
+//                }
                 totalIva += fc.getIva() * valor;
-                if (fc.getIva27() != null) {
-                    totalIva27 += fc.getIva27() * valor;
-                }
+//                if (fc.getIva27() != null) {
+//                    totalIva27 += fc.getIva27() * valor;
+//                }
                 totalFc += fc.getTotal() * valor;
                 tbl.addRow(o);
             }
             Object o[] = new Object[12];
             o[0] = "";
             o[1] = "TOTALES";
-            o[2] = df.format(totalGravado0);
-            o[3] = df.format(totalGravado10_5);
+//            o[2] = df.format(totalGravado0);
+//            o[3] = df.format(totalGravado10_5);
             o[4] = df.format(totalGravado);
-            o[5] = df.format(totalGravado27);
-            o[6] = df.format(totalImpuesto);
-            o[7] = df.format(totalIva0);
-            o[8] = df.format(totalIva10_5);
-            o[9] = df.format(totalIva);
-            o[10] = df.format(totalIva27);
-            o[11] = df.format(totalFc);
+//            o[5] = df.format(totalGravado27);
+            o[5] = df.format(totalImpuesto);
+//            o[7] = df.format(totalIva0);
+//            o[8] = df.format(totalIva10_5);
+            o[6] = df.format(totalIva);
+//            o[10] = df.format(totalIva27);
+            o[7] = df.format(totalFc);
             tbl.addRow(o);
             tabla.setModel(tbl);
         }
@@ -640,18 +634,18 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
             hoja1.addCell(new jxl.write.Label(5, 1, "CUIT"));
             hoja1.addCell(new jxl.write.Label(6, 1, "RAZON SOCIAL"));
             hoja1.addCell(new jxl.write.Label(7, 1, "CONDICION"));
-            hoja1.addCell(new jxl.write.Label(8, 1, "GRAVADO 0%"));
-            hoja1.addCell(new jxl.write.Label(9, 1, "GRAVADO 10.5%"));
-            hoja1.addCell(new jxl.write.Label(10, 1, "GRAVADO 21%"));
-            hoja1.addCell(new jxl.write.Label(11, 1, "GRAVADO 27%"));
-            hoja1.addCell(new jxl.write.Label(12, 1, "IVA 0%"));
-            hoja1.addCell(new jxl.write.Label(13, 1, "IVA 10.5%"));
-            hoja1.addCell(new jxl.write.Label(14, 1, "IVA 21%"));
-            hoja1.addCell(new jxl.write.Label(15, 1, "IVA 27%"));
-            hoja1.addCell(new jxl.write.Label(16, 1, "IMPUESTO"));
-            hoja1.addCell(new jxl.write.Label(17, 1, "TOTAL"));
-            hoja1.addCell(new jxl.write.Label(18, 1, "VTO.CAE"));
-            hoja1.addCell(new jxl.write.Label(19, 1, "CAE"));
+//            hoja1.addCell(new jxl.write.Label(8, 1, "GRAVADO 0%"));
+//            hoja1.addCell(new jxl.write.Label(9, 1, "GRAVADO 10.5%"));
+            hoja1.addCell(new jxl.write.Label(8, 1, "GRAVADO 21%"));
+//            hoja1.addCell(new jxl.write.Label(11, 1, "GRAVADO 27%"));
+//            hoja1.addCell(new jxl.write.Label(12, 1, "IVA 0%"));
+//            hoja1.addCell(new jxl.write.Label(13, 1, "IVA 10.5%"));
+            hoja1.addCell(new jxl.write.Label(9, 1, "IVA 21%"));
+//            hoja1.addCell(new jxl.write.Label(15, 1, "IVA 27%"));
+            hoja1.addCell(new jxl.write.Label(10, 1, "IMPUESTO"));
+            hoja1.addCell(new jxl.write.Label(11, 1, "TOTAL"));
+            hoja1.addCell(new jxl.write.Label(12, 1, "VTO.CAE"));
+            hoja1.addCell(new jxl.write.Label(13, 1, "CAE"));
             DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
             int y = 2;
             Double tg0 = 0.0;
@@ -729,63 +723,63 @@ public class InformeVentasPorPeriodoFrame extends javax.swing.JFrame {
                         break;
                 }
                 hoja1.addCell(new jxl.write.Label(7, y, condicion));
-                if (i.getGravado0() != null) {
-                    hoja1.addCell(new jxl.write.Number(8, y, i.getGravado0() * t));
+//                if (i.getGravado0() != null) {
+//                    hoja1.addCell(new jxl.write.Number(8, y, i.getGravado0() * t));
+//                } else {
+//                    hoja1.addCell(new jxl.write.Number(8, y, 0.00));
+//                }
+//                if (i.getGravado10_5() != null) {
+//                    hoja1.addCell(new jxl.write.Number(9, y, i.getGravado10_5() * t));
+//                } else {
+//                    hoja1.addCell(new jxl.write.Number(9, y, 0.00));
+//                }
+                if (i.getGravado() != null) {
+                    hoja1.addCell(new jxl.write.Number(8, y, i.getGravado() * t));
                 } else {
                     hoja1.addCell(new jxl.write.Number(8, y, 0.00));
                 }
-                if (i.getGravado10_5() != null) {
-                    hoja1.addCell(new jxl.write.Number(9, y, i.getGravado10_5() * t));
-                } else {
-                    hoja1.addCell(new jxl.write.Number(9, y, 0.00));
-                }
-                if (i.getGravado() != null) {
-                    hoja1.addCell(new jxl.write.Number(10, y, i.getGravado() * t));
-                } else {
-                    hoja1.addCell(new jxl.write.Number(10, y, 0.00));
-                }
-                if (i.getGravado27() != null) {
-                    hoja1.addCell(new jxl.write.Number(11, y, i.getGravado27() * t));
-                } else {
-                    hoja1.addCell(new jxl.write.Number(11, y, 0.00));
-                }
-                if (i.getIva0() != null) {
-                    hoja1.addCell(new jxl.write.Number(12, y, i.getIva0() * t));
-                } else {
-                    hoja1.addCell(new jxl.write.Number(12, y, 0.00));
-                }
-                if (i.getIva10_5() != null) {
-                    hoja1.addCell(new jxl.write.Number(13, y, i.getIva10_5() * t));
-                } else {
-                    hoja1.addCell(new jxl.write.Number(13, y, 0.00));
-                }
+//                if (i.getGravado27() != null) {
+//                    hoja1.addCell(new jxl.write.Number(11, y, i.getGravado27() * t));
+//                } else {
+//                    hoja1.addCell(new jxl.write.Number(11, y, 0.00));
+//                }
+//                if (i.getIva0() != null) {
+//                    hoja1.addCell(new jxl.write.Number(12, y, i.getIva0() * t));
+//                } else {
+//                    hoja1.addCell(new jxl.write.Number(12, y, 0.00));
+//                }
+//                if (i.getIva10_5() != null) {
+//                    hoja1.addCell(new jxl.write.Number(13, y, i.getIva10_5() * t));
+//                } else {
+//                    hoja1.addCell(new jxl.write.Number(13, y, 0.00));
+//                }
                 if (i.getIva() != null) {
-                    hoja1.addCell(new jxl.write.Number(14, y, i.getIva() * t));
+                    hoja1.addCell(new jxl.write.Number(9, y, i.getIva() * t));
                 } else {
-                    hoja1.addCell(new jxl.write.Number(14, y, 0.0));
+                    hoja1.addCell(new jxl.write.Number(9, y, 0.0));
                 }
-                if (i.getIva0() != null) {
-                    hoja1.addCell(new jxl.write.Number(15, y, i.getIva27() * t));
-                } else {
-                    hoja1.addCell(new jxl.write.Number(15, y, 0.00));
-                }
-                hoja1.addCell(new jxl.write.Number(16, y, i.getImpuesto() * t));
-                hoja1.addCell(new jxl.write.Number(17, y, i.getTotal() * t));
-                hoja1.addCell(new jxl.write.Label(18, y, sdf.format(i.getFechaCae())));
-                hoja1.addCell(new jxl.write.Label(19, y, i.getCae().toString()));
+//                if (i.getIva0() != null) {
+//                    hoja1.addCell(new jxl.write.Number(15, y, i.getIva27() * t));
+//                } else {
+//                    hoja1.addCell(new jxl.write.Number(15, y, 0.00));
+//                }
+                hoja1.addCell(new jxl.write.Number(10, y, i.getImpuesto() * t));
+                hoja1.addCell(new jxl.write.Number(11, y, i.getTotal() * t));
+                hoja1.addCell(new jxl.write.Label(12, y, sdf.format(i.getFechaCae())));
+                hoja1.addCell(new jxl.write.Label(13, y, i.getCae().toString()));
                 y += 1;
             }
             hoja1.addCell(new jxl.write.Label(1, y + 1, "TOTALES"));
-            hoja1.addCell(new jxl.write.Number(8, y + 1, tg0));
-            hoja1.addCell(new jxl.write.Number(9, y + 1, tg10));
-            hoja1.addCell(new jxl.write.Number(10, y + 1, tg21));
-            hoja1.addCell(new jxl.write.Number(11, y + 1, tg27));
-            hoja1.addCell(new jxl.write.Number(12, y + 1, tv0));
-            hoja1.addCell(new jxl.write.Number(13, y + 1, tv10));
-            hoja1.addCell(new jxl.write.Number(14, y + 1, tv21));
-            hoja1.addCell(new jxl.write.Number(15, y + 1, tv27));
-            hoja1.addCell(new jxl.write.Number(16, y + 1, ti));
-            hoja1.addCell(new jxl.write.Number(17, y + 1, tt));
+//            hoja1.addCell(new jxl.write.Number(8, y + 1, tg0));
+//            hoja1.addCell(new jxl.write.Number(9, y + 1, tg10));
+            hoja1.addCell(new jxl.write.Number(8, y + 1, tg21));
+//            hoja1.addCell(new jxl.write.Number(11, y + 1, tg27));
+//            hoja1.addCell(new jxl.write.Number(12, y + 1, tv0));
+//            hoja1.addCell(new jxl.write.Number(13, y + 1, tv10));
+            hoja1.addCell(new jxl.write.Number(9, y + 1, tv21));
+//            hoja1.addCell(new jxl.write.Number(15, y + 1, tv27));
+            hoja1.addCell(new jxl.write.Number(10, y + 1, ti));
+            hoja1.addCell(new jxl.write.Number(11, y + 1, tt));
         } catch (WriteException ex) {
             Logger.getLogger(InformeVentasPorPeriodoFrame.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error configurando Excel");

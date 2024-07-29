@@ -4,11 +4,7 @@ import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.main.MainFrame;
 import com.ventas.services.CompraClienteMercadoPagoService;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -245,13 +241,13 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
     }
 
     private void grabar() {
-        Date fecha = new Date();
-        try {
-            fecha = sdf.parse(fechaTxt.getText());
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(this, "ERROR EN FECHA");
-            return;
-        }
+        String fecha = "";
+//        try {
+        fecha = fechaTxt.getText();
+//        } catch (ParseException ex) {
+//            JOptionPane.showMessageDialog(this, "ERROR EN FECHA");
+//            return;
+//        }
         ccmp.setFecha(fecha);
         ccmp.setCuit(cuitTxt.getText());
         ccmp.setNombre(nombreTxt.getText());

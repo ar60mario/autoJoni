@@ -188,71 +188,61 @@ public class LectorDeExcel {
         List<CompraClienteMercadoPago> listaClientes = new ArrayList<>();
         Boolean salir = false;
         for (int i = 1; i < cantidadFilas; i++) {
+//            int pri2 = 0;
+//            int cou = 0;
+//            int pos = 0;
             try {
                 CompraClienteMercadoPago compra = new CompraClienteMercadoPago();
                 String fecha = hoja.getCell(0, i).getContents();
-                int largoF = fecha.length();
-                if (largoF != 8) {
-                    if (largoF != 10) {
-                        JOptionPane.showMessageDialog(null, "ERROR EN FORMATO FECHA " + i);
+
+                compra.setFecha(fecha);
+
+                compra.setNombre(hoja.getCell(2, i).getContents());
+                compra.setOrigen(hoja.getCell(4, i).getContents());
+//                compra.setLetraFactura(hoja.getCell(5, i).getContents());
+                compra.setOperacion(hoja.getCell(5, i).getContents());
+                String cui = hoja.getCell(1, i).getContents();
+                int largo = cui.length();
+                String pri;
+                String med;
+                String fin;
+                if (largo != 11) {
+                    if (largo != 1) {
+                        JOptionPane.showMessageDialog(null, "ERROR EN LARGO CUIT " + i + " " + largo);
                         salir = true;
-                    }
-//                    System.out.println(fecha);
-//                    System.out.println("x");
-//                    System.exit(0);
-                } else {
-                    String fecha1 = fecha.substring(0, 6);
-                    String fecha2 = "20";
-                    String fecha3 = fecha.substring(6, 8);
-                    String fecha4 = fecha1 + fecha2 + fecha3;
-//                    System.out.println(fecha4);
-//                    System.exit(0);
-                    compra.setFecha(sdf.parse(fecha4));
-                    compra.setNombre(hoja.getCell(2, i).getContents());
-                    compra.setOrigen(hoja.getCell(4, i).getContents());
-                    compra.setLetraFactura(hoja.getCell(5, i).getContents());
-                    String cui = hoja.getCell(1, i).getContents();
-                    int largo = cui.length();
-                    String pri;
-                    String med;
-                    String fin;
-                    if (largo != 11) {
-                        if (largo != 1) {
-                            JOptionPane.showMessageDialog(null, "ERROR EN LARGO CUIT " + i + " " + largo);
-                            salir = true;
-                        } else {
-                            if (!cui.equals("0")) {
-                                JOptionPane.showMessageDialog(null, "ERROR EN LARGO CUIT " + i + " _ " + largo);
-                                salir = true;
-                            }
-                        }
-                    }
-                    //cuiCli.substring(0, 2) + cuiCli.substring(3, 11) + cuiCli.substring(12, 13);
-                    if (cui.equals("0")) {
-                        pri = "00";
-                        med = "00000000";
-                        fin = "0";
                     } else {
-                        pri = cui.substring(0, 2);
-                        med = cui.substring(2, 10);
-                        fin = cui.substring(10, 11);
-                    }
-                    Double importeMP = Double.valueOf(hoja.getCell(3, i).getContents().replaceAll("\\,", "\\."));
-                    compra.setCuit(pri + "-" + med + "-" + fin);
-                    compra.setImporte(importeMP);
-                    compra.setProcesado(false);
-                    compra.setImporteUtilizado(0.0);
-                    
-                    if (cui.equals("0")) {
-                        if (importeMP > maximo) {
-                            JOptionPane.showMessageDialog(null, "CONSUMIDOR FINAL CON IMPORTE MAYOR AL MAXIMO" + i);
-                        } else {
-                            listaClientes.add(compra);
+                        if (!cui.equals("0")) {
+                            JOptionPane.showMessageDialog(null, "ERROR EN LARGO CUIT " + i + " _ " + largo);
+                            salir = true;
                         }
+                    }
+                }
+                //cuiCli.substring(0, 2) + cuiCli.substring(3, 11) + cuiCli.substring(12, 13);
+                if (cui.equals("0")) {
+                    pri = "00";
+                    med = "00000000";
+                    fin = "0";
+                } else {
+                    pri = cui.substring(0, 2);
+                    med = cui.substring(2, 10);
+                    fin = cui.substring(10, 11);
+                }
+                Double importeMP = Double.valueOf(hoja.getCell(3, i).getContents().replaceAll("\\,", "\\."));
+                compra.setCuit(pri + "-" + med + "-" + fin);
+                compra.setImporte(importeMP);
+                compra.setProcesado(false);
+                compra.setImporteUtilizado(0.0);
+
+                if (cui.equals("0")) {
+                    if (importeMP > maximo) {
+                        JOptionPane.showMessageDialog(null, "CONSUMIDOR FINAL CON IMPORTE MAYOR AL MAXIMO" + i);
                     } else {
                         listaClientes.add(compra);
                     }
+                } else {
+                    listaClientes.add(compra);
                 }
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error en linea: " + String.valueOf(i + 1));
                 salir = true;

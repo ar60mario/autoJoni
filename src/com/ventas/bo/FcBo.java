@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.FcDao;
+import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.Factura;
-import com.ventas.entities.FacturaCompra;
 import com.ventas.entities.RenglonFc;
 import java.util.List;
-import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 
 /**
@@ -38,7 +32,7 @@ public class FcBo {
             throw new Exception(ex);
         }
     }
-//
+
     public void updateFactura(Factura factura) throws Exception {
         try {
             dao.update(factura);
@@ -46,7 +40,7 @@ public class FcBo {
             throw new Exception(ex);
         }
     }
-//
+
     public void saveFacturaCompleta(Factura f, List<RenglonFc> renglones) throws Exception {
         FcBo fBo = new FcBo();
         RenglonFcBo rBo = new RenglonFcBo();
@@ -56,7 +50,7 @@ public class FcBo {
             rBo.saveRenglon(r);
         }
     }
-//
+
     public List<Factura> getAllFacturas() throws Exception {
         List<Factura> fact = null;
         try {
@@ -66,11 +60,21 @@ public class FcBo {
         }
         return fact;
     }
-//
+
     public List<Factura> getAllFacturasActivas() throws Exception {
         List<Factura> fact = null;
         try {
             fact = dao.getAllFacturasActivas();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public List<Factura> getFacturaByCompraClienteMp(CompraClienteMercadoPago ccmp) throws Exception {
+        List<Factura> fact = null;
+        try {
+            fact = dao.getFacturaByCompraClienteMp(ccmp);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

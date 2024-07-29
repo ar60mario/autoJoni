@@ -375,7 +375,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                         } catch (Exception ex) {
                             Logger.getLogger(FacturasDeMercadoPagoFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        Date fechaMP = new Date();
+                        String fechaMP=""; // = new Date();
                         String cuit = "";
                         String nombre = "";
                         Double importeMP = 0.0;
@@ -395,7 +395,7 @@ public class FacturasDeMercadoPagoFrame extends javax.swing.JFrame {
                         Double totalFc = iv.getTotal();
                         Object o[] = new Object[11];
                         if (referenciaMercadoPago != null) {
-                            o[0] = sdf.format(fechaMP);
+                            o[0] = fechaMP;
                             o[1] = nombre;
                             o[2] = cuit;
                             o[3] = df.format(importeMP);

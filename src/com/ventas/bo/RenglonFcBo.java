@@ -38,6 +38,8 @@ public class RenglonFcBo {
         }
     }
     
+    
+    
     public void updateRenglon(RenglonFc renglonFc) throws Exception {
         try {
             dao.update(renglonFc);

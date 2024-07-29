@@ -607,12 +607,12 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
                 } catch (Exception e) {
 //                    e.printStackTrace();
                 }
-                barral();
                 presentarBtn.setEnabled(false);
                 sacarBtn.setEnabled(false);
                 procesarBtn.setEnabled(false);
                 combo.setEnabled(false);
                 fechaTxt.setEditable(false);
+                barral();
 //                }
             } else {
                 JOptionPane.showMessageDialog(this, "NO HAY FACTURAS CARGADAS DISPONIBLES PARA CALCULAR LOS IMPUESTO");
@@ -1243,7 +1243,7 @@ class Avanzando_2 implements Runnable {
                 for (RenglonFc re : renglones) {
                     RenglonFactura rf = new RenglonFactura();
 
-                    rf.setCantidad(1F);
+                    rf.setCantidad(re.getCantidad());
                     rf.setCostoG(0.0);
                     rf.setCostoI(0.0);
                     rf.setDescripcion(re.getProducto().getDetalle());

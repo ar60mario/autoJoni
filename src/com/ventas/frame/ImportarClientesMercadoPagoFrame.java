@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.frame;
 
 import com.ventas.entities.CompraClienteMercadoPago;
@@ -68,7 +63,7 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nro.", "FECHA", "NOMBRE", "CUIT", "MONTO", "ORIGEN", "L.F."
+                "Nro.", "Fecha", "Nombre", "CUIT", "Monto", "Origen", "Operación"
             }
         ) {
             Class[] types = new Class [] {
@@ -230,12 +225,12 @@ public class ImportarClientesMercadoPagoFrame extends javax.swing.JFrame {
             for (CompraClienteMercadoPago compra : compras) {
                 Object[] fila = new Object[7];
                 fila[0] = nro;
-                fila[1] = sdf.format(compra.getFecha());
+                fila[1] = compra.getFecha();
                 fila[2] = compra.getNombre();
                 fila[3] = compra.getCuit();
                 fila[4] = df.format(compra.getImporte());
                 fila[5] = compra.getOrigen();
-                fila[6] = compra.getLetraFactura();
+                fila[6] = compra.getOperacion();
                 total += compra.getImporte();
                 nro += 1;
                 modelo.addRow(fila);
