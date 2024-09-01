@@ -9,13 +9,13 @@ import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;
 import com.jacob.com.LibraryLoader;
 import com.jacob.com.Variant;
+import com.ventas.entities.Configuracion;
 import com.ventas.entities.FacturaIvaIntercambio;
 import com.ventas.entities.TicketTime;
 import com.ventas.services.TicketTimeService;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import static java.lang.Math.rint;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,7 +44,9 @@ public class UtilAfip {
         FacturaIvaIntercambio fii = new FacturaIvaIntercambio();
         if (validar(cuitTitular, tipoDocTit, cuitCliente, tipoDocCli, gravado, impuesto,
                 iva, total, fechaFactura)) {
-
+            Configuracion cfg = null;
+            Integer nro = cfg.getNumeroFacturaB();
+            nro += 1;
             if (verificarToken()) {
 //                System.out.println("aqui");
 //                System.exit(0);
@@ -86,7 +88,7 @@ public class UtilAfip {
                     String cuit1 = cuitCliente; //cui.substring(0, 2) + cui.substring(3, 11) + cui.substring(12, 13);
                     String tipoD = String.valueOf(tipoDocCli); //cli.getTipo()
                     String tipo_doc = tipoD, nro_doc = cuit1; //tipo y numero
-                    int cbte_nro = Integer.parseInt(ult.toString()) + 1,
+                    int cbte_nro = nro,//Integer.parseInt(ult.toString()) + 1,
                             cbt_desde = cbte_nro,
                             cbt_hasta = cbte_nro;
 //                    numeroFacturaPapel = String.valueOf(cbte_nro);
@@ -97,8 +99,8 @@ public class UtilAfip {
                     Double importeAbono = total; //100.50 f.getTotal()
                     String imp_total = df.format(importeAbono).replaceAll("\\,", "\\.");//"124.00";
                     String imp_tot_conc = "0.00";
-                    String imp_neto = df.format(gravado).toString().replaceAll("\\,", "\\.");
-                    String imp_iva = df.format(iva).toString().replaceAll("\\,", "\\.");
+                    String imp_neto = df.format(gravado).replaceAll("\\,", "\\.");
+                    String imp_iva = df.format(iva).replaceAll("\\,", "\\.");
 //                    int internos = (int) rint(f.getImpuesto() * 100);
                     String imp_trib = "", imp_op_ex = "0";
 //                    if (internos > 0) {

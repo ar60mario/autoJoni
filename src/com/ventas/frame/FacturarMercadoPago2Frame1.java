@@ -54,7 +54,7 @@ import javax.swing.JProgressBar;
  *
  * @author argia
  */
-public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
+public class FacturarMercadoPago2Frame1 extends javax.swing.JFrame {
 
     private DecimalFormat df = new DecimalFormat("#0.00");
 //    private DecimalFormat df3 = new DecimalFormat("#0.000");
@@ -77,7 +77,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
      *
      * @param origen
      */
-    public FacturarMercadoPago2Frame(String origen) {
+    public FacturarMercadoPago2Frame1(String origen) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
@@ -263,11 +263,11 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ultimoImporteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(procesarBtn)
+                                .addComponent(ultimoImporteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(verCpbteBtn))
+                                .addComponent(verCpbteBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(procesarBtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -354,7 +354,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_fechaTxtKeyPressed
 
     private void procesarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procesarBtnActionPerformed
-        procesar2();
+        procesar();
     }//GEN-LAST:event_procesarBtnActionPerformed
 
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
@@ -430,14 +430,18 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -446,7 +450,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturarMercadoPago2Frame(null).setVisible(true);
+                new FacturarMercadoPago2Frame1(null).setVisible(true);
             }
         });
     }
@@ -494,7 +498,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
         try {
             rubros = new RubroService().getAllRubros();
         } catch (Exception ex) {
-            Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (Rubro r : rubros) {
             combo.addItem(r.getNombre());
@@ -565,7 +569,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
         try {
             facturas = new FcService().getAllFacturasActivas();
         } catch (Exception ex) {
-            Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         llenarTabla2();
     }
@@ -654,7 +658,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
     }
 
     private void barral() {
-        Avanzando_2 avanzando = new Avanzando_2();
+        Avanzando_3 avanzando = new Avanzando_3();
 //        presentarBtn.setEnabled(false);
 //        procesarBtn.setEnabled(false);
 //        sacarBtn.setEnabled(false);
@@ -668,7 +672,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
         try {
             productos = new ProductoTopService().getAllProductoTopActivos();
         } catch (Exception ex) {
-            Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (productos != null && !productos.isEmpty()) {
             int orden = 0;
@@ -737,13 +741,13 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
             try {
                 productos = new ProductoTopService().getAllProductoTopActivosConLimite(limite);
             } catch (Exception ex) {
-                Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(Level.SEVERE, null, ex);
             }
             List<ProductoTop> productos2=null;
             try {
                 productos2 = new ProductoTopService().getAllProductoTopActivos();
             } catch (Exception ex) {
-                Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(Level.SEVERE, null, ex);
             }
             // aquí termina
             Double acumuladoFactura = 0.0;
@@ -894,7 +898,7 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
                     try {
                         new ProductoTopService().updateProductoTop(pt);
                     } catch (Exception ex) {
-                        Logger.getLogger(FacturarMercadoPago2Frame.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(FacturarMercadoPago2Frame1.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(this, "ERR 795");
                     }
                 }
@@ -1104,13 +1108,9 @@ public class FacturarMercadoPago2Frame extends javax.swing.JFrame {
         }
         llenarTabla2();
     }
-
-    private void procesar2() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
 
-class Avanzando_2 implements Runnable {
+class Avanzando_3 implements Runnable {
 
     private JProgressBar bar;
     private Float incremento;

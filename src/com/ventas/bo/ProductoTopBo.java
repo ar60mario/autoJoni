@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.ProductoTopDao;
@@ -67,6 +62,16 @@ public class ProductoTopBo {
         return productos;
     }
 
+    public List<ProductoTop> getAllProductoTopActivosConLimite(Double limite) throws Exception {
+        List<ProductoTop> productos = null;
+        try {
+            productos = dao.getAllProductoTopActivosConLimite(limite);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+    
     public List<ProductoTop> getAllProductoTopInactivos() throws Exception {
         List<ProductoTop> productos = null;
         try {

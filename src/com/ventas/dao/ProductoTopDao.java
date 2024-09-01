@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.dao;
 
 import com.ventas.entities.ProductoTop;
@@ -45,6 +40,24 @@ public class ProductoTopDao extends GenericDao {
         Criteria criteria = session.createCriteria(ProductoTop.class);
         criteria.add(Restrictions.eq("activo", true));
         criteria.add(Restrictions.eq("panificado", false));
+        return criteria.list();
+    }
+    
+    public List<ProductoTop> getAllProductoTopActivosConLimite(Double limite) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("panificado", false));
+//        criteria.add(Restrictions.lt(propertyName, limite));
+        return criteria.list();
+    }
+    
+    public List<ProductoTop> getAllProductoTopActivosOrdenado(Double limite) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("panificado", false));
+//        criteria.add(Restrictions.lt(propertyName, limite));
         return criteria.list();
     }
 

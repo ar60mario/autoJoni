@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.services;
 
 import com.ventas.bo.ProductoTopBo;
@@ -53,6 +48,20 @@ public class ProductoTopService {
         List<ProductoTop> productos = null;
         try{
             productos = new ProductoTopBo().getAllProductoTopActivos();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+    
+    public List<ProductoTop> getAllProductoTopActivosConLimite(Double limite) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<ProductoTop> productos = null;
+        try{
+            productos = new ProductoTopBo().getAllProductoTopActivosConLimite(limite);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
