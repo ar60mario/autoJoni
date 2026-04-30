@@ -3,6 +3,7 @@ package com.ventas.bo;
 import com.ventas.dao.FcDao;
 import com.ventas.entities.CompraClienteMercadoPago;
 import com.ventas.entities.Factura;
+import com.ventas.entities.Producto;
 import com.ventas.entities.RenglonFc;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -50,6 +51,17 @@ public class FcBo {
             rBo.saveRenglon(r);
         }
     }
+    
+//    public void saveFacturaCompletaAndStock(Factura f, List<RenglonFc> renglones) throws Exception {
+//        FcBo fBo = new FcBo();
+//        RenglonFcBo rBo = new RenglonFcBo();
+//        
+//        Factura fa = fBo.saveFactura(f);
+//        for (RenglonFc r : renglones) {
+//            r.setFactura(fa);
+//            rBo.saveRenglon(r);
+//        }
+//    }
 
     public List<Factura> getAllFacturas() throws Exception {
         List<Factura> fact = null;

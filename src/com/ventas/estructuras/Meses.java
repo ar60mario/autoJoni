@@ -1,10 +1,6 @@
 package com.ventas.estructuras;
 
 
-/**
- *
- * @author argia
- */
 public enum Meses {
     ENERO(0, "ENERO"),
     FEBRERO(1,"FEBRERO"),

@@ -31,69 +31,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="ivaTxt" min="-2" pref="134" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
-                      <Component id="nombreClienteABuscarTxt" min="-2" pref="176" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="buscarClienteXNombre" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="comboClientes" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="codigoTxt" min="-2" pref="58" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="buscarClienteBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="razonSocialTxt" min="-2" pref="332" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fechaTxt" min="-2" pref="81" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                      <Component id="descuentoGlobalLbl" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="descuentoGlobalTxt" min="-2" pref="89" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="volverBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="59" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="texto1PieFacturaTxt" min="-2" pref="676" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="111" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="cantidadAtadosMassalinTxt" min="-2" pref="76" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
-                                      <Component id="importeMassalinTxt" min="-2" pref="78" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
-                                      <Component id="cantidadAtadosNoblezaTxt" min="-2" pref="72" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
-                                      <Component id="importeNoblezaTxt" min="-2" pref="81" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="descuentoLineaLbl" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="descuentoLineaTxt" min="-2" pref="87" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="548" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="0" pref="89" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="texto2PieFacturaTxt" min="-2" pref="676" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="imprimeChk" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -104,111 +49,143 @@
                       <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="249" max="-2" attributes="0"/>
-                                      <Component id="nombreProductoABuscarTxt" min="-2" pref="180" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="buscarProductoXNombreBtn" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="1" attributes="0">
-                                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Group type="102" attributes="0">
-                                                              <EmptySpace max="-2" attributes="0"/>
-                                                              <Component id="cantidadTxt" min="-2" pref="61" max="-2" attributes="0"/>
-                                                          </Group>
-                                                          <Group type="102" alignment="0" attributes="0">
-                                                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                                                              <Component id="codigoProductoTxt" min="-2" pref="149" max="-2" attributes="0"/>
-                                                          </Group>
-                                                      </Group>
-                                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="nombreProductoConsultaTxt" min="-2" pref="258" max="-2" attributes="0"/>
-                                                          <Group type="102" alignment="0" attributes="0">
-                                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                                  <Group type="102" alignment="1" attributes="0">
-                                                                      <Component id="precioProductoConsultaTxt" min="-2" pref="148" max="-2" attributes="0"/>
-                                                                      <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
-                                                                      <Component id="leerCantidadBtn" min="-2" max="-2" attributes="0"/>
-                                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                                  </Group>
-                                                                  <Group type="102" alignment="0" attributes="0">
-                                                                      <Component id="comboProductos" min="-2" pref="311" max="-2" attributes="0"/>
-                                                                      <EmptySpace max="32767" attributes="0"/>
-                                                                  </Group>
-                                                              </Group>
-                                                              <Component id="nuevaCantidadTxt" min="-2" pref="68" max="-2" attributes="0"/>
-                                                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                                          </Group>
-                                                      </Group>
-                                                  </Group>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                                                      <Component id="codigoBarrasTxt" min="-2" pref="165" max="-2" attributes="0"/>
-                                                  </Group>
-                                              </Group>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="cantidadTxt" min="-2" pref="61" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="incorporarAFacturaBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="agregarBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="eliminarItemBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="leerPrecioBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="nuevoPrecioTxt" min="-2" pref="81" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" attributes="0">
-                                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace pref="707" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                              <Component id="codigoProductoTxt" min="-2" pref="149" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                  </Group>
-                              </Group>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="descuentoBtn" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                          <Component id="descuentoVolumenTxt" min="-2" pref="107" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="cantidadItemsTxt" min="-2" pref="98" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="nombreProductoConsultaTxt" min="-2" pref="258" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <Component id="precioProductoConsultaTxt" min="-2" pref="148" max="-2" attributes="0"/>
+                                                      <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                                                      <Component id="leerCantidadBtn" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Component id="comboProductos" min="-2" pref="311" max="-2" attributes="0"/>
+                                                      <EmptySpace max="32767" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Component id="nuevaCantidadTxt" min="-2" pref="68" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                          <Component id="grabarCantidadBtn" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="191" max="-2" attributes="0"/>
+                                              <Component id="nombreProductoABuscarTxt" min="-2" pref="180" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="buscarProductoXNombreBtn" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                              <Component id="codigoBarrasTxt" min="-2" pref="165" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="pdfChk" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="totalTxt" min="-2" pref="115" max="-2" attributes="0"/>
+                                      <Component id="impreChk" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="grabarPrecioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="incorporarAFacturaBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="agregarBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="eliminarItemBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="leerPrecioBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="nuevoPrecioTxt" min="-2" pref="81" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                              <Component id="cantidadItemsTxt" min="-2" pref="98" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="grabarCantidadBtn" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="totalTxt" min="-2" pref="115" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="grabarPrecioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="codigoTxt" min="-2" pref="58" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="buscarClienteBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="razonSocialTxt" min="-2" pref="332" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="fechaTxt" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="ivaTxt" min="-2" pref="134" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
+                              <Component id="nombreClienteABuscarTxt" min="-2" pref="176" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="buscarClienteXNombre" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="comboClientes" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
+                              <Component id="volverBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="983" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -225,8 +202,6 @@
                   <Component id="razonSocialTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fechaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buscarClienteBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descuentoGlobalTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descuentoGlobalLbl" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="volverBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -245,9 +220,8 @@
                   <Component id="buscarProductoXNombreBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="codigoBarrasTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descuentoBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descuentoVolumenTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pdfChk" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="impreChk" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -267,8 +241,6 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="descuentoLineaLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descuentoLineaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="precioProductoConsultaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="leerCantidadBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nuevaCantidadTxt" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -292,16 +264,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="texto2PieFacturaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="terminarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="imprimeChk" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cantidadAtadosMassalinTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cantidadAtadosNoblezaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="importeMassalinTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="importeNoblezaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -461,7 +425,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="fechaTxt">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="FECHA"/>
       </Properties>
       <Events>
@@ -555,26 +519,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarProductoXNombreBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="descuentoGlobalLbl">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Descuento:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="descuentoGlobalTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="DESCUENTO"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="descuentoLineaLbl">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Dscto:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="descuentoLineaTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="DESCUENTO"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JComboBox" name="comboClientes">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -623,22 +567,6 @@
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombreProductoABuscarTxtKeyPressed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="descuentoBtn">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Dto"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel12">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Descuento"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="descuentoVolumenTxt">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="DESCEUNTO"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="texto1PieFacturaTxt">
       <Properties>
         <Property name="text" type="java.lang.String" value="TEXTO 1 PIE FACTURA"/>
@@ -666,18 +594,6 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="PRECIO PROD CONSU"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="cantidadAtadosMassalinTxt">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="Cant.Mass."/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="cantidadAtadosNoblezaTxt">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="Cant.Nobl."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel18">
@@ -738,21 +654,14 @@
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nuevoPrecioTxtKeyPressed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="importeMassalinTxt">
+    <Component class="javax.swing.JCheckBox" name="pdfChk">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="IMP.MASS."/>
+        <Property name="text" type="java.lang.String" value="PDF"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="importeNoblezaTxt">
+    <Component class="javax.swing.JCheckBox" name="impreChk">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="IMP.NOBL."/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="imprimeChk">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Imprime"/>
+        <Property name="text" type="java.lang.String" value="Impresora"/>
       </Properties>
     </Component>
   </SubComponents>

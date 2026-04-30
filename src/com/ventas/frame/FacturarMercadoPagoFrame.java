@@ -443,7 +443,7 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void limpiarCampos() {
-        String ultimaFecha = UtilFrame.ultimaFecha();
+        String ultimaFecha = UtilFrame.ultimaFecha("20300377425");
         if (ultimaFecha != null) {
             ultimaFechaTxt.setText(ultimaFecha);
         } else {
@@ -467,8 +467,8 @@ public class FacturarMercadoPagoFrame extends javax.swing.JFrame {
         Integer ult_num = 0;
         String ult_impFc;
         try {
-            ult_num = new IvaVentasService().getUltimoNumeroFactura();
-            ult_impFc = new IvaVentasService().getUltimoImporteFactura();
+            ult_num = new IvaVentasService().getUltimoNumeroFactura("20300377425");
+            ult_impFc = new IvaVentasService().getUltimoImporteFactura("20300377425");
         } catch (Exception ex) {
             return;
         }
@@ -798,7 +798,7 @@ class Avanzando implements Runnable {
                 fii.setLetra("B");
                 Integer nroFc;
                 try {
-                    nroFc = new IvaVentasService().getUltimoNumeroFactura();
+                    nroFc = new IvaVentasService().getUltimoNumeroFactura("20300377425");
                 } catch (Exception ex) {
                     nroFc = 0;
                 }

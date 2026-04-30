@@ -1,10 +1,7 @@
 package com.ventas.entities;
 
-/**
- *
- * @author Mario
- */
 public class Producto {
+
     private Long id;
     private Integer codigo;
     private Long codigoBarras;
@@ -24,11 +21,16 @@ public class Producto {
     private AlicuotaIva alicuotaIva;
     private Boolean fabricado;
     private Boolean esLogistica;
+    private Boolean precioPorPorcentaje;
+    private Float porcentajePrecio;
 
     public Producto() {
     }
 
-    public Producto(Long id, Integer codigo, Long codigoBarras, String detalle, Double precio, Float impuesto, Double sugerido, Boolean inactivo, Float stock, Float stockMinimo, Rubro rubro, SubRubro subRubro, Double costoP, Double costoI, Boolean auto, Boolean panificado, AlicuotaIva alicuotaIva, Boolean fabricado, Boolean esLogistica) {
+    public Producto(Long id, Integer codigo, Long codigoBarras, String detalle, Double precio, Float impuesto,
+            Double sugerido, Boolean inactivo, Float stock, Float stockMinimo, Rubro rubro, SubRubro subRubro,
+            Double costoP, Double costoI, Boolean auto, Boolean panificado, AlicuotaIva alicuotaIva,
+            Boolean fabricado, Boolean esLogistica, Boolean precioPorPorcentaje, Float porcentajePrecio) {
         this.id = id;
         this.codigo = codigo;
         this.codigoBarras = codigoBarras;
@@ -48,6 +50,8 @@ public class Producto {
         this.alicuotaIva = alicuotaIva;
         this.fabricado = fabricado;
         this.esLogistica = esLogistica;
+        this.precioPorPorcentaje = precioPorPorcentaje;
+        this.porcentajePrecio = porcentajePrecio;
     }
 
     public Long getId() {
@@ -201,5 +205,21 @@ public class Producto {
     public void setEsLogistica(Boolean esLogistica) {
         this.esLogistica = esLogistica;
     }
-    
+
+    public Boolean getPrecioPorPorcentaje() {
+        return precioPorPorcentaje;
+    }
+
+    public void setPrecioPorPorcentaje(Boolean precioPorPorcentaje) {
+        this.precioPorPorcentaje = precioPorPorcentaje;
+    }
+
+    public Float getPorcentajePrecio() {
+        return porcentajePrecio;
+    }
+
+    public void setPorcentajePrecio(Float porcentajePrecio) {
+        this.porcentajePrecio = porcentajePrecio;
+    }
+
 }

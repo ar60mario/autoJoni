@@ -8,6 +8,7 @@
             <generator class="identity"/>
         </id>
         <property name="itemNro" type="integer" column="ITEM_NUMERO"/>
+        <property name="codigoProducto" type="integer" column="CODIGO_PRODUCTO"/>
         <property name="gravado" type="double" column="GRAVADO"/>
         <property name="gravado10_5" type="double" column="GRAVADO_10_5"/>
         <property name="gravado0" type="double" column="GRAVADO_0"/>

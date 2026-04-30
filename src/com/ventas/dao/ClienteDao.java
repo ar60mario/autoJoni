@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.ventas.dao;
 
 import com.ventas.entities.Cliente;
@@ -15,11 +9,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 
-/**
- *
- * @author Mar y Mar Informatica
- */
-public class ClienteDao extends GenericDao{
+public class ClienteDao extends GenericDao {
 
     public Cliente getByCuit(String cuit) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -33,13 +23,13 @@ public class ClienteDao extends GenericDao{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Cliente.class);
         criteria.add(Restrictions.eq("codigo", codigo));
-        
+
         Cliente cliente = (Cliente) criteria.uniqueResult();
         return cliente;
     }
-    
+
     public Cliente getUltimoCliente() {
-        List<Cliente> cs = null; 
+        List<Cliente> cs = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Cliente.class);
         criteria.addOrder(Order.desc("codigo"));
@@ -48,28 +38,38 @@ public class ClienteDao extends GenericDao{
         cliente = cs.get(0);
         return cliente;
     }
-    
+
     public List<Cliente> getAllClientesOrdenado() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Cliente.class);
         criteria.addOrder(Order.asc("razonSocial"));
         return (List<Cliente>) criteria.list();
     }
-    
+
     public List<Cliente> getClientesByFiltro(String filtro) {
-        List<Cliente> clientes = null;
+        List<Cliente> clientes;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        
+
         StringBuffer sb = new StringBuffer();
         sb.append("from Cliente clie ");
         sb.append("where clie.razonSocial like :filtro ");
         sb.append("order by clie.razonSocial asc");
-        
+
         Query query = session.createQuery(sb.toString());
-        query.setParameter("filtro", "%"+filtro+"%");
-        
+        query.setParameter("filtro", "%" + filtro + "%");
+
         clientes = (List<Cliente>) query.list();
-                
+
         return clientes;
+    }
+
+    public List<Cliente> getClientesByFiltroFacturaA(String filtro) {
+        List<Cliente> clientes;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.add(Restrictions.like("razonSocial", "%" + filtro + "%"));
+        criteria.add(Restrictions.lt("categoriaDeIva", 4));
+        criteria.addOrder(Order.asc("razonSocial"));
+        return (List<Cliente>) criteria.list();
     }
 }

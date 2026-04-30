@@ -1298,7 +1298,7 @@ public class FacturaWebPanificadosFrame extends javax.swing.JFrame {
             try {
                 co = new ConfiguracionService().getFacturas(1L);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWeb2Frame.class.getName()).log(Level.SEVERE, null, ex);
             }
             Date f5d = new Date();
             Calendar calendar = Calendar.getInstance();

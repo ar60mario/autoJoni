@@ -56,7 +56,7 @@
               <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="combo" min="-2" pref="195" max="-2" attributes="0"/>
+              <Component id="combo" min="-2" pref="304" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>

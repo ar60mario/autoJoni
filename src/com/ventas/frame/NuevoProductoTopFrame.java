@@ -61,6 +61,8 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         netoTxt = new javax.swing.JTextField();
         impuestoTxt = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        fraccionMpTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("NUEVO PRODUCTO UTILIZADO");
@@ -142,7 +144,7 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
 
         ventaSinStockChk.setText("Venta sin Stock");
 
-        jLabel10.setText("Fracción Mínima de Venta:");
+        jLabel10.setText("Fracción por Importe:");
 
         fraccionTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         fraccionTxt.setText("FR.MIN:vta");
@@ -161,6 +163,11 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
 
         impuestoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         impuestoTxt.setText("IMPUESTO");
+
+        jLabel1.setText("Fracción Mercado Pago:");
+
+        fraccionMpTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        fraccionMpTxt.setText("FRAC2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,17 +190,20 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(porcentualCantidadMaximaVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jLabel10)
-                                            .addGap(18, 18, 18))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel8)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(jLabel8)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel10))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(cantidadMinimaTxt)
                                         .addComponent(cantidadMaximaTxt)
-                                        .addComponent(fraccionTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                                        .addComponent(fraccionTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                        .addComponent(fraccionMpTxt))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
@@ -204,11 +214,7 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
                                                 .addComponent(jLabel12)))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addGap(113, 113, 113)
-                                            .addComponent(jLabel11))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(porcentualCantidadMaximaVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(jLabel11)))))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -248,10 +254,14 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
                     .addComponent(precioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(fraccionMpTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(porcentualCantidadMaximaVentaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ventaSinStockChk))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(v)
                     .addComponent(agregarBtn))
@@ -400,8 +410,10 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
     private javax.swing.JTextField cantidadMinimaTxt;
     private javax.swing.JComboBox<String> comboProductos;
     private javax.swing.JTextField filtroTxt;
+    private javax.swing.JTextField fraccionMpTxt;
     private javax.swing.JTextField fraccionTxt;
     private javax.swing.JTextField impuestoTxt;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -427,6 +439,8 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
         comboProductos.addItem("");
         porcentualCantidadMaximaVentaTxt.setText("");
         filtroTxt.requestFocus();
+        fraccionTxt.setText("");
+        fraccionMpTxt.setText("");
     }
 
     private void buscarProducto() {
@@ -499,6 +513,7 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
             Integer cantMax = Integer.valueOf(cantidadMaximaTxt.getText());
             Integer cantMin = Integer.valueOf(cantidadMinimaTxt.getText().replace(",", "."));
             Integer fraccion = Integer.valueOf(fraccionTxt.getText().replace(",", "."));
+            Integer fraccionMp = Integer.valueOf(fraccionMpTxt.getText().replace(",", "."));
             if(fraccion > cantMin){
                 JOptionPane.showMessageDialog(this, "Verifique fracción y Mínimo venta");
                 return;
@@ -506,6 +521,7 @@ public class NuevoProductoTopFrame extends javax.swing.JFrame {
             pro.setCantidadMaximaVenta(cantMax);
             pro.setCantidadMinimaVenta(cantMin);
             pro.setFraccion(fraccion);
+            pro.setFraccionMp(fraccionMp);
             pro.setStock(producto.getStock());
             pro.setDetalle(producto.getDetalle());
             pro.setUsado(false);

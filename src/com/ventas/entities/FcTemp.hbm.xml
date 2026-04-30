@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.FcTemp" schema="joni" table="fc_temp">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="impuesto" type="double" column="IMPUESTO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <property name="cuitCliente" type="string" column="CUIT_CLIENTE"/>
+        <property name="anulada" type="boolean" column="ANULADA"/>
+
+    </class>
+</hibernate-mapping>

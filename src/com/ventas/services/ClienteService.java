@@ -8,8 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class ClienteService {
-    
-    public Cliente getClienteByCodigo(String codigo) throws Exception{
+
+    public Cliente getClienteByCodigo(String codigo) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         Cliente cliente = null;
@@ -22,8 +22,8 @@ public class ClienteService {
         }
         return cliente;
     }
-    //
-    public Cliente getUltimoCliente() throws Exception{
+
+    public Cliente getUltimoCliente() throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         Cliente cliente = null;
@@ -36,8 +36,8 @@ public class ClienteService {
         }
         return cliente;
     }
-    
-    public Cliente getClienteByCuit(String cuit) throws Exception{
+
+    public Cliente getClienteByCuit(String cuit) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         Cliente cliente = null;
@@ -50,18 +50,17 @@ public class ClienteService {
         }
         return cliente;
     }
-    
-    public void deleteCliente(Cliente cliente) throws Exception{
-       Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-       Transaction tx = session.beginTransaction();
-       try{
-          new ClienteBo().deleteCliente(cliente);
-          tx.commit();
-       }
-       catch(Exception ex){
-           tx.rollback();
-           throw new Exception (ex);
-       }
+
+    public void deleteCliente(Cliente cliente) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            new ClienteBo().deleteCliente(cliente);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
     }
 
     public void saveCliente(Cliente cliente) throws Exception {
@@ -101,64 +100,77 @@ public class ClienteService {
             throw new Exception(ex);
         }
     }
-    
-    public List<Cliente> getClienteByPagina(int paginaActual) throws Exception{
+
+    public List<Cliente> getClienteByPagina(int paginaActual) throws Exception {
         List<Cliente> clientes = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             clientes = new ClienteBo().getClienteByPagina(paginaActual);
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
         return clientes;
     }
-    
-    public int getClientesCount() throws Exception{
+
+    public int getClientesCount() throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         int count = 0;
-        try{
+        try {
             count = new ClienteBo().getClientesCount();
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
         return count;
     }
-    
-    public List<Cliente> getClienteOrdenado() throws Exception{
+
+    public List<Cliente> getClienteOrdenado() throws Exception {
         List<Cliente> clientes = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        try{
+        try {
             clientes = new ClienteBo().getClientesOrdenado();
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
         return clientes;
     }
-    
+
     public List<Cliente> getClientesByFiltro(String filtro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         List<Cliente> clientes = null;
-        try{
+        try {
             clientes = new ClienteBo().getClientesByFiltro(filtro);
             tx.commit();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
         return clientes;
     }
-    
-    
+
+    public List<Cliente> getClientesByFiltroFacturaA(String filtro) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Cliente> clientes = null;
+        try {
+            clientes = new ClienteBo().getClientesByFiltroFacturaA(filtro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+
     public void saveListaClientes(List<Cliente> listaClientes) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -170,5 +182,5 @@ public class ClienteService {
             throw new Exception(ex);
         }
     }
-    
+
 }

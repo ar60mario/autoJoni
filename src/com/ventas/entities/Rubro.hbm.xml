@@ -9,5 +9,6 @@
         </id>
         <property name="codigo" type="integer" column="CODIGO"/>
         <property name="nombre" type="string" column="NOMBRE"/>
+        <property name="tipoMarca" type="integer" column="TIPO_MARCA"/>
     </class>
 </hibernate-mapping>

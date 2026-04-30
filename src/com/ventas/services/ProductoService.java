@@ -1,31 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.services;
 
 import com.ventas.bo.ProductoBo;
 import com.ventas.entities.Producto;
+import com.ventas.entities.ProductoIntercambio;
 import com.ventas.entities.Rubro;
+import com.ventas.entities.SubRubro;
 import com.ventas.util.HibernateUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-/**
- *
- * @author Mario
- */
 public class ProductoService {
 
+    private ProductoBo bo = new ProductoBo();
+    
     public List<Producto> getAllProductos() throws Exception {
         List<Producto> productoLista = new ArrayList();
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            ProductoBo bo = new ProductoBo();
+//            ProductoBo bo = new ProductoBo();
             productoLista = bo.getAllProductos();
             tx.commit();
         } catch (Exception ex) {
@@ -41,7 +36,7 @@ public class ProductoService {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            ProductoBo bo = new ProductoBo();
+//            ProductoBo bo = new ProductoBo();
             productoLista = bo.getAllProductosByRubro(rubro);
             tx.commit();
         } catch (Exception ex) {
@@ -52,11 +47,25 @@ public class ProductoService {
         return productoLista;
     }
 
+    public List<Producto> getProductosConPrecioPorPorcentaje(String filtro, Rubro rubro) throws Exception {
+        List<Producto> productoLista = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            productoLista = bo.getProductosConPrecioPorPorcentaje(filtro, rubro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productoLista;
+    }
+
     public void guardarProducto(Producto producto) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            ProductoBo bo = new ProductoBo();
+//            ProductoBo bo = new ProductoBo();
             bo.guardarProducto(producto);
             tx.commit();
         } catch (Exception ex) {
@@ -70,7 +79,49 @@ public class ProductoService {
         Transaction tx = session.beginTransaction();
         Producto producto = null;
         try {
-            producto = new ProductoBo().getProductoByCodigo(codigo);
+            producto = bo.getProductoByCodigo(codigo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+
+    public Producto getActivoByCodigoSubRubroAndRubro(Rubro ru, SubRubro su) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Producto producto = null;
+        try {
+            producto = bo.getActivoByCodigoSubRubroAndRubro(ru, su);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+    
+    public Producto getByRubroAndPrecioPorPorcentaje(Rubro rubro) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Producto producto = null;
+        try {
+            producto = bo.getByRubroAndPrecioPorPorcentaje(rubro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+    
+    public Producto getProductoByDetalle(String detalle) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Producto producto = null;
+        try {
+            producto = bo.getProductoByDetalle(detalle);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
@@ -187,6 +238,32 @@ public class ProductoService {
         }
     }
 
+    public void saveListaProductosAndProductoTop(ProductoIntercambio pi) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            new ProductoBo().saveListaProductosAndProductoTop(pi);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+
+    public List<Producto> getProductosByFiltro2(String filtro) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Producto> productos = null;
+        try {
+            productos = new ProductoBo().getProductosByFiltro2(filtro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+    
     public List<Producto> getProductosByFiltro(String filtro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();

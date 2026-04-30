@@ -8,12 +8,14 @@
             <generator class="identity"/>
         </id>
         <property name="fecha" type="string" column="FECHA2"/>
+        <property name="fecha2" type="date" column="FECHA"/>
         <property name="nombre" type="string" column="NOMBRE"/>
         <property name="cuit" type="string" column="CUIT"/>
         <property name="importe" type="double" column="IMPORTE"/>
         <property name="importeUtilizado" type="double" column="IMPORTE_UTILIZADO"/>
         <property name="procesado" type="boolean" column="PROCESADO"/>
         <property name="origen" type="string" column="ORIGEN"/>
+        <property name="letra" type="string" column="LETRA_FACTURA"/>
         <property name="operacion" type="string" column="OPERACION"/>
     </class>
 </hibernate-mapping>

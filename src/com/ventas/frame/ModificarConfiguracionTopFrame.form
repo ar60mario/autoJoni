@@ -36,12 +36,20 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="168" max="32767" attributes="0"/>
+                      <EmptySpace pref="107" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="maximoTxt" pref="143" max="32767" attributes="0"/>
                           <Component id="minimoFacturaMercadoPagoTxt" max="32767" attributes="0"/>
+                          <Component id="minimoMpTxt" max="32767" attributes="0"/>
+                          <Component id="porcentajeImpuestoTxt" alignment="0" max="32767" attributes="0"/>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="maximoLogisticaTxt" min="-2" pref="143" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -61,7 +69,19 @@
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="minimoFacturaMercadoPagoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="70" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="minimoMpTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="porcentajeImpuestoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="maximoLogisticaTxt" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="37" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="grabarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="volverBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -101,13 +121,41 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Importe M&#xe1;ximo de Log&#xed;stica:"/>
+        <Property name="text" type="java.lang.String" value="Importe M&#xed;nimo Fc Autom&#xe1;tica Cons.Final:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="minimoFacturaMercadoPagoTxt">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="MINIMO FC"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Productos Cigarrillos Varios:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="minimoMpTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="MIN MP"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Porcentaje Impuesto:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="maximoLogisticaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="MAX LOGISTICA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="porcentajeImpuestoTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="porcentajeImpuesto"/>
       </Properties>
     </Component>
   </SubComponents>

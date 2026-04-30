@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.entities;
 
 /**
@@ -10,21 +5,30 @@ package com.ventas.entities;
  * @author Mario
  */
 public class ConfiguracionTop {
+
     private Integer id;
     private Integer orderMaximo;
     private Double importeMaximo;
     private Double importeMaximoPanificados;
-    private Double importeMinimoMercadoPago;
+    private Double importeMinimoMercadoPago;//logistica
+    private Double minimoMp;
+    private Double maximoLogistica;
+    private Float porcentajeImpuesto;
 
     public ConfiguracionTop() {
     }
 
-    public ConfiguracionTop(Integer id, Integer orderMaximo, Double importeMaximo, Double importeMaximoPanificados, Double importeMinimoMercadoPago) {
+    public ConfiguracionTop(Integer id, Integer orderMaximo, Double importeMaximo,
+            Double importeMaximoPanificados, Double importeMinimoMercadoPago,
+            Double minimoMp, Double maximoLogistica, Float porcentajeImpuesto) {
         this.id = id;
         this.orderMaximo = orderMaximo;
         this.importeMaximo = importeMaximo;
         this.importeMaximoPanificados = importeMaximoPanificados;
         this.importeMinimoMercadoPago = importeMinimoMercadoPago;
+        this.minimoMp = minimoMp;
+        this.maximoLogistica = maximoLogistica;
+        this.porcentajeImpuesto = porcentajeImpuesto;
     }
 
     public Integer getId() {
@@ -65,6 +69,30 @@ public class ConfiguracionTop {
 
     public void setImporteMinimoMercadoPago(Double importeMinimoMercadoPago) {
         this.importeMinimoMercadoPago = importeMinimoMercadoPago;
+    }
+
+    public Double getMinimoMp() {
+        return minimoMp;
+    }
+
+    public void setMinimoMp(Double minimoMp) {
+        this.minimoMp = minimoMp;
+    }
+
+    public Double getMaximoLogistica() {
+        return maximoLogistica;
+    }
+
+    public void setMaximoLogistica(Double maximoLogistica) {
+        this.maximoLogistica = maximoLogistica;
+    }
+
+    public Float getPorcentajeImpuesto() {
+        return porcentajeImpuesto;
+    }
+
+    public void setPorcentajeImpuesto(Float porcentajeImpuesto) {
+        this.porcentajeImpuesto = porcentajeImpuesto;
     }
 
 }

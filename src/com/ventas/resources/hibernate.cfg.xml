@@ -12,8 +12,8 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
     
-    <!--property name="hibernate.connection.url">jdbc:mysql://localhost:3306/joni</property>
-    <property name="hibernate.connection.username">joni</property>
+    <!--property name="hibernate.connection.url">jdbc:mysql://FIERRO-JONA:3306/Joni</property>
+    <property name="hibernate.connection.username">Joni</property>
     <property name="hibernate.connection.password">root</property-->
     
     <!-- Enable Hibernate's automatic session context management -->
@@ -53,13 +53,19 @@
     <mapping resource="com/ventas/entities/Factura.hbm.xml"/>
     <mapping resource="com/ventas/entities/FacturaCompra.hbm.xml"/>
     <mapping resource="com/ventas/entities/FacturaCompraReferenciaMercadoPago.hbm.xml"/>
+    <mapping resource="com/ventas/entities/FcTemp.hbm.xml"/>
     <mapping resource="com/ventas/entities/NuevaFactura.hbm.xml"/>
     <mapping resource="com/ventas/entities/Remito.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonFc.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonRemito.hbm.xml"/>
     <mapping resource="com/ventas/entities/IvaVentas.hbm.xml"/>
+    <mapping resource="com/ventas/entities/IvaVentasPorCaja.hbm.xml"/>
+    <mapping resource="com/ventas/entities/IvaCompras.hbm.xml"/>
     <mapping resource="com/ventas/entities/RenglonFactura.hbm.xml"/>
+    <mapping resource="com/ventas/entities/RenglonFacturaPorCaja.hbm.xml"/>
+    <mapping resource="com/ventas/entities/RenglonFcTemp.hbm.xml"/>
     <mapping resource="com/ventas/entities/TipoDoc.hbm.xml"/>
+    <mapping resource="com/ventas/entities/TitularCuit.hbm.xml"/>
     <mapping resource="com/ventas/entities/ProductoTop.hbm.xml"/>
     <mapping resource="com/ventas/entities/TicketTime.hbm.xml"/>
   </session-factory>

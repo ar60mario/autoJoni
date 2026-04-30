@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public class VerComprobanteFrame extends javax.swing.JFrame {
 
     private IvaVentas iv = null;
+    private List<IvaVentas> facturas;
     private DecimalFormat df = new DecimalFormat("#0.00");
     private DecimalFormat df1 = new DecimalFormat("#0.0");
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -34,12 +35,13 @@ public class VerComprobanteFrame extends javax.swing.JFrame {
     /**
      * Creates new form VerComprobanteFrame
      */
-    public VerComprobanteFrame(IvaVentas i, Date d, Date a, Integer r, Integer origen) {
+    public VerComprobanteFrame(List<IvaVentas> facturas, IvaVentas i, Date d, Date a, Integer r, Integer origen) {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(100, 100, 255));
         this.setLocationRelativeTo(null);
         imprimeBtn.setVisible(false);
         this.origen = origen;
+        this.facturas = facturas;
         this.iv = i;
         this.d = d;
         this.a = a;
@@ -224,7 +226,7 @@ public class VerComprobanteFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VerComprobanteFrame(null, null, null, null, null).setVisible(true);
+                new VerComprobanteFrame(null, null, null, null, null, null).setVisible(true);
             }
         });
     }
@@ -300,17 +302,17 @@ public class VerComprobanteFrame extends javax.swing.JFrame {
 
     private void volver() {
         if (origen == 1) {
-            InformeVentasPorPeriodoFrame ivppf = new InformeVentasPorPeriodoFrame(null, null, null);
+            InformeVentasPorPeriodoFrame ivppf = new InformeVentasPorPeriodoFrame(facturas, d, a, r);
             ivppf.setVisible(true);
         } else {
             //
-            FacturasDeMercadoPagoFrame ivppf = new FacturasDeMercadoPagoFrame(null, null, null);
+            FacturasDeMercadoPagoFrame ivppf = new FacturasDeMercadoPagoFrame(facturas, d, a, r);
             ivppf.setVisible(true);
         }
         this.dispose();
     }
 
     private void imprime() {
-        
+
     }
 }

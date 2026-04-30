@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.IvaVentasPorCaja" schema="joni" table="iva_ventas_por_caja">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="letra" type="string" column="LETRA"/>
+        <property name="numeroSucursal" type="integer" column="NUMERO_SUCURSAL"/>
+        <property name="numeroFactura" type="integer" column="NUMERO_FACTURA"/>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="impuesto" type="double" column="IMPUESTO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <property name="activa" type="boolean" column="ACTIVA"/>
+        <many-to-one name="cliente"
+                     class="com.ventas.entities.Cliente"
+                     lazy="false">
+            <column name="ID_CLIENTE" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -2,10 +2,6 @@ package com.ventas.entities;
 
 import java.util.Date;
 
-/**
- *
- * @author Mario
- */
 public class Factura {
     private Long id;
     private Date fecha;

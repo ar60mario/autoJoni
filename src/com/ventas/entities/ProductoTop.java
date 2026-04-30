@@ -1,9 +1,6 @@
 package com.ventas.entities;
 
-/**
- *
- * @author Mario
- */
+
 public class ProductoTop {
     private Long id;
     private Integer codigo;
@@ -22,12 +19,17 @@ public class ProductoTop {
     private Integer cantidadMinimaVenta;
     private Integer cantidadMaximaVenta;
     private Integer fraccion;
+    private Integer fraccionMp;
     private Boolean ventaSinStock;
 
     public ProductoTop() {
     }
 
-    public ProductoTop(Long id, Integer codigo, Boolean activo, Boolean usado, Integer orden, Integer cantidad, Boolean panificado, Float stock, String detalle, Double precio, Float impuesto, Rubro rubro, SubRubro subRubro, Float porcentualMaximoVentaAutomatica, Integer cantidadMinimaVenta, Integer cantidadMaximaVenta, Integer fraccion, Boolean ventaSinStock) {
+    public ProductoTop(Long id, Integer codigo, Boolean activo, Boolean usado, Integer orden, 
+            Integer cantidad, Boolean panificado, Float stock, String detalle, Double precio, 
+            Float impuesto, Rubro rubro, SubRubro subRubro, Float porcentualMaximoVentaAutomatica, 
+            Integer cantidadMinimaVenta, Integer cantidadMaximaVenta, Integer fraccion, 
+            Integer fraccionMp, Boolean ventaSinStock) {
         this.id = id;
         this.codigo = codigo;
         this.activo = activo;
@@ -45,6 +47,7 @@ public class ProductoTop {
         this.cantidadMinimaVenta = cantidadMinimaVenta;
         this.cantidadMaximaVenta = cantidadMaximaVenta;
         this.fraccion = fraccion;
+        this.fraccionMp = fraccionMp;
         this.ventaSinStock = ventaSinStock;
     }
 
@@ -182,6 +185,14 @@ public class ProductoTop {
 
     public void setFraccion(Integer fraccion) {
         this.fraccion = fraccion;
+    }
+
+    public Integer getFraccionMp() {
+        return fraccionMp;
+    }
+
+    public void setFraccionMp(Integer fraccionMp) {
+        this.fraccionMp = fraccionMp;
     }
 
     public Boolean getVentaSinStock() {

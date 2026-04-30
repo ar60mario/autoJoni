@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.util;
 
 import com.ventas.entities.Cliente;
 import com.ventas.entities.IvaVentas;
-import com.ventas.entities.Titular;
 import com.ventas.services.IvaVentasService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,10 +10,6 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Mario
- */
 public class UtilFrame {
 
     private final int qr_TamAncho = 200;
@@ -62,28 +52,28 @@ public class UtilFrame {
         return fe;
     }
 
-    public static String ultimaFecha() {
+    public static String ultimaFecha(String cuitTitular) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String ultimaFecha = sdf.format(new Date());
         try {
-            ultimaFecha = new IvaVentasService().getUltimaFechaFactura();
+            ultimaFecha = new IvaVentasService().getUltimaFechaFactura(cuitTitular);
         } catch (Exception ex) {
             Logger.getLogger(UtilFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ultimaFecha;
     }
 
-    public static Integer getUltimoNumeroFactura() {
+    public static Integer getUltimoNumeroFactura(String cuitTitular) {
         Integer numero = 0;
         try {
-            numero = new IvaVentasService().getUltimoNumeroFactura();
+            numero = new IvaVentasService().getUltimoNumeroFactura(cuitTitular);
         } catch (Exception ex) {
             Logger.getLogger(UtilFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         return numero;
     }
     
-    public static String crearQr(Titular titular, Cliente cliente, IvaVentas iv) {
+    public static String crearQr(Cliente cliente, IvaVentas iv) {
         String data = qr_url
                 + "{\"ver\":" + qr_version;
 //        99

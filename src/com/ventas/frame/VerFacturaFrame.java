@@ -1,21 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.ventas.frame;
 
 import com.ventas.entities.Factura;
+import com.ventas.entities.TitularCuit;
 
-/**
- *
- * @author argia
- */
+
 public class VerFacturaFrame extends javax.swing.JFrame {
 
     private Factura f;
     /**
-     * Creates new form VerFacturaFrame
      * @param f
      */
     public VerFacturaFrame(Factura f) {
@@ -108,7 +101,8 @@ public class VerFacturaFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void volver() {
-        FacturarMercadoPago2Frame fmp2f= new FacturarMercadoPago2Frame("V");
+        TitularCuit tc = new TitularCuit();
+        FacturarMercadoPago2Frame fmp2f= new FacturarMercadoPago2Frame("V", tc);
     }
 
     private void llenarFrame() {

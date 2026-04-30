@@ -1,12 +1,13 @@
 package com.ventas.main;
 
 import com.ventas.entities.ArticuloCompra;
+import com.ventas.entities.IvaVentas;
 import com.ventas.entities.Producto;
+import com.ventas.entities.TitularCuit;
 import com.ventas.estructuras.Meses;
 import com.ventas.frame.AbmArticulosPorMontoFrame;
 import com.ventas.frame.AbmClienteFrame;
 import com.ventas.frame.AbmFabricantesFrame;
-import com.ventas.frame.AbmFacturasComprasFrame;
 import com.ventas.frame.AbmProductoFrame;
 import com.ventas.frame.AbmProductosInactivosFrame;
 import com.ventas.frame.AbmProductosTopFrame;
@@ -15,21 +16,27 @@ import com.ventas.frame.AbmRubroFrame;
 import com.ventas.frame.AbmStockFrame;
 import com.ventas.frame.AbmSubRubroFrame;
 import com.ventas.frame.AbmTipoDocForm;
+import com.ventas.frame.AbmTitularesDeCuitFrame;
 import com.ventas.frame.BackupFrame;
 import com.ventas.frame.DuplicadoFacturaFrame;
 import com.ventas.frame.DuplicadoFacturaPdfFrame;
-import com.ventas.frame.FacturaWebFrame;
+import com.ventas.frame.FacturaWeb2Frame;
 import com.ventas.frame.FacturaWebPanificadosFrame;
 import com.ventas.frame.FacturarFrame;
 import com.ventas.frame.ArticulosConSaldoPendienteParaAsignarFrame;
+import com.ventas.frame.ElegirTitularFrame;
+import com.ventas.frame.FacturaWeb3Frame;
+import com.ventas.frame.FacturarAutomaticoPorMonto3Frame;
 import com.ventas.frame.FacturarAutomaticoPorMontoFrame;
 import com.ventas.frame.FacturarMercadoPago2Frame;
 import com.ventas.frame.FacturasDeMercadoPagoFrame;
 import com.ventas.frame.FacturasMercadoPagoCompletadasFacturarFrame;
 import com.ventas.frame.FacturarMercadoPagoFrame;
 import com.ventas.frame.FacturarMercadoPagoInscriptosFrame;
+import com.ventas.frame.FacturarPorCajasFrame;
 import com.ventas.frame.FacturasMercadoPagoPendientesFacturarFrame;
 import com.ventas.frame.ImportarClientesMercadoPagoFrame;
+import com.ventas.frame.ImportarIvaComprasFrame;
 import com.ventas.frame.ImportarProductoFrame;
 import com.ventas.frame.InformeConsFinalCortePorDiaFrame;
 import com.ventas.frame.InformeMercadoPagoCortePorDiaFrame;
@@ -39,24 +46,35 @@ import com.ventas.frame.InformesImpresosFacturasMpFrame;
 import com.ventas.frame.ModificarArticuloCompraFrame;
 import com.ventas.frame.ModificarConfiguracionTopFrame;
 import com.ventas.frame.NotaCreditoFrame;
+import com.ventas.frame.NotaCreditoPorGrupoFrame;
 import com.ventas.frame.NuevaFacturaCompraFrame;
+import com.ventas.frame.ProductoSetearPorcentajeCigVariosFrame;
+import com.ventas.frame.ProductosOrdenarFraccionMpFrame;
+import com.ventas.frame.ProductosValorizadosFrame;
+import com.ventas.frame.ProductosValorizadosMpFrame;
 import com.ventas.frame.RecuperarDeAfipFrame;
 import com.ventas.frame.RemitoFrame;
 import com.ventas.frame.RemitoPanificadosFrame;
 import com.ventas.frame.StockPeriodoProductoCompraFrame;
 import com.ventas.frame.StockPeriodoProductoFrame;
+import com.ventas.frame.VerFacturasByFechaFrame;
+import com.ventas.frame.VerFacturasMercadoPagoFrame;
+import com.ventas.frame.VerFcPorCajasFrame;
 import com.ventas.frame.VerificarAfipFrame;
 import com.ventas.services.ArticuloCompraService;
 import com.ventas.services.FacturaService;
 import com.ventas.services.FcService;
 import com.ventas.services.IvaVentasService;
 import com.ventas.services.RenglonFcService;
+import com.ventas.services.TitularCuitService;
+import com.ventas.util.Constantes;
+import com.ventas.util.LectorDeExcel;
 import com.ventas.util.UtilFrame;
+import com.ventas.util.UtilQr;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import static java.util.Collections.list;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,45 +83,31 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Mario
- */
 public class MainFrame extends javax.swing.JFrame {
 
     private List<ArticuloCompra> articulos;
     private DecimalFormat df = new DecimalFormat("#0.00");
     private DecimalFormat dfp = new DecimalFormat("#0.000");
 
-    /**
-     * Creates new form MainFrame
-     */
     public MainFrame() {
         initComponents();
-        getContentPane().setBackground(new java.awt.Color(100, 100, 255));
-        this.setLocationRelativeTo(null);
+        
 //        duplicadoPdfMnu.setVisible(false);
         recuperarAfipMnu.setVisible(true);
-        clientesMnu.setVisible(false);
+//        clientesMnu.setVisible(false);
         tipoDocMnu.setVisible(false);
         notaCreditoBtn.setVisible(true);
         randomBtn.setVisible(false);
         saldoFacturasCompraPendeintesMnu.setVisible(false);
         facturasMercadoPagoCompletadasMnu.setVisible(false);
-        facturaAutomPorImporteBtn.setVisible(false);
+        facturaAutomPorImporteBtn.setVisible(true);
 //        tabla.setVisible(false);
         modificarTabacaleraBtn.setVisible(false);
-        facturarMercadoPagoInscriptosBtn.setVisible(false);
         articulosPorMontoMnu.setVisible(false);
         stockMnu.setVisible(false);
         cargarFrame();
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -126,32 +130,47 @@ public class MainFrame extends javax.swing.JFrame {
         nombreTxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         modificarTabacaleraBtn = new javax.swing.JButton();
-        facturarMercadoPagoInscriptosBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        mostrarTablaBtn = new javax.swing.JButton();
+        facturaManualBtn = new javax.swing.JButton();
+        tstBtn = new javax.swing.JButton();
+        verFcMpBtn = new javax.swing.JButton();
+        facturarPorCajasBtn = new javax.swing.JButton();
+        verFcPorCajasBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         comprasPorImporteMnu = new javax.swing.JMenuItem();
         clientesMnu = new javax.swing.JMenuItem();
         configuracionMnu = new javax.swing.JMenuItem();
         fabricanteMnu = new javax.swing.JMenuItem();
-        productosMnu = new javax.swing.JMenuItem();
-        verInactivosMnu = new javax.swing.JMenuItem();
-        productosUtilizadosMnu = new javax.swing.JMenuItem();
-        productosTopInactivosMnu = new javax.swing.JMenuItem();
         rubrosMnu = new javax.swing.JMenuItem();
         subRubrosMnu = new javax.swing.JMenuItem();
         stockMnu = new javax.swing.JMenuItem();
         articulosPorMontoMnu = new javax.swing.JMenuItem();
         tipoDocMnu = new javax.swing.JMenuItem();
+        titularesDeCuitMenu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         verificarAfipMnu = new javax.swing.JMenuItem();
         recuperarAfipMnu = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        productosMnu = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        verInactivosMnu = new javax.swing.JMenuItem();
+        productosUtilizadosMnu = new javax.swing.JMenuItem();
+        productosTopInactivosMnu = new javax.swing.JMenuItem();
+        todasLasAccionesMnu = new javax.swing.JMenuItem();
+        productosOrdenarPorFraccionMpMnu = new javax.swing.JMenuItem();
+        setearPorcentajeCigVariosMnu = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         backupMnu = new javax.swing.JMenuItem();
         duplicadoPdfMnu = new javax.swing.JMenuItem();
+        duplicadoFcPdfPorFechaMnu = new javax.swing.JMenuItem();
         importarMnu = new javax.swing.JMenuItem();
         importarMercadoPagoMnu = new javax.swing.JMenuItem();
+        importarIvaComprasMnu = new javax.swing.JMenuItem();
+        notaCreditoPorGrupoMnu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         ventasPorPeriodoMnu = new javax.swing.JMenuItem();
         informeStockMnu = new javax.swing.JMenuItem();
@@ -164,10 +183,12 @@ public class MainFrame extends javax.swing.JFrame {
         mpCortePorDiaMnu = new javax.swing.JMenuItem();
         cfCortePorDiaMnu = new javax.swing.JMenuItem();
         mpFcImpresasMnu = new javax.swing.JMenuItem();
+        productosValorizadosMnu = new javax.swing.JMenuItem();
+        productosValorizadosMpMnu = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         versionMnu = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FACTURACION AUTOMATICA");
 
         salirBtn.setText("Salir");
@@ -251,33 +272,91 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        facturarMercadoPagoInscriptosBtn.setText("Facturar MP Inscriptos");
-        facturarMercadoPagoInscriptosBtn.addActionListener(new java.awt.event.ActionListener() {
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "MES", "IVA COMP", "TOTAL COMPRAS", "IVA VENT", "TOTAL VENTAS", "DIFERENCIA"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(200);
+        }
+
+        mostrarTablaBtn.setText("Mostrar Datos Tabla");
+        mostrarTablaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                facturarMercadoPagoInscriptosBtnActionPerformed(evt);
+                mostrarTablaBtnActionPerformed(evt);
             }
         });
 
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "MES", "IVA COMPRAS", "IVA VENTAS", "DIFERENCIA"
+        facturaManualBtn.setText("Factura A Manual");
+        facturaManualBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturaManualBtnActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(tabla);
+        });
+
+        tstBtn.setText("tst");
+        tstBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tstBtnActionPerformed(evt);
+            }
+        });
+
+        verFcMpBtn.setText("Ver Fc Mp");
+        verFcMpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verFcMpBtnActionPerformed(evt);
+            }
+        });
+
+        facturarPorCajasBtn.setText("Facturar X Cajas");
+        facturarPorCajasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturarPorCajasBtnActionPerformed(evt);
+            }
+        });
+
+        verFcPorCajasBtn.setText("Ver Fc Por Cajas");
+        verFcPorCajasBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verFcPorCajasBtnActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Abm");
 
@@ -312,38 +391,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(fabricanteMnu);
-
-        productosMnu.setText("Productos");
-        productosMnu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productosMnuActionPerformed(evt);
-            }
-        });
-        jMenu1.add(productosMnu);
-
-        verInactivosMnu.setText("Productos Inactivos");
-        verInactivosMnu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verInactivosMnuActionPerformed(evt);
-            }
-        });
-        jMenu1.add(verInactivosMnu);
-
-        productosUtilizadosMnu.setText("Productos utilizados");
-        productosUtilizadosMnu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productosUtilizadosMnuActionPerformed(evt);
-            }
-        });
-        jMenu1.add(productosUtilizadosMnu);
-
-        productosTopInactivosMnu.setText("Productos Utilizados Eliminados");
-        productosTopInactivosMnu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productosTopInactivosMnuActionPerformed(evt);
-            }
-        });
-        jMenu1.add(productosTopInactivosMnu);
 
         rubrosMnu.setText("Rubros");
         rubrosMnu.addActionListener(new java.awt.event.ActionListener() {
@@ -385,6 +432,14 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(tipoDocMnu);
 
+        titularesDeCuitMenu.setText("Titulares De Cuit");
+        titularesDeCuitMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                titularesDeCuitMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(titularesDeCuitMenu);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Verificar");
@@ -407,6 +462,72 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu6.setText("Productos");
+
+        productosMnu.setText("Actualizar Precios");
+        productosMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productosMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(productosMnu);
+
+        jMenuItem1.setText("Cargar Stocks");
+        jMenu6.add(jMenuItem1);
+
+        jMenuItem2.setText("Desactivar Productos");
+        jMenu6.add(jMenuItem2);
+
+        verInactivosMnu.setText("Productos Inactivos");
+        verInactivosMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verInactivosMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(verInactivosMnu);
+
+        productosUtilizadosMnu.setText("Productos utilizados");
+        productosUtilizadosMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productosUtilizadosMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(productosUtilizadosMnu);
+
+        productosTopInactivosMnu.setText("Productos Utilizados Eliminados");
+        productosTopInactivosMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productosTopInactivosMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(productosTopInactivosMnu);
+
+        todasLasAccionesMnu.setText("Todas las Acciones");
+        todasLasAccionesMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todasLasAccionesMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(todasLasAccionesMnu);
+
+        productosOrdenarPorFraccionMpMnu.setText("Productos Ordenar Por Fracción MP");
+        productosOrdenarPorFraccionMpMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productosOrdenarPorFraccionMpMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(productosOrdenarPorFraccionMpMnu);
+
+        setearPorcentajeCigVariosMnu.setText("Setear Porcentaje Cigarrillos Varios");
+        setearPorcentajeCigVariosMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setearPorcentajeCigVariosMnuActionPerformed(evt);
+            }
+        });
+        jMenu6.add(setearPorcentajeCigVariosMnu);
+
+        jMenuBar1.add(jMenu6);
+
         jMenu5.setText("Herramientas");
 
         backupMnu.setText("Backup");
@@ -417,13 +538,21 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu5.add(backupMnu);
 
-        duplicadoPdfMnu.setText("Duplicado Fc en Pdf");
+        duplicadoPdfMnu.setText("Duplicado Fc en Pdf x Cliente");
         duplicadoPdfMnu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 duplicadoPdfMnuActionPerformed(evt);
             }
         });
         jMenu5.add(duplicadoPdfMnu);
+
+        duplicadoFcPdfPorFechaMnu.setText("Duplicado Fc en Pdf x Fecha");
+        duplicadoFcPdfPorFechaMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                duplicadoFcPdfPorFechaMnuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(duplicadoFcPdfPorFechaMnu);
 
         importarMnu.setText("Importar");
         importarMnu.addActionListener(new java.awt.event.ActionListener() {
@@ -440,6 +569,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu5.add(importarMercadoPagoMnu);
+
+        importarIvaComprasMnu.setText("Importar Iva Compras");
+        importarIvaComprasMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importarIvaComprasMnuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(importarIvaComprasMnu);
+
+        notaCreditoPorGrupoMnu.setText("Notas De Crédito por grupo");
+        notaCreditoPorGrupoMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notaCreditoPorGrupoMnuActionPerformed(evt);
+            }
+        });
+        jMenu5.add(notaCreditoPorGrupoMnu);
 
         jMenuBar1.add(jMenu5);
 
@@ -533,6 +678,22 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu4.add(mpFcImpresasMnu);
 
+        productosValorizadosMnu.setText("Productos Valorizados");
+        productosValorizadosMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productosValorizadosMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(productosValorizadosMnu);
+
+        productosValorizadosMpMnu.setText("Productos Valorizados Mp");
+        productosValorizadosMpMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productosValorizadosMpMnuActionPerformed(evt);
+            }
+        });
+        jMenu4.add(productosValorizadosMpMnu);
+
         jMenuBar1.add(jMenu4);
 
         jMenu3.setText("?");
@@ -556,35 +717,41 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cargarFcComprasBtn)
-                                    .addComponent(facturaMercadoPagoBtn))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(importarMpBtn)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(modificarTabacaleraBtn)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
-                                        .addComponent(randomBtn))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(facturarMercadoPagoInscriptosBtn)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(facturaAutomPorImporteBtn)))
-                                .addGap(5, 5, 5)
-                                .addComponent(notaCreditoBtn)
-                                .addGap(18, 18, 18)
-                                .addComponent(salirBtn))
+                            .addComponent(cargarFcComprasBtn)
+                            .addComponent(facturaMercadoPagoBtn))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(importarMpBtn)
+                            .addComponent(facturarPorCajasBtn))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ultFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(modificarTabacaleraBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(randomBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(facturaAutomPorImporteBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(facturaManualBtn)
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
+                        .addGap(5, 5, 5)
+                        .addComponent(notaCreditoBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(salirBtn))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ultFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(tstBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(verFcMpBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(verFcPorCajasBtn)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -593,7 +760,8 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(ultImpoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ultNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(ultNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
@@ -601,21 +769,26 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cuitTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nombreTxt))))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38))))
+                                    .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mostrarTablaBtn)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(ultFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(ultFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tstBtn)
+                            .addComponent(verFcMpBtn)
+                            .addComponent(verFcPorCajasBtn))
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(cuitTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -630,25 +803,27 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(ultNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cargarFcComprasBtn)
-                            .addComponent(randomBtn)
-                            .addComponent(importarMpBtn)
-                            .addComponent(modificarTabacaleraBtn))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(salirBtn)
-                            .addComponent(facturaMercadoPagoBtn)
-                            .addComponent(facturaAutomPorImporteBtn)
-                            .addComponent(notaCreditoBtn)
-                            .addComponent(facturarMercadoPagoInscriptosBtn))
-                        .addGap(17, 17, 17))
+                            .addComponent(ultNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(59, 59, 59)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(mostrarTablaBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cargarFcComprasBtn)
+                    .addComponent(randomBtn)
+                    .addComponent(importarMpBtn)
+                    .addComponent(modificarTabacaleraBtn))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(salirBtn)
+                    .addComponent(facturaMercadoPagoBtn)
+                    .addComponent(facturaAutomPorImporteBtn)
+                    .addComponent(notaCreditoBtn)
+                    .addComponent(facturaManualBtn)
+                    .addComponent(facturarPorCajasBtn))
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -663,10 +838,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_productosUtilizadosMnuActionPerformed
 
     private void salirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirBtnActionPerformed
-        int a = JOptionPane.showConfirmDialog(this, "Desea Salir del programa?", "Atención", JOptionPane.YES_NO_OPTION);
-        if (a == 0) {
-            salir();
-        }
+//        int a = JOptionPane.showConfirmDialog(this, "Desea Salir del programa?", "Atención", JOptionPane.YES_NO_OPTION);
+//        if (a == 0) {
+        salir();
+//        }
     }//GEN-LAST:event_salirBtnActionPerformed
 
     private void configuracionMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionMnuActionPerformed
@@ -743,7 +918,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_stockPeriodoProductoCompraMnuActionPerformed
 
     private void notaCreditoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notaCreditoBtnActionPerformed
-        notaCredito();
+        notaCreditoGrupo();
     }//GEN-LAST:event_notaCreditoBtnActionPerformed
 
     private void importarMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarMnuActionPerformed
@@ -759,7 +934,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_facturaMercadoPagoBtnActionPerformed
 
     private void comprasPorImporteMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprasPorImporteMnuActionPerformed
-//        abmComprasPorImporte();
         abmStock();
     }//GEN-LAST:event_comprasPorImporteMnuActionPerformed
 
@@ -788,7 +962,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_facturaAutomPorImporteBtnActionPerformed
 
     private void cargarFcComprasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarFcComprasBtnActionPerformed
-//        comprasPorImporte();
         abmStock();
     }//GEN-LAST:event_cargarFcComprasBtnActionPerformed
 
@@ -812,13 +985,141 @@ public class MainFrame extends javax.swing.JFrame {
         modificarTabacalera();
     }//GEN-LAST:event_modificarTabacaleraBtnActionPerformed
 
-    private void facturarMercadoPagoInscriptosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturarMercadoPagoInscriptosBtnActionPerformed
-        facturarInscriptos();
-    }//GEN-LAST:event_facturarMercadoPagoInscriptosBtnActionPerformed
-
     private void fabricanteMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fabricanteMnuActionPerformed
         abmFabricante();
     }//GEN-LAST:event_fabricanteMnuActionPerformed
+
+    private void productosValorizadosMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosValorizadosMnuActionPerformed
+        productosValoridados1();
+    }//GEN-LAST:event_productosValorizadosMnuActionPerformed
+
+    private void productosValorizadosMpMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosValorizadosMpMnuActionPerformed
+        productosValoridados2();
+    }//GEN-LAST:event_productosValorizadosMpMnuActionPerformed
+
+    private void importarIvaComprasMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarIvaComprasMnuActionPerformed
+        importarIvaCompras();
+    }//GEN-LAST:event_importarIvaComprasMnuActionPerformed
+
+    private void mostrarTablaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarTablaBtnActionPerformed
+        llenarTabla();
+    }//GEN-LAST:event_mostrarTablaBtnActionPerformed
+
+    private void notaCreditoPorGrupoMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notaCreditoPorGrupoMnuActionPerformed
+        notaCreditoGrupo();
+    }//GEN-LAST:event_notaCreditoPorGrupoMnuActionPerformed
+
+    private void facturaManualBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturaManualBtnActionPerformed
+        facturaManual();
+    }//GEN-LAST:event_facturaManualBtnActionPerformed
+
+    private void todasLasAccionesMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todasLasAccionesMnuActionPerformed
+        todasLasAccionesProductos();
+    }//GEN-LAST:event_todasLasAccionesMnuActionPerformed
+
+    private void tstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tstBtnActionPerformed
+        IvaVentas iv = null;
+        try {
+            iv = new IvaVentasService().getUltimaFactura(6);
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        Date fechaCmpbte = iv.getFecha();
+        String cuitTitular = Constantes.cuitTitular;
+        String cuitT = "";
+        String pri = "";
+        String med = "";
+        String fin = "";
+        String priR = "";
+        String medR = "";
+        String finR = "";
+        String ptoVta = iv.getNumeroSucursal().toString();
+        Integer nroCpbte = iv.getNumeroFactura();
+        String tipoCompr = iv.getTipoDoc().toString();
+        Double totalFc = iv.getTotal();
+        String tipoDocumReceptor = iv.getCliente().getTipo();
+        String nroDocumReceptor;
+        String cuitReceptor = iv.getCliente().getCuit();
+        String caeNro = iv.getCae().toString();
+        if (tipoDocumReceptor.equals("80")
+                || tipoDocumReceptor.equals("86")) {
+            int largo = cuitReceptor.length();
+            if (largo == 13) {
+                priR = cuitReceptor.substring(0, 2);
+                medR = cuitReceptor.substring(3, 11);
+                finR = cuitReceptor.substring(12, 13);
+                nroDocumReceptor = priR + medR + finR;
+            } else {
+                if (largo != 11) {
+                    JOptionPane.showMessageDialog(this, "ERROR EN CUIT");
+                    return;
+                } else {
+                    nroDocumReceptor = cuitReceptor;
+                }
+            }
+        } else {
+            if (tipoDocumReceptor.equals("96")) {
+                nroDocumReceptor = cuitReceptor;
+            } else {
+                if (tipoDocumReceptor.equals("99")) {
+                    nroDocumReceptor = "0";
+                } else {
+                    JOptionPane.showMessageDialog(this, "ERROR EN TIPO DOCUMENTO CLIENTE");
+                    return;
+                }
+            }
+        }
+
+        int largo = cuitTitular.length();
+        if (largo == 13) {
+            pri = cuitTitular.substring(0, 2);
+            med = cuitTitular.substring(3, 11);
+            fin = cuitTitular.substring(12, 13);
+            cuitT = priR + medR + finR;
+        } else {
+            cuitT = cuitTitular;
+        }
+        DecimalFormat df_nf = new DecimalFormat("00000000");
+        String nombreArchivo = "Qr_" + tipoCompr + "_" + ptoVta + "_" + df_nf.format(nroCpbte);
+        String data = UtilQr.crearDataQr(fechaCmpbte, cuitT, ptoVta, nroCpbte, tipoCompr, totalFc,
+                tipoDocumReceptor, nroDocumReceptor, caeNro);
+        try {
+            UtilQr.generarPngQr(data, nombreArchivo);
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "QR LISTO");
+    }//GEN-LAST:event_tstBtnActionPerformed
+
+    private void verFcMpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verFcMpBtnActionPerformed
+        verFcMp();
+    }//GEN-LAST:event_verFcMpBtnActionPerformed
+
+    private void titularesDeCuitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titularesDeCuitMenuActionPerformed
+        abmTitulares();
+    }//GEN-LAST:event_titularesDeCuitMenuActionPerformed
+
+    private void productosOrdenarPorFraccionMpMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosOrdenarPorFraccionMpMnuActionPerformed
+        productosOrdenarPorFraccion();
+    }//GEN-LAST:event_productosOrdenarPorFraccionMpMnuActionPerformed
+
+    private void duplicadoFcPdfPorFechaMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_duplicadoFcPdfPorFechaMnuActionPerformed
+        duplicadoPdfPorFecha();
+    }//GEN-LAST:event_duplicadoFcPdfPorFechaMnuActionPerformed
+
+    private void setearPorcentajeCigVariosMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setearPorcentajeCigVariosMnuActionPerformed
+        setearPorcentajeCigVarios();
+    }//GEN-LAST:event_setearPorcentajeCigVariosMnuActionPerformed
+
+    private void facturarPorCajasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturarPorCajasBtnActionPerformed
+        facturarPorCajas();
+    }//GEN-LAST:event_facturarPorCajasBtnActionPerformed
+
+    private void verFcPorCajasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verFcPorCajasBtnActionPerformed
+        verFcPorCajas();
+    }//GEN-LAST:event_verFcPorCajasBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -871,14 +1172,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem comprasPorImporteMnu;
     private javax.swing.JMenuItem configuracionMnu;
     private javax.swing.JTextField cuitTxt;
+    private javax.swing.JMenuItem duplicadoFcPdfPorFechaMnu;
     private javax.swing.JMenuItem duplicadoPdfMnu;
     private javax.swing.JMenuItem fabricanteMnu;
     private javax.swing.JButton facturaAutomPorImporteBtn;
+    private javax.swing.JButton facturaManualBtn;
     private javax.swing.JButton facturaMercadoPagoBtn;
-    private javax.swing.JButton facturarMercadoPagoInscriptosBtn;
+    private javax.swing.JButton facturarPorCajasBtn;
     private javax.swing.JMenuItem facturasDeMercadoPagoMnu;
     private javax.swing.JMenuItem facturasMercadoPagoCompletadasMnu;
     private javax.swing.JMenuItem facturasMercadoPagoPendientesMnu;
+    private javax.swing.JMenuItem importarIvaComprasMnu;
     private javax.swing.JMenuItem importarMercadoPagoMnu;
     private javax.swing.JMenuItem importarMnu;
     private javax.swing.JButton importarMpBtn;
@@ -893,31 +1197,45 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificarTabacaleraBtn;
+    private javax.swing.JButton mostrarTablaBtn;
     private javax.swing.JMenuItem mpCortePorDiaMnu;
     private javax.swing.JMenuItem mpFcImpresasMnu;
     private javax.swing.JTextField nombreTxt;
     private javax.swing.JButton notaCreditoBtn;
+    private javax.swing.JMenuItem notaCreditoPorGrupoMnu;
     private javax.swing.JMenuItem productosMnu;
+    private javax.swing.JMenuItem productosOrdenarPorFraccionMpMnu;
     private javax.swing.JMenuItem productosTopInactivosMnu;
     private javax.swing.JMenuItem productosUtilizadosMnu;
+    private javax.swing.JMenuItem productosValorizadosMnu;
+    private javax.swing.JMenuItem productosValorizadosMpMnu;
     private javax.swing.JButton randomBtn;
     private javax.swing.JMenuItem recuperarAfipMnu;
     private javax.swing.JMenuItem rubrosMnu;
     private javax.swing.JMenuItem saldoFacturasCompraPendeintesMnu;
     private javax.swing.JButton salirBtn;
+    private javax.swing.JMenuItem setearPorcentajeCigVariosMnu;
     private javax.swing.JMenuItem stockMnu;
     private javax.swing.JMenuItem stockPeriodoProductoCompraMnu;
     private javax.swing.JMenuItem stockPeriodoProductoVentaMnu;
     private javax.swing.JMenuItem subRubrosMnu;
     private javax.swing.JTable tabla;
     private javax.swing.JMenuItem tipoDocMnu;
+    private javax.swing.JMenuItem titularesDeCuitMenu;
+    private javax.swing.JMenuItem todasLasAccionesMnu;
+    private javax.swing.JButton tstBtn;
     private javax.swing.JTextField ultFechaTxt;
     private javax.swing.JTextField ultImpoTxt;
     private javax.swing.JTextField ultNumTxt;
     private javax.swing.JMenuItem ventasPorPeriodoMnu;
+    private javax.swing.JButton verFcMpBtn;
+    private javax.swing.JButton verFcPorCajasBtn;
     private javax.swing.JMenuItem verInactivosMnu;
     private javax.swing.JMenuItem verificarAfipMnu;
     private javax.swing.JMenuItem versionMnu;
@@ -940,15 +1258,13 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void facturaWebUnica() {
-        FacturaWebFrame fwf = new FacturaWebFrame();
+        FacturaWeb2Frame fwf = new FacturaWeb2Frame();
         fwf.setVisible(true);
         this.dispose();
     }
 
     private void productos() {
-        AbmProductoFrame apf = new AbmProductoFrame(null);
-        apf.setVisible(true);
-        this.dispose();
+
     }
 
     private void rubros() {
@@ -976,7 +1292,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void informeVXP() {
-        InformeVentasPorPeriodoFrame ivppf = new InformeVentasPorPeriodoFrame(null, null, null);
+        InformeVentasPorPeriodoFrame ivppf = new InformeVentasPorPeriodoFrame(null, null, null, null);
         ivppf.setVisible(true);
         this.dispose();
     }
@@ -1135,8 +1451,16 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void facturaMercadoPago() {
-        FacturarMercadoPago2Frame fmpf = new FacturarMercadoPago2Frame("M");
-        fmpf.setVisible(true);
+//        ElegirTitularFrame etf = new ElegirTitularFrame();
+        TitularCuit tf2;
+        try {
+            tf2 = new TitularCuitService().getTitularCuitByCuit("20300377425");
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        FacturarMercadoPago2Frame etf = new FacturarMercadoPago2Frame("M", tf2);
+        etf.setVisible(true);
         this.dispose();
     }
 
@@ -1159,7 +1483,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void facturasDeMercadoPago() {
-        FacturasDeMercadoPagoFrame fdmpf = new FacturasDeMercadoPagoFrame(null, null, null);
+        FacturasDeMercadoPagoFrame fdmpf = new FacturasDeMercadoPagoFrame(null, null, null, null);
         fdmpf.setVisible(true);
         this.dispose();
     }
@@ -1177,7 +1501,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void facturaAutomPorImporte() {
-        FacturarAutomaticoPorMontoFrame fapmf = new FacturarAutomaticoPorMontoFrame();
+        FacturarAutomaticoPorMonto3Frame fapmf = new FacturarAutomaticoPorMonto3Frame();
         fapmf.setVisible(true);
         this.dispose();
     }
@@ -1201,13 +1525,15 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void cargarFrame() {
-//        UtilFrame.limpiarTabla(tabla);
+        getContentPane().setBackground(new java.awt.Color(100, 100, 255));
+        this.setLocationRelativeTo(null);
+        tstBtn.setVisible(false);
         try {
-            ultFechaTxt.setText(new IvaVentasService().getUltimaFechaFactura());
+            ultFechaTxt.setText(new IvaVentasService().getUltimaFechaFactura("20300377425"));
             cuitTxt.setText(new IvaVentasService().getUltimoCuitEnFactura());
             nombreTxt.setText(new IvaVentasService().getUltimaNombreEnFactura());
-            ultImpoTxt.setText(new IvaVentasService().getUltimoImporteFactura());
-            ultNumTxt.setText(new IvaVentasService().getUltimoNumeroFactura().toString());
+            ultImpoTxt.setText(new IvaVentasService().getUltimoImporteFactura("20300377425"));
+            ultNumTxt.setText(new IvaVentasService().getUltimoNumeroFactura("20300377425").toString());
         } catch (Exception ex) {
             ultFechaTxt.setText("");
             ultNumTxt.setText("");
@@ -1216,7 +1542,7 @@ public class MainFrame extends javax.swing.JFrame {
             nombreTxt.setText("");
         }
         buscarArticulos();
-        llenarTabla();
+        limpiarTabla();
         salirBtn.requestFocus();
     }
 
@@ -1242,6 +1568,7 @@ public class MainFrame extends javax.swing.JFrame {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         Integer mesX = cal.get(Calendar.MONTH);
+        Integer anio = cal.get(Calendar.YEAR);
         DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
         String mes[] = new String[12];
         int i = 0;
@@ -1249,9 +1576,17 @@ public class MainFrame extends javax.swing.JFrame {
             mes[i] = m.getDetalle();
             i += 1;
         }
-        for (i = 0; i < mesX+1; i++) {
+
+        for (i = 0; i < mesX + 1; i++) {
+            Double imp = 0.0;
+            try {
+                imp = new IvaVentasService().getFacturasByPeriodo(i + 1, anio);
+            } catch (Exception ex) {
+                imp = 0.0;
+            }
             Object o[] = new Object[4];
             o[0] = mes[i];
+            o[2] = df.format(imp);
             tbl.addRow(o);
         }
         tabla.setModel(tbl);
@@ -1283,6 +1618,107 @@ public class MainFrame extends javax.swing.JFrame {
     private void abmFabricante() {
         AbmFabricantesFrame aff = new AbmFabricantesFrame();
         aff.setVisible(true);
+        this.dispose();
+    }
+
+    private void productosValoridados2() {
+        ProductosValorizadosMpFrame pvf = new ProductosValorizadosMpFrame();
+        pvf.setVisible(true);
+        this.dispose();
+    }
+
+    private void productosValoridados1() {
+        ProductosValorizadosFrame pvf = new ProductosValorizadosFrame();
+        pvf.setVisible(true);
+        this.dispose();
+    }
+
+    private void importarIvaCompras() {
+        importarCompras();
+    }
+
+    private void limpiarTabla() {
+        UtilFrame.limpiarTabla(tabla);
+    }
+
+    private void notaCreditoGrupo() {
+        NotaCreditoPorGrupoFrame ncxgf = new NotaCreditoPorGrupoFrame();
+        ncxgf.setVisible(true);
+        this.dispose();
+    }
+
+    private void facturaManual() {
+        FacturaWeb3Frame fw2f = new FacturaWeb3Frame();
+        fw2f.setVisible(true);
+        this.dispose();
+    }
+
+    private void todasLasAccionesProductos() {
+        AbmProductoFrame apf = new AbmProductoFrame(null);
+        apf.setVisible(true);
+        this.dispose();
+    }
+
+    private void verFcMp() {
+        VerFacturasMercadoPagoFrame vfmpf = new VerFacturasMercadoPagoFrame();
+        vfmpf.setVisible(true);
+        this.dispose();
+    }
+
+    private void abmTitulares() {
+        AbmTitularesDeCuitFrame atcf = new AbmTitularesDeCuitFrame();
+        atcf.setVisible(true);
+        this.dispose();
+    }
+
+    private void productosOrdenarPorFraccion() {
+        ProductosOrdenarFraccionMpFrame popff = new ProductosOrdenarFraccionMpFrame();
+        popff.setVisible(true);
+        this.dispose();
+    }
+
+    private void duplicadoPdfPorFecha() {
+        VerFacturasByFechaFrame vfpff = new VerFacturasByFechaFrame();
+        vfpff.setVisible(true);
+        this.dispose();
+    }
+
+    private void setearPorcentajeCigVarios() {
+        ProductoSetearPorcentajeCigVariosFrame pspcvf = new ProductoSetearPorcentajeCigVariosFrame();
+        pspcvf.setVisible(true);
+        this.dispose();
+    }
+
+    private void importarCompras() {
+        JFileChooser selector = new JFileChooser();
+        selector.showOpenDialog(this);
+        File archivo = selector.getSelectedFile();
+        if (archivo != null) {
+            if (LectorDeExcel.validarExtension(archivo)) {
+                ImportarIvaComprasFrame inf = new ImportarIvaComprasFrame(archivo);
+                inf.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "El formato elegido no está soportado.",
+                        "Atencion",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "ARCHIVO EXCEL CON ERROR.",
+                    "Atencion",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void facturarPorCajas() {
+        FacturarPorCajasFrame fxcf = new FacturarPorCajasFrame();
+        fxcf.setVisible(true);
+        this.dispose();
+    }
+
+    private void verFcPorCajas() {
+        VerFcPorCajasFrame cfxcf = new VerFcPorCajasFrame();
+        cfxcf.setVisible(true);
         this.dispose();
     }
 }

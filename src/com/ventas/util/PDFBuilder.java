@@ -841,9 +841,11 @@ public class PDFBuilder {
         String f_venc_cae = sdf.format(iv.getFechaCae());
         String cae_nro = dfc.format(iv.getCae());
         if (iv.getImpuesto() > 0.00) {
-            impu = "Total Impuesto: " + df.format(iv.getImpuesto());
+            impu = "Otros Imp.Nac.Indirectos: " + df.format(iv.getImpuesto());
         }
-
+        impu = impu + " Régimen de transp.fiscal al consum. Ley (ley 27.743) Iva conten.: " ;
+        String ivaContenido = df.format(iv.getIva());
+        impu = impu + ivaContenido;
         String tpd = iv.getCliente().getTipo();
         String vto = sdf2.format(iv.getFechaCae());
         String cuit1;
@@ -908,7 +910,7 @@ public class PDFBuilder {
 
 //        Image imagen = Image.getInstance("c://ventasDA//qr//CodigoQR" + nr0 + ".png");
         Image imagen = Image.getInstance(Constantes.ruta_qr + nr0 + ".png");
-        Image img3 = Image.getInstance(Constantes.ruta_logo);
+//        Image img3 = Image.getInstance(Constantes.ruta_logo);
         Image img2 = Image.getInstance(Constantes.ruta_logo_afip);
 
         com.itextpdf.text.Font font = FontFactory.getFont(Constantes.ruta_fonts,
@@ -934,10 +936,10 @@ public class PDFBuilder {
 
         imagen.setAbsolutePosition(10f, 50f);
         img2.setAbsolutePosition(230f, 140f);
-        img3.setAbsolutePosition(10f, 910f);
+//        img3.setAbsolutePosition(10f, 910f);
         pdf.add(imagen);
         pdf.add(img2);
-        pdf.add(img3);
+//        pdf.add(img3);
 
         pdf.close();
         return new File(Constantes.ruta_pdf + fileNameFormatted + ".pdf");

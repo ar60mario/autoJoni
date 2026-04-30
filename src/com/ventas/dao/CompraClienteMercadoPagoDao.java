@@ -27,8 +27,8 @@ public class CompraClienteMercadoPagoDao extends GenericDao {
         criteria.add(Restrictions.eq("id", id));
         return (CompraClienteMercadoPago) criteria.uniqueResult();
     }
-//    
-//    public List<CompraClienteMercadoPago> getComprasParaProcesar() {
+    
+//    public List<CompraClienteMercadoPago> getFacturasMercadoPagoEntreFechas() {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
 //        criteria.add(Restrictions.eq("procesado", false));
@@ -37,6 +37,24 @@ public class CompraClienteMercadoPagoDao extends GenericDao {
 //    }
     
     public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesar() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+        criteria.add(Restrictions.eq("procesado", false));
+//        criteria.add(Restrictions.eq("letraFactura", "B"));
+        //criteria.addOrder(Order.asc("fecha"));
+        return (List<CompraClienteMercadoPago>) criteria.list();
+    }
+    
+    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesarPorFecha() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
+        criteria.add(Restrictions.eq("procesado", false));
+//        criteria.add(Restrictions.eq("letraFactura", "B"));
+        criteria.addOrder(Order.asc("fecha"));
+        return (List<CompraClienteMercadoPago>) criteria.list();
+    }
+    
+    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesarPorCliente() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(CompraClienteMercadoPago.class);
         criteria.add(Restrictions.eq("procesado", false));

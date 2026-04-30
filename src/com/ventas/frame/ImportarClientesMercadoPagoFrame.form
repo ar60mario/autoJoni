@@ -66,8 +66,8 @@
               <Table columnCount="7" rowCount="0">
                 <Column editable="false" title="Nro." type="java.lang.Object"/>
                 <Column editable="false" title="Fecha" type="java.lang.Object"/>
-                <Column editable="false" title="Nombre" type="java.lang.Object"/>
                 <Column editable="false" title="CUIT" type="java.lang.Object"/>
+                <Column editable="false" title="Nombre" type="java.lang.Object"/>
                 <Column editable="false" title="Monto" type="java.lang.Integer"/>
                 <Column editable="false" title="Origen" type="java.lang.Object"/>
                 <Column editable="false" title="Operaci&#xf3;n" type="java.lang.Object"/>
@@ -85,12 +85,12 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="280" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="280" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>

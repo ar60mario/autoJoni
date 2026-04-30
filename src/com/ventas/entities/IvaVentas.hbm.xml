@@ -11,6 +11,11 @@
         <property name="letra" type="string" column="LETRA"/>
         <property name="numeroSucursal" type="integer" column="NUMERO_SUCURSAL"/>
         <property name="numeroFactura" type="integer" column="NUMERO_FACTURA"/>
+        
+        <property name="razonSocialCliente" type="string" column="RAZON_SOCIAL_CLIENTE"/>
+        <property name="cuitCliente" type="string" column="CUIT_CLIENTE"/>
+        <property name="calleNroCliente" type="string" column="CALLE_NRO_CLIENTE"/>
+        <property name="cpLocalidadProvinciaCliente" type="string" column="CP_LOCALIDAD_PROVINCIA_CLIENTE"/>
         <property name="gravado" type="double" column="GRAVADO"/>
         <property name="gravado10_5" type="double" column="GRAVADO_10_5"/>
         <property name="gravado0" type="double" column="GRAVADO_0"/>
@@ -30,6 +35,14 @@
         <property name="numeroSucursalReferencia" type="integer" column="NUMERO_SUCURSAL_REFERENCIA"/>
         <property name="numeroFacturaReferencia" type="integer" column="NUMERO_FACTURA_REFERENCIA"/>
         <property name="tipoDoc" type="integer" column="TIPO_DOC"/>
+        <property name="descripcion" type="string" column="DESCRIPCION"/>
+        <property name="operacion" type="string" column="OPERACION"/>
+        <property name="cuitTitular" type="string" column="CUIT_TITULAR"/>
+        <property name="razonSocialTitular" type="string" column="RAZON_SOCIAL_TITULAR"/>
+        <property name="calleNroTitular" type="string" column="CALLE_NRO_TITULAR"/>
+        <property name="cpLocalidadProvinciaTitular" type="string" column="CP_LOCALIDAD_PROVINCIA_TITULAR"/>
+        <property name="iibbTitular" type="string" column="IIBB_TITULAR"/>
+        <property name="inicioActividades" type="string" column="INICIO_ACTIVIDADES"/>
         <many-to-one name="cliente"
                     class="com.ventas.entities.Cliente"
                      lazy="false">

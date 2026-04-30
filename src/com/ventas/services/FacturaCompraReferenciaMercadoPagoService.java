@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.services;
 
 import com.ventas.bo.FacturaCompraBo;
@@ -17,19 +12,34 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-/**
- *
- * @author Mario
- */
 public class FacturaCompraReferenciaMercadoPagoService {
+
+    public FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
 
     public FacturaCompraReferenciaMercadoPago getFacturaByIvaVentas(IvaVentas iv) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+//        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
         FacturaCompraReferenciaMercadoPago fc;
         try {
             fc = fBo.getFacturaByIvaVentas(iv);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            fc = null;
+            throw new Exception(ex);
+        }
+        return fc;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasMercadoPagoEntreFechas(Date de, Date al)
+            throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+//        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+        List<FacturaCompraReferenciaMercadoPago> fc;
+        try {
+            fc = fBo.getFacturasMercadoPagoEntreFechas(de, al);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
@@ -43,7 +53,7 @@ public class FacturaCompraReferenciaMercadoPagoService {
             throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+//        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
         List<FacturaCompraReferenciaMercadoPago> fc;
         try {
             fc = fBo.getFacturasIvaVentasEntreFechas(de, al);
@@ -56,12 +66,46 @@ public class FacturaCompraReferenciaMercadoPagoService {
         return fc;
     }
 
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechasAndOperacion(Date de,
+            Date al, String operacion)
+            throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<FacturaCompraReferenciaMercadoPago> fc;
+        try {
+            fc = fBo.getFacturasIvaVentasEntreFechasAndOperacion(de, al, operacion);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            fc = null;
+            throw new Exception(ex);
+        }
+        return fc;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechasAndNombre(Date de,
+            Date al, String nombre)
+            throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<FacturaCompraReferenciaMercadoPago> fc;
+        try {
+            fc = fBo.getFacturasIvaVentasEntreFechasAndNombre(de, al, nombre);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            fc = null;
+            throw new Exception(ex);
+        }
+        return fc;
+    }
+    
     public List<FacturaCompraReferenciaMercadoPago>
             getFacturasIvaVentasEntreFechasAndCuit(Date de, Date al, String cuit)
             throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+//        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
         List<FacturaCompraReferenciaMercadoPago> fc;
         try {
             fc = fBo.getFacturasIvaVentasEntreFechasAndCuit(de, al, cuit);
@@ -77,7 +121,7 @@ public class FacturaCompraReferenciaMercadoPagoService {
     public void saveFacturaCompraRmp(FacturaCompraReferenciaMercadoPago fc) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+//        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
         try {
             fBo.saveFacturaCompraReferenciaMercadoPago(fc);
             tx.commit();
@@ -86,7 +130,7 @@ public class FacturaCompraReferenciaMercadoPagoService {
             throw new Exception(ex);
         }
     }
-    
+
 //    public void updateFacturaCompra(FacturaCompra fc) throws Exception {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();
@@ -103,7 +147,7 @@ public class FacturaCompraReferenciaMercadoPagoService {
     public FacturaCompraReferenciaMercadoPago getFacturaById(Long id) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
-        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
+//        FacturaCompraReferenciaMercadoPagoBo fBo = new FacturaCompraReferenciaMercadoPagoBo();
         FacturaCompraReferenciaMercadoPago fc;
         try {
             fc = fBo.getFacturaById(id);

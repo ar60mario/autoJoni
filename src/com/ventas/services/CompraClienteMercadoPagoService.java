@@ -101,6 +101,20 @@ public class CompraClienteMercadoPagoService {
         return compras;
     }
     
+    public List<CompraClienteMercadoPago> getAllFacturasPendientesDeProcesarPorFecha() throws Exception {
+        List<CompraClienteMercadoPago> compras = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            compras = new CompraClienteMercadoPagoBo().getAllFacturasPendientesDeProcesarPorFecha();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return compras;
+    }
+    
     public List<CompraClienteMercadoPago> getAllFacturasDeInscriptosPendientesDeProcesar() throws Exception {
         List<CompraClienteMercadoPago> compras = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

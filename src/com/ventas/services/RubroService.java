@@ -15,10 +15,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-/**
- *
- * @author Administrador
- */
 public class RubroService {
 
     public List<Rubro> getAllRubros() throws Exception {
@@ -36,6 +32,23 @@ public class RubroService {
         }
         return listaRubro;
     }
+    
+    public List<Rubro> getRubrosByNroMarca(int nro) throws Exception {
+        List<Rubro> listaRubro = new ArrayList();
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try{
+            RubroBo bo = new RubroBo();
+            listaRubro = bo.getRubrosByNroMarca(nro);
+            tx.commit();
+        }
+        catch(Exception ex){
+           tx.rollback();
+            throw new Exception(ex);   
+        }
+        return listaRubro;
+    }
+    
     public void saveRubro(Rubro rubro)  throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();

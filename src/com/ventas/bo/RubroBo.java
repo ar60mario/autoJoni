@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.ventas.bo;
 
 import com.ventas.dao.RubroDao;
@@ -11,10 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 
-/**
- *
- * @author Administrador
- */
+
 public class RubroBo {
 
     RubroDao dao = new RubroDao();
@@ -23,6 +16,16 @@ public class RubroBo {
         List<Rubro> listaRubro = new ArrayList();
         try {
             listaRubro = dao.getAll(Rubro.class);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return listaRubro;
+    }
+    
+    public List<Rubro> getRubrosByNroMarca(int nroMarca) throws Exception {
+        List<Rubro> listaRubro = new ArrayList();
+        try {
+            listaRubro = dao.getRubrosByNroMarca(nroMarca);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

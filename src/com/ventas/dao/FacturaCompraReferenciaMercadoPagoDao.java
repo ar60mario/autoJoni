@@ -25,6 +25,16 @@ public class FacturaCompraReferenciaMercadoPagoDao extends GenericDao {
         return fact;
     }
 
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasMercadoPagoEntreFechas(Date de, Date al) {
+        List<FacturaCompraReferenciaMercadoPago> facts;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(FacturaCompraReferenciaMercadoPago.class);
+        Criteria criteria2 = criteria.createCriteria("ivaVentas");
+        criteria2.add(Restrictions.between("fecha", de, al));
+        facts = (List<FacturaCompraReferenciaMercadoPago>) criteria.list();
+        return facts;
+    }
+
     public FacturaCompraReferenciaMercadoPago getFacturaByIvaVentas(IvaVentas iv) {
         FacturaCompraReferenciaMercadoPago fact;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -41,6 +51,35 @@ public class FacturaCompraReferenciaMercadoPagoDao extends GenericDao {
         Criteria criteria = session.createCriteria(FacturaCompraReferenciaMercadoPago.class);
         Criteria criteria1 = criteria.createCriteria("ivaVentas");
         criteria1.add(Restrictions.between("fecha", de, al));
+        criteria1.addOrder(Order.asc("fecha"));
+        fact = (List<FacturaCompraReferenciaMercadoPago>) criteria.list();
+
+        return fact;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechasAndOperacion(Date de,
+            Date al, String operacion) {
+        List<FacturaCompraReferenciaMercadoPago> fact;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(FacturaCompraReferenciaMercadoPago.class);
+        Criteria criteria2 = criteria.createCriteria("compraClienteMercadoPago");
+        Criteria criteria1 = criteria.createCriteria("ivaVentas");
+        criteria1.add(Restrictions.between("fecha", de, al));
+        criteria2.add(Restrictions.like("operacion", operacion + "%"));
+        criteria1.addOrder(Order.asc("fecha"));
+        fact = (List<FacturaCompraReferenciaMercadoPago>) criteria.list();
+
+        return fact;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechasAndNombre(Date de,
+            Date al, String nombre) {
+        List<FacturaCompraReferenciaMercadoPago> fact;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(FacturaCompraReferenciaMercadoPago.class);
+        Criteria criteria1 = criteria.createCriteria("ivaVentas");
+        criteria1.add(Restrictions.between("fecha", de, al));
+        criteria1.add(Restrictions.like("razonSocialCliente", "%" + nombre + "%"));
         criteria1.addOrder(Order.asc("fecha"));
         fact = (List<FacturaCompraReferenciaMercadoPago>) criteria.list();
 

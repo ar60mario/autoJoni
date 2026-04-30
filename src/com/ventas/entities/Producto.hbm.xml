@@ -22,6 +22,8 @@
         <property name="panificado" type="boolean" column="PANIFICADO"/>
         <property name="fabricado" type="boolean" column="FABRICADO"/>
         <property name="esLogistica" type="boolean" column="ES_LOGISTICA"/>
+        <property name="precioPorPorcentaje" type="boolean" column="PRECIO_POR_PORCENTAJE"/>
+        <property name="porcentajePrecio" type="float" column="PORCENTAJE_PRECIO"/>
         <many-to-one name="rubro"
                     class="com.ventas.entities.Rubro"
                      lazy="false">

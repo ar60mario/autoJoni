@@ -11,5 +11,8 @@
         <property name="importeMaximo" type="double" column="IMPORTE_MAXIMO"/>
         <property name="importeMaximoPanificados" type="double" column="IMPORTE_MAXIMO_PANIFICADOS"/>
         <property name="importeMinimoMercadoPago" type="double" column="IMPORTE_MINIMO_MERCADO_PAGO"/>
+        <property name="minimoMp" type="double" column="MINIMO_M_P"/>
+        <property name="maximoLogistica" type="double" column="MAXIMO_LOGISTICA"/>
+        <property name="porcentajeImpuesto" type="float" column="PORCENTAJE_IMPUESTO"/>
     </class>
 </hibernate-mapping>

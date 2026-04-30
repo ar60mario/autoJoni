@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.ventas.dao;
 
 import com.ventas.entities.Rubro;
@@ -14,10 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Administrador
- */
+
 public class RubroDao extends GenericDao {
 
     public Rubro getByCodigo(Integer codigo) {
@@ -31,6 +24,14 @@ public class RubroDao extends GenericDao {
     public <T> List getAllOrdenado(Class<T> clase) throws HibernateException {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(clase);
+        criteria.addOrder(Order.asc("codigo"));
+        return criteria.list();
+    }
+    
+    public List<Rubro> getRubrosByNroMarca(int nroMarca) throws HibernateException {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Rubro.class);
+        criteria.add(Restrictions.eq("tipoMarca", nroMarca));
         criteria.addOrder(Order.asc("codigo"));
         return criteria.list();
     }

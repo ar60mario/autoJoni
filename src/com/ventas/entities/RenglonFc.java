@@ -14,6 +14,7 @@ public class RenglonFc {
     private Long id;
     private Integer itemNro;
     private Producto producto;
+    private Integer codigoProducto;
     private Double gravado;
     private Double gravado10_5;
     private Double gravado0;
@@ -38,10 +39,11 @@ public class RenglonFc {
     public RenglonFc() {
     }
 
-    public RenglonFc(Long id, Integer itemNro, Producto producto, Double gravado, Double gravado10_5, Double gravado0, Double gravado27, Double noGravado, Float cantidad, Double exento, Double impuesto, Double descuento, Double iva, Double iva10_5, Double iva0, Double iva27, Double total, Factura factura, Double sugerido, Boolean anulado, Double costoG, Double costoI, Boolean fabricacion) {
+    public RenglonFc(Long id, Integer itemNro, Producto producto, Integer codigoProducto, Double gravado, Double gravado10_5, Double gravado0, Double gravado27, Double noGravado, Float cantidad, Double exento, Double impuesto, Double descuento, Double iva, Double iva10_5, Double iva0, Double iva27, Double total, Factura factura, Double sugerido, Boolean anulado, Double costoG, Double costoI, Boolean fabricacion) {
         this.id = id;
         this.itemNro = itemNro;
         this.producto = producto;
+        this.codigoProducto = codigoProducto;
         this.gravado = gravado;
         this.gravado10_5 = gravado10_5;
         this.gravado0 = gravado0;
@@ -85,6 +87,14 @@ public class RenglonFc {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    public Integer getCodigoProducto() {
+        return codigoProducto;
+    }
+
+    public void setCodigoProducto(Integer codigoProducto) {
+        this.codigoProducto = codigoProducto;
     }
 
     public Double getGravado() {

@@ -1,9 +1,5 @@
 package com.ventas.entities;
 
-/**
- *
- * @author argia
- */
 public class FacturaCompraReferenciaMercadoPago {
     private Long id;
     private CompraClienteMercadoPago compraClienteMercadoPago;

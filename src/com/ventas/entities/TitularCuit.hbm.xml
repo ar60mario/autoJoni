@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.TitularCuit" schema="joni" table="titular_cuit">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="codigo" type="integer" column="CODIGO"/>
+        <property name="razonSocial" type="string" column="RAZON_SOCIAL"/>
+        <property name="categoria" type="integer" column="CATEGORIA"/>
+        <property name="cuit" type="string" column="CUIT"/>
+        <property name="tipoDoc" type="string" column="TIPO_DOC"/>
+        <property name="iibb" type="string" column="IIBB"/>
+        <property name="calleNroPisoDto" type="string" column="CALLE_PISO_NRO_DTO"/>
+        <property name="cpLocalidadProvincia" type="string" column="CP_LOCALIDAD_PROVINCIA"/>
+        <property name="puntoVenta" type="integer" column="PUNTO_VENTA"/>
+        <property name="activo" type="boolean" column="ACTIVO"/>
+        <property name="rutaCrt" type="string" column="RUTA_CRT"/>
+        <property name="rutaKey" type="string" column="RUTA_KEY"/>
+        <property name="ultimoNroFactura" type="integer" column="ULTIMO_NRO_FACTURA"/>
+    </class>
+</hibernate-mapping>

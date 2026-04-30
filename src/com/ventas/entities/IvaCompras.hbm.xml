@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ventas.entities.IvaCompras" schema="joni" table="iva_compras">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="tipoComprobante" type="integer" column="TIPO_COMPROBANTE"/>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="impuesto" type="double" column="IMPUESTO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="otros" type="double" column="OTROS"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <property name="sucursal" type="integer" column="SUCURSAL"/>
+        <property name="numero" type="integer" column="NUMERO"/>
+        <property name="razonSocial" type="string" column="RAZON_SOCIAL"/>
+        <property name="cuit" type="string" column="CUIT"/>
+        
+    </class>
+</hibernate-mapping>

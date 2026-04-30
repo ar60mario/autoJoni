@@ -7,10 +7,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 
-/**
- *
- * @author Mario
- */
 public class ProductoTopBo {
 
     private final ProductoTopDao dao = new ProductoTopDao();
@@ -24,14 +20,15 @@ public class ProductoTopBo {
         }
     }
 
-    public void updateProductoTop(ProductoTop producto) throws Exception {
+    public ProductoTop updateProductoTop(ProductoTop producto) throws Exception {
         try {
-            dao.update(producto);
+            producto = (ProductoTop) dao.update(producto);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
+        return producto;
     }
-    
+
     public List<ProductoTop> getAllProductoVariosTopActivos(Rubro rubro) throws Exception {
         List<ProductoTop> productos = null;
         try {
@@ -52,6 +49,36 @@ public class ProductoTopBo {
         return productos;
     }
     
+    public List<ProductoTop> getAllProductoTabacoTopActivos2ConStock(Rubro rubro) throws Exception {
+        List<ProductoTop> productos = null;
+        try {
+            productos = dao.getAllProductoTabacoTopActivos2ConStock(rubro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
+    public List<ProductoTop> getAllProductoTabacoTopActivos9(Rubro rubro) throws Exception {
+        List<ProductoTop> productos = null;
+        try {
+            productos = dao.getAllProductoTabacoTopActivos9(rubro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
+    public List<ProductoTop> getAllProductoTabacoTopActivos8(Rubro rubro) throws Exception {
+        List<ProductoTop> productos = null;
+        try {
+            productos = dao.getAllProductoTabacoTopActivos8(rubro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
     public List<ProductoTop> getAllProductoTopActivos() throws Exception {
         List<ProductoTop> productos = null;
         try {
@@ -62,6 +89,26 @@ public class ProductoTopBo {
         return productos;
     }
 
+    public List<ProductoTop> getProductoTopActivosVtaSinStock() throws Exception {
+        List<ProductoTop> productos = null;
+        try {
+            productos = dao.getProductoTopActivosVtaSinStock();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
+    public List<ProductoTop> getProductoPorcentajeActivo() throws Exception {
+        List<ProductoTop> productos = null;
+        try {
+            productos = dao.getProductoPorcentajeActivo();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+    
     public List<ProductoTop> getAllProductoTopActivosConLimite(Double limite) throws Exception {
         List<ProductoTop> productos = null;
         try {
@@ -71,7 +118,7 @@ public class ProductoTopBo {
         }
         return productos;
     }
-    
+
     public List<ProductoTop> getAllProductoTopInactivos() throws Exception {
         List<ProductoTop> productos = null;
         try {
@@ -81,11 +128,21 @@ public class ProductoTopBo {
         }
         return productos;
     }
-    
+
     public ProductoTop getProductoTopByCodigo(Integer codigo) throws Exception {
         ProductoTop prod = null;
         try {
             prod = dao.getProductoTopByCodigo(codigo);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return prod;
+    }
+
+    public ProductoTop getProductoTopByDetalle(String detalle) throws Exception {
+        ProductoTop prod = null;
+        try {
+            prod = dao.getProductoTopByDetalle(detalle);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
@@ -101,7 +158,17 @@ public class ProductoTopBo {
         }
         return prod;
     }
-    //
+
+    public ProductoTop getProductoTopByOrder2(Integer ord) throws Exception {
+        ProductoTop prod = null;
+        try {
+            prod = dao.getProductoTopByOrder2(ord);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return prod;
+    }
+
     public ProductoTop getProductoTopPanificadoByOrder(Integer order) throws Exception {
         ProductoTop prod = null;
         try {

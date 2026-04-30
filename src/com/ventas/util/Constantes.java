@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.ventas.util;
 
-/**
- *
- * @author Marcela
- */
+
 public class Constantes {
 
     public static final int MAX_RESULTS = 20;
@@ -37,11 +30,17 @@ public class Constantes {
     public static final String llave = "/clave_privada_20300377425_202404201217.key";
     public static final String userdir = "d:/ventasJo/crt";
     public static final String ruta = "d:/ventasJo/cmprbt/";
-    public static final String ruta_qr = "d://ventasJo//qr//codigoQR";
+    public static final String ruta_qr = "d://ventasJo//qr//";
     public static final String ruta_pdf = "d://ventasJo//data//facturas_pdf//";
     public static final String ruta_logo_afip = "d://ventasJo//qr//afip.png";
     public static final String ruta_fonts = "d:/ventasJo/ttf/PF_I2OF5_TXT.ttf";
     public static final String razon_social_titular = "BELSITO JONATHAN MAXIMILIANO";
     public static final String nombre_fantasia_titular = "BELSITO JONATHAN MAXIMILIANO";
     public static final String ruta_logo = "d:/ventasJo/logo/logo.jpg";
+    public static final String rutaExcel = "d:/ventasJo/data/excel/";
+    public static final String calleNroTitular = "COSQUIN 2626";
+    public static final String cpLocalidadProvinciaTitular="1814 - LA NORIA - PCIA.BS.AS.";
+    public static final String iibbTitular="20-30037742-5";//20300377425
+    public static final String inicioActividades = "05-2024";
+    public static final String categoriaInscripcionTitular="RESPONSABLE INSCRIPTO";
 }

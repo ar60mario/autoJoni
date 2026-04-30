@@ -4,9 +4,13 @@ import com.ventas.entities.Cliente;
 import com.ventas.entities.IvaVentas;
 import com.ventas.util.HibernateUtils;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,11 +18,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
-/**
- *
- * @author Marcela
- */
 public class IvaVentasDao extends GenericDao {
+
+    private DecimalFormat df_mes = new DecimalFormat("00");
+    private DecimalFormat df_anio = new DecimalFormat("0000");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public List<IvaVentas> getFacturasEntreFechas(Date fd, Date fa) {
         List<IvaVentas> fact = null;
@@ -33,19 +37,34 @@ public class IvaVentasDao extends GenericDao {
         return fact;
     }
 
+    public List<IvaVentas> getFacturasBEntreFechas(Date fd, Date fa) {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
+                .add(Restrictions.between("fecha", fd, fa))
+                //  .add(Restrictions.eq("panificado", false))
+                .add(Restrictions.eq("tipoDoc", 6))
+                .addOrder(Order.asc("fecha"))
+                .addOrder(Order.asc("letra"))
+                .addOrder(Order.asc("numeroFactura"))
+                .list();
+        return fact;
+    }
+
     public List<IvaVentas> getFacturasEntreFechasOrdenCliente(Date fd, Date fa) {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(IvaVentas.class);
         Criteria criteria2 = criteria.createCriteria("cliente");
         criteria.add(Restrictions.between("fecha", fd, fa));
+
         criteria2.addOrder(Order.asc("razonSocial"));
         criteria.addOrder(Order.asc("letra"));
         criteria.addOrder(Order.asc("numeroFactura"));
         fact = (List<IvaVentas>) criteria.list();
         return fact;
     }
-    
+
     public List<IvaVentas> getFacturasEntreFechasOrdenNroFc(Date fd, Date fa) {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -59,11 +78,37 @@ public class IvaVentasDao extends GenericDao {
         return fact;
     }
 
-    public String getUltimaFechaFactura() {
+    public List<IvaVentas> getFacturasByPeriodo(Integer mes, Integer anio) {
+        List<IvaVentas> fact;
+        Date fd;
+        try {
+            fd = sdf.parse("01/" + df_mes.format(mes) + "/" + df_anio.format(anio));
+        } catch (ParseException ex) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fd);
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date fa = cal.getTime();
+        System.out.println(fd);
+        System.out.println(fa);
+//        System.exit(0);
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(IvaVentas.class);
+//        Criteria criteria2 = criteria.createCriteria("cliente");
+        criteria.add(Restrictions.between("fecha", fd, fa));
+        criteria.addOrder(Order.asc("fecha"));
+        criteria.addOrder(Order.asc("letra"));
+        criteria.addOrder(Order.asc("numeroFactura"));
+        fact = (List<IvaVentas>) criteria.list();
+        return fact;
+    }
+
+    public String getUltimaFechaFactura(String cuitTitular) {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
-                //                        .add(Restrictions.between("fecha", fd, fa))
+                .add(Restrictions.eq("cuitTitular", cuitTitular))
                 //  .add(Restrictions.eq("panificado", false))
                 .setMaxResults(3)
                 .addOrder(Order.desc("fecha"))
@@ -74,7 +119,20 @@ public class IvaVentasDao extends GenericDao {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(fecha);
     }
-    
+
+    public IvaVentas getUltimaFactura(Integer td) {
+        List<IvaVentas> fact;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
+                .add(Restrictions.eq("tipoDoc", td))
+                .addOrder(Order.desc("fecha"))
+                .addOrder(Order.desc("numeroFactura"))
+                .setMaxResults(3)
+                .list();
+        IvaVentas iv = fact.get(0);
+        return iv;
+    }
+
     public String getUltimaNombreEnFactura() {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -87,10 +145,10 @@ public class IvaVentasDao extends GenericDao {
                 .addOrder(Order.desc("numeroFactura"))
                 .list();
         String nombre = fact.get(0).getCliente().getRazonSocial();
-        
+
         return nombre;
     }
-    
+
     public String getUltimoCuitEnFactura() {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -103,15 +161,15 @@ public class IvaVentasDao extends GenericDao {
                 .addOrder(Order.desc("numeroFactura"))
                 .list();
         String nombre = fact.get(0).getCliente().getCuit();
-        
+
         return nombre;
     }
-    
-    public String getUltimoImporteFactura() {
+
+    public String getUltimoImporteFactura(String cuitTitular) {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
-                //                        .add(Restrictions.between("fecha", fd, fa))
+                .add(Restrictions.eq("cuitTitular", cuitTitular))
                 //  .add(Restrictions.eq("panificado", false))
                 .setMaxResults(3)
                 .addOrder(Order.desc("fecha"))
@@ -123,11 +181,11 @@ public class IvaVentasDao extends GenericDao {
         return df.format(importe);
     }
 
-    public Integer getUltimoNumeroFactura() {
+    public Integer getUltimoNumeroFactura(String cuitTitular) {
         List<IvaVentas> fact = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
-//                .add(Restrictions.eq("numeroSucursal", 10))
+                .add(Restrictions.eq("cuitTitular", cuitTitular))
                 .add(Restrictions.eq("tipoDoc", 6))
                 .setMaxResults(3)
                 .addOrder(Order.desc("numeroFactura"))
@@ -135,6 +193,23 @@ public class IvaVentasDao extends GenericDao {
                 //                        .addOrder(Order.desc("numeroFactura"))
                 .list();
         Integer numero = fact.get(0).getNumeroFactura();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return numero;
+    }
+    
+    public Integer getUltimoNumeroFacturaA(String cuitTitular) {
+        List<IvaVentas> fact = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        fact = (List<IvaVentas>) session.createCriteria(IvaVentas.class)
+                .add(Restrictions.eq("cuitTitular", cuitTitular))
+                .add(Restrictions.eq("tipoDoc", 1))
+                .setMaxResults(3)
+                .addOrder(Order.desc("numeroFactura"))
+                //                        .addOrder(Order.asc("letra"))
+                //                        .addOrder(Order.desc("numeroFactura"))
+                .list();
+        Integer numero = fact.get(0).getNumeroFactura();
+        
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return numero;
     }
@@ -189,19 +264,19 @@ public class IvaVentasDao extends GenericDao {
         factura = (IvaVentas) query.uniqueResult();
         return factura;
     }
-    
+
     public IvaVentas getByLetraNumero2(String letra, Integer sucursal, Integer numero) {
         IvaVentas factura = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         factura = (IvaVentas) session.createCriteria(IvaVentas.class)
-//                .add(Restrictions.between("fecha", fd, fa))
+                //                .add(Restrictions.between("fecha", fd, fa))
                 .add(Restrictions.eq("letra", letra))
                 .add(Restrictions.eq("numeroSucursal", sucursal))
                 .add(Restrictions.eq("numeroFactura", numero))
                 .add(Restrictions.eq("tipoDoc", 6))
-//                .addOrder(Order.asc("fecha"))
-//                .addOrder(Order.asc("letra"))
-//                .addOrder(Order.asc("numeroFactura"))
+                //                .addOrder(Order.asc("fecha"))
+                //                .addOrder(Order.asc("letra"))
+                //                .addOrder(Order.asc("numeroFactura"))
                 .uniqueResult();
         return factura;
     }

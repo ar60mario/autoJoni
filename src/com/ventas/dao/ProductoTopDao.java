@@ -6,12 +6,9 @@ import com.ventas.util.HibernateUtils;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Mario
- */
 public class ProductoTopDao extends GenericDao {
 
     public List<ProductoTop> getAllProductoVariosTopActivos(Rubro rubro) {
@@ -28,9 +25,45 @@ public class ProductoTopDao extends GenericDao {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(ProductoTop.class);
         criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("rubro", rubro));
+//        criteria.add(Restrictions.eq("panificado", false));
+        List<ProductoTop> productos = criteria.list();
+        return productos;
+    }
+    
+    public List<ProductoTop> getAllProductoTabacoTopActivos2ConStock(Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("rubro", rubro));
         criteria.add(Restrictions.gt("stock", 0F));
+//        criteria.add(Restrictions.eq("panificado", false));
+        List<ProductoTop> productos = criteria.list();
+        return productos;
+    }
+
+    public List<ProductoTop> getAllProductoTabacoTopActivos9(Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.gt("stock", 0F));
+        criteria.add(Restrictions.gt("impuesto", 0F));
         criteria.add(Restrictions.eq("rubro", rubro));
         criteria.add(Restrictions.eq("panificado", false));
+        criteria.addOrder(Order.desc("orden"));
+        List<ProductoTop> productos = criteria.list();
+        return productos;
+    }
+
+    public List<ProductoTop> getAllProductoTabacoTopActivos8(Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.gt("stock", 0F));
+        criteria.add(Restrictions.gt("impuesto", 0F));
+        criteria.add(Restrictions.eq("rubro", rubro));
+        criteria.add(Restrictions.eq("panificado", false));
+//        criteria.addOrder(Order.desc("orden"));
         List<ProductoTop> productos = criteria.list();
         return productos;
     }
@@ -42,7 +75,35 @@ public class ProductoTopDao extends GenericDao {
         criteria.add(Restrictions.eq("panificado", false));
         return criteria.list();
     }
+
+    public List<ProductoTop> getProductoTopActivosVtaSinStock() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("panificado", false));
+        criteria.add(Restrictions.eq("ventaSinStock", true));
+        criteria.add(Restrictions.eq("usado", false));
+        return criteria.list();
+    }
+
+    public List<ProductoTop> getProductoPorcentajeActivo() {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("panificado", false));
+        criteria.add(Restrictions.eq("ventaSinStock", true));
+        criteria.add(Restrictions.eq("usado", false));
+        return criteria.list();
+    }
     
+    public List<ProductoTop> getProductoTopActivosByRubro(Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("panificado", false));
+        return criteria.list();
+    }
+
     public List<ProductoTop> getAllProductoTopActivosConLimite(Double limite) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(ProductoTop.class);
@@ -51,7 +112,7 @@ public class ProductoTopDao extends GenericDao {
 //        criteria.add(Restrictions.lt(propertyName, limite));
         return criteria.list();
     }
-    
+
     public List<ProductoTop> getAllProductoTopActivosOrdenado(Double limite) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(ProductoTop.class);
@@ -77,11 +138,21 @@ public class ProductoTopDao extends GenericDao {
         ProductoTop prod = (ProductoTop) criteria.uniqueResult();
         return prod;
     }
+    
+    public ProductoTop getProductoTopByDetalle(String detalle) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("detalle", detalle));
+        criteria.add(Restrictions.eq("activo",true));
+        ProductoTop prod = (ProductoTop) criteria.uniqueResult();
+        return prod;
+    }
 
     public ProductoTop getProductoTopByOrder(Integer order) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(ProductoTop.class);
         criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.gt("stock", 0));
         criteria.add(Restrictions.eq("panificado", false));
         criteria.add(Restrictions.eq("orden", order));
         ProductoTop prod = (ProductoTop) criteria.uniqueResult();
@@ -95,6 +166,17 @@ public class ProductoTopDao extends GenericDao {
 //        if(p.getStock() < 1){
 //            prod = null;
 //        }
+        return prod;
+    }
+
+    public ProductoTop getProductoTopByOrder2(Integer ord) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProductoTop.class);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.gt("stock", 0F));
+        criteria.add(Restrictions.eq("panificado", false));
+        criteria.add(Restrictions.eq("orden", ord));
+        ProductoTop prod = (ProductoTop) criteria.uniqueResult();
         return prod;
     }
 

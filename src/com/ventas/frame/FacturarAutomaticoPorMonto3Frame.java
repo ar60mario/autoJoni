@@ -1,0 +1,1186 @@
+package com.ventas.frame;
+
+import com.ventas.entities.Cliente;
+import com.ventas.entities.ConfiguracionTop;
+import com.ventas.entities.Factura;
+import com.ventas.entities.FacturaIvaIntercambio;
+import com.ventas.entities.IvaVentas;
+import com.ventas.entities.NuevaFactura;
+import com.ventas.entities.Producto;
+import com.ventas.entities.ProductoTop;
+import com.ventas.entities.RenglonFactura;
+import com.ventas.entities.RenglonFc;
+import com.ventas.entities.Rubro;
+import com.ventas.main.MainFrame;
+import com.ventas.services.ClienteService;
+import com.ventas.services.ConfiguracionTopService;
+import com.ventas.services.FacturaService;
+import com.ventas.services.FcService;
+import com.ventas.services.IvaVentasService;
+import com.ventas.services.ProductoService;
+import com.ventas.services.ProductoTopService;
+import com.ventas.services.RenglonFcService;
+import com.ventas.services.RubroService;
+import com.ventas.util.Constantes;
+import com.ventas.util.UtilAfip;
+import com.ventas.util.UtilFactura;
+import com.ventas.util.UtilFrame;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import static java.lang.Thread.sleep;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.table.DefaultTableModel;
+
+public class FacturarAutomaticoPorMonto3Frame extends javax.swing.JFrame {
+
+//    private List<ArticuloCompra> articulos;
+    private List<Rubro> rubros;
+    private List<Factura> facturas;
+//    private List<RenglonFc> renglones;
+    private DecimalFormat df = new DecimalFormat("#0.00");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private Double minimo = 0.0;
+    private Double maximo = 0.0;
+    private Date fechaFacturas = new Date();
+//    private String cuitTitular = Constantes.cuitTitular;
+//    private String tipoDocTit = Constantes.tipoDocTit;
+//    private String puntoVenta = Constantes.puntoVenta;
+    private Cliente cliente;
+//    private String cuitCliente;
+//    private String tipoDocCli;
+//    private final int tst = 0; // 1 esta en test
+
+    public FacturarAutomaticoPorMonto3Frame() {
+        initComponents();
+        getContentPane().setBackground(new java.awt.Color(100, 100, 255));
+        this.setLocationRelativeTo(null);
+        limpiarCampos();
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        volverBtn = new javax.swing.JButton();
+        presentarBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        calcularBtn = new javax.swing.JButton();
+        importeMaximoTxt = new javax.swing.JTextField();
+        importeMinimoTxt = new javax.swing.JTextField();
+        fechaTxt = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        ultimaFechaTxt = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        totalFacturarTxt = new javax.swing.JTextField();
+        segDeTxt = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        segAlTxt = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        combo = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        ultimoNumeroTxt = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        ultimoImporteTxt = new javax.swing.JTextField();
+        barral = new javax.swing.JProgressBar();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("FACTURACION AUTOMATICA POR MONTO");
+
+        volverBtn.setText("VOLVER");
+        volverBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverBtnActionPerformed(evt);
+            }
+        });
+
+        presentarBtn.setText("PRESENTAR");
+        presentarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presentarBtnActionPerformed(evt);
+            }
+        });
+
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "NRO", "GRAVADO", "IMPUESTO", "IVA", "TOTAL"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(60);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(60);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(60);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(60);
+        }
+
+        jLabel1.setText("FECHA:");
+
+        jLabel2.setText("IMPORTE MINIMO:");
+
+        jLabel3.setText("IMPORTE MAXIMO:");
+
+        calcularBtn.setText("CALCULAR");
+        calcularBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcularBtnActionPerformed(evt);
+            }
+        });
+        calcularBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calcularBtnKeyPressed(evt);
+            }
+        });
+
+        importeMaximoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        importeMaximoTxt.setText("IMPORTE MAX");
+
+        importeMinimoTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        importeMinimoTxt.setText("IMPORTE MIN");
+
+        fechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        fechaTxt.setText("FECHA");
+        fechaTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fechaTxtKeyPressed(evt);
+            }
+        });
+
+        jLabel4.setText("ULTIMA FECHA:");
+
+        ultimaFechaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultimaFechaTxt.setText("ULTIMA FECHA");
+
+        jLabel5.setText("TOTAL FC:");
+
+        totalFacturarTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        totalFacturarTxt.setText("TOTAL FACTURAR");
+        totalFacturarTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                totalFacturarTxtKeyPressed(evt);
+            }
+        });
+
+        segDeTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        segDeTxt.setText("SEG");
+
+        jLabel6.setText("SEGUNDOS ENTRE FC:");
+
+        segAlTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        segAlTxt.setText("SEG");
+
+        jLabel7.setText("TABACALERA:");
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
+        combo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                comboKeyPressed(evt);
+            }
+        });
+
+        jLabel8.setText("ULTIMO NUMERO:");
+
+        ultimoNumeroTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        ultimoNumeroTxt.setText("U.NUM");
+
+        jLabel9.setText("ULTIMO IMPORTE:");
+
+        ultimoImporteTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        ultimoImporteTxt.setText("U.IMPORTE");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(barral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(presentarBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(segDeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(segAlTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(volverBtn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ultimoNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ultimoImporteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(calcularBtn)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(ultimaFechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(ultimoNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(ultimoImporteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(importeMinimoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(importeMaximoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalFacturarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(calcularBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(barral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(volverBtn)
+                    .addComponent(presentarBtn)
+                    .addComponent(segDeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(segAlTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
+        volver();
+    }//GEN-LAST:event_volverBtnActionPerformed
+
+    private void presentarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentarBtnActionPerformed
+        importeMinimoTxt.setEditable(false);
+        importeMaximoTxt.setEditable(false);
+        fechaTxt.setEditable(false);
+        totalFacturarTxt.setEditable(false);
+//        segDeTxt.setEditable(false);
+//        segAlTxt.setEditable(false);
+        presentar();
+    }//GEN-LAST:event_presentarBtnActionPerformed
+
+    private void calcularBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularBtnActionPerformed
+        calcular2();
+    }//GEN-LAST:event_calcularBtnActionPerformed
+
+    private void fechaTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            String fe = fechaTxt.getText();
+            int largo = fe.length();
+            if (largo == 10) {
+                try {
+                    fechaFacturas = sdf.parse(fechaTxt.getText());
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR 252");
+                    return;
+                }
+                if (verificarFecha(fechaFacturas)) {
+                    totalFacturarTxt.requestFocus();
+//                        combo.showPopup();
+//                        combo.requestFocus();
+                }
+
+            } else {
+                if (largo > 10) {
+                    JOptionPane.showMessageDialog(this, "ERROR EN LARGO DE FECHA");
+                    return;
+                }
+            }
+            fe = UtilFrame.fecha(fe);
+            fechaTxt.setText(fe);
+        }
+    }//GEN-LAST:event_fechaTxtKeyPressed
+
+    private void totalFacturarTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalFacturarTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (!totalFacturarTxt.getText().isEmpty()) {
+                combo.addFocusListener(null);
+                combo.showPopup();
+                combo.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_totalFacturarTxtKeyPressed
+
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+        if (evt.getModifiers() == 16) {
+            int row = combo.getSelectedIndex();
+            if (row > 0) {
+                calcularBtn.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_comboActionPerformed
+
+    private void comboKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboKeyPressed
+        if (evt.getKeyCode() == 10) {
+            int row = combo.getSelectedIndex();
+            if (row > 0) {
+                calcularBtn.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_comboKeyPressed
+
+    private void calcularBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calcularBtnKeyPressed
+        if (evt.getKeyCode() == 10) {
+
+            calcular2();
+        }
+    }//GEN-LAST:event_calcularBtnKeyPressed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FacturarAutomaticoPorMonto3Frame().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barral;
+    private javax.swing.JButton calcularBtn;
+    private javax.swing.JComboBox<String> combo;
+    private javax.swing.JTextField fechaTxt;
+    private javax.swing.JTextField importeMaximoTxt;
+    private javax.swing.JTextField importeMinimoTxt;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton presentarBtn;
+    private javax.swing.JTextField segAlTxt;
+    private javax.swing.JTextField segDeTxt;
+    private javax.swing.JTable tabla;
+    private javax.swing.JTextField totalFacturarTxt;
+    private javax.swing.JTextField ultimaFechaTxt;
+    private javax.swing.JTextField ultimoImporteTxt;
+    private javax.swing.JTextField ultimoNumeroTxt;
+    private javax.swing.JButton volverBtn;
+    // End of variables declaration//GEN-END:variables
+
+    private void limpiarCampos() {
+        fechaTxt.setText("");
+        fechaTxt.requestFocus();
+        segDeTxt.setText("1");
+        segAlTxt.setText("1");
+        importeMinimoTxt.setText("");
+        importeMaximoTxt.setText("");
+        totalFacturarTxt.setText("");
+        ultimaFechaTxt.setText("");
+        ultimaFechaTxt.setEditable(false);
+        jLabel6.setVisible(false);
+        segDeTxt.setVisible(false);
+        segAlTxt.setVisible(false);
+        try {
+            ultimaFechaTxt.setText(new IvaVentasService().getUltimaFechaFactura("20300377425"));
+            ultimoImporteTxt.setText(new IvaVentasService().getUltimoImporteFactura("20300377425"));
+            ultimoNumeroTxt.setText(new IvaVentasService().getUltimoNumeroFactura("20300377425").toString());
+        } catch (Exception ex) {
+            ultimaFechaTxt.setText(sdf.format(new Date()));
+        }
+        ultimoNumeroTxt.setEditable(false);
+        ultimoImporteTxt.setEditable(false);
+        UtilFrame.limpiarTabla(tabla);
+        ConfiguracionTop cfgt;
+        try {
+            cfgt = new ConfiguracionTopService().getConfigTopById(1);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "ERROR NRO.275");
+            return;
+        }
+        minimo = cfgt.getImporteMinimoMercadoPago();
+        maximo = cfgt.getImporteMaximo();
+        mostrarImportes();
+//        Configuracion cfg;
+//        try {
+//            cfg = new ConfiguracionService().getFacturas(1L);
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(this, "ERROR NRO.288");
+//            return;
+//        }
+        try {
+            cliente = new ClienteService().getClienteByCodigo("1");
+            if (cliente != null) {
+                String cuit_cliente = cliente.getCuit();
+                String pri = cuit_cliente.substring(0, 2);
+                String med = cuit_cliente.substring(3, 11);
+                String fin = cuit_cliente.substring(12, 13);
+//                cuitCliente = pri + med + fin;
+//                tipoDocCli = cliente.getTipo();
+            }
+        } catch (Exception ex) {
+            cliente = null;
+        }
+        rubros = null;
+        try {
+            rubros = new RubroService().getAllRubros();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        articulos = null;
+//        try {
+//            articulos = new ArticuloCompraService().getAllArticulosActivos();
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(this, "NO HAY TABACALERAS DISPONIBLES");
+//            return;
+//        }
+//        limpiarFacturas();
+
+        combo.removeAllItems();
+        combo.addItem("");
+        if (rubros != null && !rubros.isEmpty()) {
+            for (Rubro ac : rubros) {
+                combo.addItem(ac.getNombre());
+            }
+        }
+    }
+
+    private void calcular() {
+        if (!totalFacturarTxt.getText().isEmpty()) {
+            Double limiteFacturar = Double.valueOf(totalFacturarTxt.getText().replace(",", "."));
+            UtilFrame.limpiarTabla(tabla);
+            int row = combo.getSelectedIndex();
+//            List<Factura> facturas;
+            if (row > 0) {
+                facturas = calcularConFacturas(limiteFacturar);
+                if (facturas != null) {
+                    llenarTabla(facturas);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR TABACALERA");
+            }
+        }
+    }
+
+    private void presentar() {
+        int a = JOptionPane.showConfirmDialog(this, "VERIFICO LA FECHA DE LAS FACTURAS???", "Atención", JOptionPane.YES_NO_OPTION);
+        if (a == 0) {
+//            Integer nroInicial = 0;
+//            try {
+//                nroInicial = new IvaVentasService().getUltimoNumeroFactura();
+//            } catch (Exception ex) {
+//                Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            //cliente;
+            String codigo = "1";
+            try {
+                cliente = new ClienteService().getClienteByCodigo(codigo);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "ERROR 391");
+                return;
+            }
+            try {
+                fechaFacturas = sdf.parse(fechaTxt.getText());
+            } catch (ParseException ex) {
+                //Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "ERROR EN FECHAS");
+                fechaTxt.requestFocus();
+                return;
+            }
+            if (!segDeTxt.getText().isEmpty()) {
+                if ((!segAlTxt.getText().isEmpty())) {
+                    int tim1 = Integer.valueOf(segDeTxt.getText().trim());
+                    int tim2 = Integer.valueOf(segAlTxt.getText().trim());
+//                    List<NuevaFactura> facturasParaBorrar;
+//                    try {
+//                        facturasParaBorrar = new NuevaFacturaService().getAll();
+//                        for (NuevaFactura nf : facturasParaBorrar) {
+//                            new NuevaFacturaService().delete(nf);
+//                        }
+//                    } catch (Exception ex) {
+//                        return;
+//                    }
+//                    for (Factura cf : facturas) {
+//                        NuevaFactura nf = new NuevaFactura();
+//                        nf.setCliente(cliente);
+//                        nf.setGravado(cf.getGravado());
+//                        nf.setImpuesto(cf.getImpuesto());
+//                        nf.setIva(cf.getIva());
+//                        nf.setTotal(cf.getTotal());
+//                        try {
+//                            new IvaVentasService().saveIvaVentas(nf);
+//                        } catch (Exception ex) {
+//                            return;
+//                        }
+//                    }
+                    try (FileWriter fichero = new FileWriter("D:/ventasJo/temp.txt")) {
+                        PrintWriter pw = new PrintWriter(fichero);
+                        pw.println(sdf.format(fechaFacturas));
+                        pw.println(tim1);
+                        pw.println(tim2);
+                        pw.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    barral();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "DEBE INGRESAR LOS SEGUNDOS ENTRE FACTURAS");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "DEBE INGRESAR LOS SEGUNDOS ENTRE FACTURAS");
+            }
+        }
+    }
+
+    private void volver() {
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
+    }
+
+    private void barral() {
+        Avanzando2a avanzando = new Avanzando2a();
+        presentarBtn.setEnabled(false);
+        calcularBtn.setEnabled(false);
+        avanzando.setBar(barral);
+        Thread hilo = new Thread(avanzando);
+        hilo.start();
+    }
+
+    private void mostrarImportes() {
+        importeMinimoTxt.setText(df.format(minimo));
+        importeMaximoTxt.setText(df.format(maximo));
+    }
+
+    private List<Factura> calcularConFacturas(Double limiteFacturar) {
+        List<Factura> nue_facturas = new ArrayList<>();
+        Date fech0;
+        try {
+            fech0 = sdf.parse(fechaTxt.getText());
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "ERROR 761 - FECHA");
+            return null;
+        }
+        Double totalFacturas = 0.00;
+        Boolean repetir = true;
+        int row = combo.getSelectedIndex() - 1;
+        Rubro rubro = rubros.get(row);
+        do {
+            limpiarProductosTop();
+            Random rnd = new Random();
+            Double importeRnd = rnd.nextDouble() * (maximo + .5);
+            importeRnd = importeRedondeado(importeRnd);
+            if (importeRnd > minimo) {
+                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                System.out.println("696 " + importeRnd);
+                System.out.println("697 " + minimo);
+                System.out.println("698 " + maximo);
+//                JOptionPane.showMessageDialog(this, "VER 696");
+                List<RenglonFc> cf = UtilFactura.calcularTotalesAutomatico4(importeRnd, rubro, minimo, maximo);
+                if (cf != null && !cf.isEmpty()) {
+
+                    Double t_neto = 0.0;
+                    Double t_iva = 0.0;
+                    Double t_impu = 0.0;
+                    Double t_t = 0.0;
+                    for (RenglonFc rf : cf) {
+//                        RenglonFc rf = cf.get(i);
+                        Producto pr;
+                        try {
+                            pr = new ProductoService().getProductoByCodigo(rf.getCodigoProducto());
+                        } catch (Exception ex) {
+                            Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        t_neto += rf.getGravado();
+                        t_iva += rf.getIva();
+                        t_impu += rf.getImpuesto();
+                        t_t += rf.getTotal();
+                    }
+                    Factura factura = new Factura();
+                    factura.setAnulado(false);
+                    factura.setCliente(cliente);
+                    factura.setFecha(fech0);
+                    factura.setGravado(t_neto);
+                    factura.setImpuesto(t_impu);
+                    factura.setIva(t_iva);
+                    factura.setTotal(t_t);
+                    factura.setGravado0(0.0);
+                    factura.setGravado10(0.0);
+                    factura.setGravado27(0.0);
+                    factura.setExento(0.0);
+                    factura.setNoGravado(0.0);
+                    factura.setIva0(0.0);
+                    factura.setIva10(0.0);
+                    factura.setIva27(0.0);
+                    factura.setFabricacion(false);
+                    nue_facturas.add(factura);
+                    totalFacturas += t_t;
+                    for (RenglonFc rfc : cf) {
+                        if (rfc.getTotal() > 0.0) {
+                            rfc.setFactura(factura);
+                        }
+                    }
+                    try {
+                        new FcService().saveFactura(factura, cf);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "ERROR 803 -FACTURAS");
+                        repetir = false;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "FACTURAS VACIAS");
+                    repetir = false;
+                }
+                if (totalFacturas > limiteFacturar) {
+                    repetir = false;
+                }
+//                System.out.println("AQUI ESTAMOS Y NO SE VA");
+            }
+            System.out.println("757 " + totalFacturas);
+            System.out.println("758 " + limiteFacturar);
+//            JOptionPane.showMessageDialog(this, "VER");
+            if (totalFacturas > limiteFacturar) {
+                repetir = false;
+            }
+            System.out.println("763 " + repetir);
+        } while (repetir);
+        return nue_facturas;
+    }
+
+    private Double importeRedondeado(Double importeRnd) {
+        String importeStr = df.format(importeRnd);
+        Double importeRedondeado = Double.valueOf(importeStr.replace(",", "."));
+        return importeRedondeado;
+    }
+
+    private void llenarTabla(List<Factura> nue_facturas) {
+        Integer nro = 0;
+        if (nue_facturas != null && !nue_facturas.isEmpty()) {
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            Double total = 0.0;
+            Double gravadoT = 0.0;
+            for (Factura cf : nue_facturas) {
+                Object o[] = new Object[5];
+                nro += 1;
+                o[0] = nro;
+                o[1] = df.format(cf.getGravado());
+                o[2] = df.format(cf.getImpuesto());
+                o[3] = df.format(cf.getIva());
+                o[4] = df.format(cf.getTotal());
+                total += cf.getTotal();
+                gravadoT += cf.getGravado();
+                tbl.addRow(o);
+            }
+            Object o[] = new Object[5];
+            nro += 1;
+            o[0] = "TOTAL >>>>";
+            o[1] = df.format(gravadoT);
+            o[4] = df.format(total);
+            tbl.addRow(o);
+            tabla.setModel(tbl);
+        }
+    }
+
+    private void calcular2() {
+        if (hayStock()) {
+            generarOrden();
+            limpiarFacturas();
+            if (!importeMinimoTxt.getText().isEmpty()) {
+                minimo = Double.valueOf(importeMinimoTxt.getText().replace(",", "."));
+            }
+            if (!importeMaximoTxt.getText().isEmpty()) {
+                maximo = Double.valueOf(importeMaximoTxt.getText().replace(",", "."));
+            }
+            limpiarProductosTop();
+            JOptionPane.showMessageDialog(this, "PRODUCTOS PREPARADOS");
+            calcular();
+        } else {
+            JOptionPane.showMessageDialog(this, "NO HAY STOCK");
+        }
+    }
+
+    private void limpiarProductosTop() {
+        int row = combo.getSelectedIndex();
+        if (row > 0) {
+            Rubro rubro = rubros.get(row - 1);
+            List<ProductoTop> pts;
+            try {
+                pts = new ProductoTopService().getAllProductoTabacoTopActivos9(rubro);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "ERROR Nro. 373 - PRODUCTOS UTILIZADOS");
+                return;
+            }
+            int nro = 0;
+            for (ProductoTop pt0 : pts) {
+                pt0.setOrden(nro);
+                pt0.setUsado(false);
+                Integer codigo = pt0.getCodigo();
+                Producto producto;
+                try {
+                    producto = new ProductoService().getProductoByCodigo(codigo);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR 810 - PRODUCTO");
+                    return;
+                }
+                pt0.setStock(producto.getStock());
+                pt0.setPrecio(producto.getPrecio());
+                pt0.setImpuesto(producto.getImpuesto());
+                nro += 1;
+                try {
+                    new ProductoTopService().updateProductoTop(pt0);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR 1059 - GRABANDO ORDEN");
+                    return;
+                }
+            }
+        }
+    }
+
+    private void limpiarFacturas() {
+        List<Factura> factur = null;
+        try {
+            factur = new FacturaService().getAllFacturasActivas();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Factura fc : factur) {
+            fc.setAnulado(true);
+            try {
+                new FcService().updateFactura(fc);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        List<RenglonFc> reng = null;
+        try {
+            reng = new RenglonFcService().getAllRenglonesActivos();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (RenglonFc rfc : reng) {
+            rfc.setAnulado(true);
+            try {
+                new RenglonFcService().updateRenglon(rfc);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private boolean verificarFecha(Date fecha) {
+        Date hoy = new Date();
+        if (fecha.after(hoy)) {
+            JOptionPane.showMessageDialog(this, "NO PUEDE FACTURAR CON FECHA POSTERIOR A HOY");
+            fechaTxt.requestFocus();
+            return false;
+        }
+        try {
+            Date ultimaFecha = sdf.parse(ultimaFechaTxt.getText());
+            if (fecha.before(ultimaFecha)) {
+                JOptionPane.showMessageDialog(this, "NO PUEDE FACTURAR CON FECHA ANTERIOR A ULTIMA");
+                fechaTxt.requestFocus();
+                return false;
+            }
+            Date f5d = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(f5d);
+            calendar.add(Calendar.DATE, -6);
+            f5d = calendar.getTime();
+            if (fecha.before(f5d)) {
+                JOptionPane.showMessageDialog(this, "NO DEBE SUPERAR 5 DIAS ATRAS");
+                return false;
+            }
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "ERROR EN FECHAS");
+            fechaTxt.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean hayStock() {
+        Boolean hay = false;
+        List<ProductoTop> produs = null;
+        int row = combo.getSelectedIndex();
+        if (row > 0) {
+            Rubro rubro = rubros.get(row - 1);
+            try {
+                produs = new ProductoTopService().getAllProductoTabacoTopActivos8(rubro);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "ERROR Nro. 927 - PRODUCTOS UTILIZADOS");
+                return hay;
+            }
+        }
+        for (ProductoTop pt : produs) {
+            if (pt.getStock() > 0) {
+                hay = true;
+            }
+        }
+        return hay;
+    }
+
+    private void generarOrden() {
+        List<ProductoTop> produs = null;
+        int row = combo.getSelectedIndex();
+        if (row > 0) {
+            Rubro rubro = rubros.get(row - 1);
+            try {
+                produs = new ProductoTopService().getAllProductoTabacoTopActivos8(rubro);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "ERROR Nro. 948 - PRODUCTOS UTILIZADOS");
+                return;
+            }
+        }
+        int orden = 0;
+        for (ProductoTop pt : produs) {
+            System.out.println(pt.getId());
+            System.out.println(pt.getDetalle());
+            System.out.println(pt.getImpuesto());
+            System.out.println(pt.getStock());
+            System.out.println(pt.getOrden());
+            pt.setOrden(orden);
+            orden += 1;
+            try {
+                new ProductoTopService().updateProductoTop(pt);
+            } catch (Exception ex) {
+                Logger.getLogger(FacturarAutomaticoPorMonto3Frame.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "ERROR Nro. 953 - PRODUCTOS UTILIZADOS (ORDEN)");
+                return;
+            }
+        }
+//        System.exit(0);
+    }
+}
+
+class Avanzando2a implements Runnable {
+
+    private JProgressBar bar;
+    private Float incremento;
+    private Float maximo;
+    private final int tst = 0; // 1 esta en test
+
+    @Override
+
+    public void run() {
+        this.getBar().setValue(1);
+
+        String cuitTitular = Constantes.cuitTitular;
+        String tipoDocTit = Constantes.tipoDocTit;
+        String puntoVenta = Constantes.puntoVenta;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Float posF = 2F;
+        Integer largo;
+        // desde aqui
+        Date fechaFacturas;
+        Integer tim1;
+        Integer tim2;
+        String fechaString;
+        String tim1String;
+        String tim2String;
+        File archivo = new File("D:/ventasJo/temp.txt");
+        FileReader fr;
+        try {
+            fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+
+            fechaString = br.readLine();
+            tim1String = br.readLine();
+            tim2String = br.readLine();
+            br.close();
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "uno 610");
+            return;
+        }
+        try {
+            fechaFacturas = sdf.parse(fechaString);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "DOS 615");
+            return;
+        }
+        tim1 = Integer.valueOf(tim1String);
+        tim2 = Integer.valueOf(tim2String);
+
+        List<Factura> nuevasFacturas = null;
+        try {
+            nuevasFacturas = new FcService().getAllFacturasActivas();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "TRES 625");
+//            Logger.getLogger(Avanzando.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        largo = nuevasFacturas.size();
+        maximo = largo.floatValue();
+        incremento = 100 / maximo;
+//        System.out.println(largo);
+//        System.out.println(incremento);
+//        System.out.println(maximo);
+//        System.exit(0);
+        for (Factura ccmp : nuevasFacturas) {
+//            CompraClienteMercadoPago compraMp = ccmp.getCompraMercadoPago();
+            posF += incremento;
+            Integer pos = posF.intValue();
+//            this.procesarBarra(nuevasFacturas, tim1, tim2, fechaFacturas, compraMp);//
+            getBar().setValue(pos);
+//            JOptionPane.showMessageDialog(null, "VER");
+            String cuit_cliente = ccmp.getCliente().getCuit();
+//            System.out.println(cuit_cliente);
+//            System.exit(0);
+            Cliente cliente = ccmp.getCliente();
+//            try {
+//                cliente = new ClienteService().getClienteByCuit(cuit_cliente);
+//                if (cliente == null) {
+//                    JOptionPane.showMessageDialog(null, "ERROR nro. 669 - LEYENDO CLIENTE");
+//                    return;
+//                }
+//            } catch (Exception ex) {
+//                JOptionPane.showMessageDialog(null, "ERROR nro. 669 - LEYENDO CLIENTE");
+//                return;
+//            }
+            String pri = cuit_cliente.substring(0, 2);
+            String med = cuit_cliente.substring(3, 11);
+            String fin = cuit_cliente.substring(12, 13);
+            String cuitCliente = pri + med + fin;
+            String tipoDocCli = cliente.getTipo();
+            int tim = 0;
+            FacturaIvaIntercambio fii;
+            do {
+                Random rnd = new Random();
+                Double segu = rnd.nextDouble() * (tim2 + 1);
+                tim = segu.intValue();
+            } while (tim < tim1 || tim > tim2);
+            try {
+                sleep(tim * 1000);
+            } catch (InterruptedException ex) {
+                JOptionPane.showMessageDialog(null, "ERR. con frecuencia de facturas");
+                continue;
+            }
+            if (tst == 0) {
+                fii = UtilAfip.presentarAfip(cuitTitular, tipoDocTit, cuitCliente,
+                        tipoDocCli, ccmp.getGravado(), ccmp.getImpuesto(), ccmp.getIva(),
+                        ccmp.getTotal(), fechaFacturas, puntoVenta);
+            } else {
+                fii = new FacturaIvaIntercambio();
+                fii.setCae(123456789012345L);
+                fii.setEstado("A");
+                fii.setFecha(fechaFacturas);
+                fii.setFechaVencimientoCae(fechaFacturas);
+                fii.setLetra("B");
+                Integer nroFc;
+                try {
+                    nroFc = new IvaVentasService().getUltimoNumeroFactura("20300377425");
+                } catch (Exception ex) {
+                    nroFc = 0;
+                }
+                fii.setNumero(nroFc + 1);
+                fii.setSucursal(2);
+            }
+            if (fii != null) {
+                List<RenglonFc> reng = null;
+                try {
+                    reng = new RenglonFcService().getRenglonesByFc(ccmp);
+                } catch (Exception ex) {
+                    Logger.getLogger(Avanzando2a.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                List<RenglonFactura> listaRf = new ArrayList<>();
+                for (RenglonFc r : reng) {
+                    RenglonFactura rf = new RenglonFactura();
+                    Producto pr0 = null;
+                    Integer cod = r.getCodigoProducto();
+                    try {
+                        pr0 = new ProductoService().getProductoByCodigo(cod);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Avanzando2a.class.getName()).log(Level.SEVERE, null, ex);
+                        break;
+                    }
+                    rf.setCantidad(r.getCantidad());
+                    rf.setCostoG(0.0);
+                    rf.setCostoI(0.0);
+                    rf.setDescripcion(pr0.getDetalle());
+                    pr0.setStock(pr0.getStock() - r.getCantidad());
+                    rf.setDescuento(0.0);
+                    rf.setExento(0.0);
+                    rf.setFabricacion(false);
+                    rf.setGravado(r.getGravado());
+                    rf.setGravado0(0.0);
+                    rf.setGravado10_5(0.0);
+                    rf.setGravado27(0.0);
+                    rf.setImpuesto(r.getImpuesto());
+                    rf.setItemNro(r.getItemNro());
+                    rf.setIva(r.getIva());
+                    rf.setIva0(0.0);
+                    rf.setIva10_5(0.0);
+                    rf.setIva27(0.0);
+                    rf.setNoGravado(0.0);
+                    rf.setProducto(pr0);
+                    rf.setSugerido(0.0);
+                    rf.setTotal(r.getTotal());
+                    listaRf.add(rf);
+                    try {
+                        new ProductoService().updateProducto(pr0);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Avanzando2a.class.getName()).log(Level.SEVERE, null, ex);
+                        break;
+                    }
+                }
+                IvaVentas iv = new IvaVentas();
+                iv.setCae(fii.getCae());
+                iv.setCliente(cliente);
+                iv.setDescuentoGlobal(0.0);
+                iv.setExento(0.0);
+                iv.setFecha(fechaFacturas);
+                iv.setFechaCae(fii.getFechaVencimientoCae());
+                iv.setGravado(ccmp.getGravado());
+                iv.setGravado0(0.0);
+                iv.setGravado10_5(0.0);
+                iv.setGravado27(0.0);
+                iv.setImpuesto(ccmp.getImpuesto());
+                iv.setIva(ccmp.getIva());
+                iv.setIva0(0.0);
+                iv.setIva10_5(0.0);
+                iv.setIva27(0.0);
+                iv.setLetra(fii.getLetra());
+                iv.setLetraReferencia("x");
+                iv.setNoGravado(0.0);
+                iv.setNumeroFactura(fii.getNumero());
+                iv.setNumeroFacturaReferencia(0);
+                iv.setNumeroSucursal(fii.getSucursal());
+                iv.setNumeroSucursalReferencia(0);
+                iv.setTipoDoc(6);
+                iv.setTotal(ccmp.getTotal());
+                try {
+                    new IvaVentasService().saveIvaVentasCompleto(iv, listaRf);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "ERROR 789");
+                    break;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "ERR AFIP");
+            }
+        }
+        JOptionPane.showMessageDialog(null, "FINALIZADO - REGRESE AL MENU PRINCIPAL");
+    }
+
+    public void setBar(JProgressBar bar) {
+        this.bar = bar;
+    }
+
+    public JProgressBar getBar() {
+        return bar;
+    }
+
+}

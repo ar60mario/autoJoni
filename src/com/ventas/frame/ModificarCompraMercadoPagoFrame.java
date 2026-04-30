@@ -229,7 +229,7 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
     }
 
     private void cargarFrame() {
-        fechaTxt.setText(sdf.format(ccmp.getFecha()));
+        fechaTxt.setText(ccmp.getFecha());
         nombreTxt.setText(ccmp.getNombre());
         cuitTxt.setText(ccmp.getCuit());
         importeTxt.setText(df.format(ccmp.getImporte()));
@@ -260,6 +260,7 @@ public class ModificarCompraMercadoPagoFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "ERROR 242 - ACTUALIZANDO MP");
         }
+        volver();
     }
 
     private void volver() {

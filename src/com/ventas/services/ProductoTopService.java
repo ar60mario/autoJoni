@@ -8,17 +8,13 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-/**
- *
- * @author Mario
- */
 public class ProductoTopService {
 
     public List<ProductoTop> getAllProductoTabacoTopActivos2(Rubro rubro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         List<ProductoTop> productos = null;
-        try{
+        try {
             productos = new ProductoTopBo().getAllProductoTabacoTopActivos2(rubro);
             tx.commit();
         } catch (Exception ex) {
@@ -27,12 +23,54 @@ public class ProductoTopService {
         }
         return productos;
     }
+
+    public List<ProductoTop> getAllProductoTabacoTopActivos2ConStock(Rubro rubro) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<ProductoTop> productos = null;
+        try {
+            productos = new ProductoTopBo().getAllProductoTabacoTopActivos2ConStock(rubro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
     
+    public List<ProductoTop> getAllProductoTabacoTopActivos9(Rubro rubro) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<ProductoTop> productos = null;
+        try {
+            productos = new ProductoTopBo().getAllProductoTabacoTopActivos9(rubro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
+    public List<ProductoTop> getAllProductoTabacoTopActivos8(Rubro rubro) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<ProductoTop> productos = null;
+        try {
+            productos = new ProductoTopBo().getAllProductoTabacoTopActivos8(rubro);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
     public List<ProductoTop> getAllProductoVariosTopActivos(Rubro rubro) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         List<ProductoTop> productos = null;
-        try{
+        try {
             productos = new ProductoTopBo().getAllProductoVariosTopActivos(rubro);
             tx.commit();
         } catch (Exception ex) {
@@ -41,12 +79,12 @@ public class ProductoTopService {
         }
         return productos;
     }
-    
+
     public List<ProductoTop> getAllProductoTopActivos() throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         List<ProductoTop> productos = null;
-        try{
+        try {
             productos = new ProductoTopBo().getAllProductoTopActivos();
             tx.commit();
         } catch (Exception ex) {
@@ -55,12 +93,53 @@ public class ProductoTopService {
         }
         return productos;
     }
+
+    public List<ProductoTop> getProductoTopActivosVtaSinStock() throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<ProductoTop> productos = null;
+        try {
+            productos = new ProductoTopBo().getProductoTopActivosVtaSinStock();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
     
+    public List<ProductoTop> getProductoPorcentajeActivo() throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<ProductoTop> productos = null;
+        try {
+            productos = new ProductoTopBo().getProductoPorcentajeActivo();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
+//    public List<ProductoTop> getAllProductoTabacoTopActivos2(Rubro rubro) throws Exception {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Transaction tx = session.beginTransaction();
+//        List<ProductoTop> productos = null;
+//        try{
+//            productos = new ProductoTopBo().getAllProductoTopActivos();
+//            tx.commit();
+//        } catch (Exception ex) {
+//            tx.rollback();
+//            throw new Exception(ex);
+//        }
+//        return productos;
+//    }
     public List<ProductoTop> getAllProductoTopActivosConLimite(Double limite) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         List<ProductoTop> productos = null;
-        try{
+        try {
             productos = new ProductoTopBo().getAllProductoTopActivosConLimite(limite);
             tx.commit();
         } catch (Exception ex) {
@@ -69,12 +148,12 @@ public class ProductoTopService {
         }
         return productos;
     }
-    
-     public List<ProductoTop> getAllProductoTopInactivos() throws Exception {
+
+    public List<ProductoTop> getAllProductoTopInactivos() throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         List<ProductoTop> productos = null;
-        try{
+        try {
             productos = new ProductoTopBo().getAllProductoTopInactivos();
             tx.commit();
         } catch (Exception ex) {
@@ -83,13 +162,27 @@ public class ProductoTopService {
         }
         return productos;
     }
-    
+
     public ProductoTop getProductoTopByCodigo(Integer codigo) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         ProductoTop prod = null;
-        try{
+        try {
             prod = new ProductoTopBo().getProductoTopByCodigo(codigo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return prod;
+    }
+
+    public ProductoTop getProductoTopByDetalle(String detalle) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        ProductoTop prod = null;
+        try {
+            prod = new ProductoTopBo().getProductoTopByDetalle(detalle);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
@@ -102,7 +195,7 @@ public class ProductoTopService {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         ProductoTop prod = null;
-        try{
+        try {
             prod = new ProductoTopBo().getProductoTopByOrder(order);
             tx.commit();
         } catch (Exception ex) {
@@ -111,12 +204,26 @@ public class ProductoTopService {
         }
         return prod;
     }
-    //
+
+    public ProductoTop getProductoTopByOrder2(Integer ord) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        ProductoTop prod = null;
+        try {
+            prod = new ProductoTopBo().getProductoTopByOrder2(ord);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return prod;
+    }
+
     public ProductoTop getProductoTopPanificadoByOrder(Integer order) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         ProductoTop prod = null;
-        try{
+        try {
             prod = new ProductoTopBo().getProductoTopPanificadoByOrder(order);
             tx.commit();
         } catch (Exception ex) {
@@ -125,6 +232,7 @@ public class ProductoTopService {
         }
         return prod;
     }
+
     public void saveProductoTop(ProductoTop producto) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -136,17 +244,18 @@ public class ProductoTopService {
             throw new Exception(ex);
         }
     }
-    
-    public void updateProductoTop(ProductoTop producto) throws Exception {
+
+    public ProductoTop updateProductoTop(ProductoTop producto) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            new ProductoTopBo().updateProductoTop(producto);
+            producto = new ProductoTopBo().updateProductoTop(producto);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
+        return producto;
     }
 
     /*

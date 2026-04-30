@@ -46,6 +46,21 @@ public class FacturaService {
         }
         return fc;
     }
+    
+    public List<Factura> getAllFacturasActivas() throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Factura> fc = null;
+        FcBo fcBo = new FcBo();
+        try {
+            fc = fcBo.getAllFacturasActivas();
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return fc;
+    }
 
     public void saveFactura(IvaVentas iv, List<RenglonFactura> rf) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

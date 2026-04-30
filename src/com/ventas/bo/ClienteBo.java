@@ -1,21 +1,13 @@
-/*
- * Aqui va toda la lógica de validaciones respecto a los Administradores.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.ClienteDao;
 import com.ventas.entities.Cliente;
 import com.ventas.entities.Domicilio;
-import com.ventas.bo.DomicilioBo;
 import com.ventas.util.Constantes;
 import java.util.List;
 import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 
-/**
- *
- * @author Mar y Mar Informatica
- */
 public class ClienteBo {
 
     private final ClienteDao dao = new ClienteDao();
@@ -154,6 +146,16 @@ public class ClienteBo {
         List<Cliente> clientes = null;
         try {
             clientes = dao.getClientesByFiltro(filtro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+
+    public List<Cliente> getClientesByFiltroFacturaA(String filtro) throws Exception {
+        List<Cliente> clientes = null;
+        try {
+            clientes = dao.getClientesByFiltroFacturaA(filtro);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

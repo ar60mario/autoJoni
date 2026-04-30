@@ -5,14 +5,16 @@ public class Rubro {
     private Long id;
     private Integer codigo;
     private String nombre;
+    private Integer tipoMarca;
 
     public Rubro() {
     }
 
-    public Rubro(Long id, Integer codigo, String nombre) {
+    public Rubro(Long id, Integer codigo, String nombre, Integer tipoMarca) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
+        this.tipoMarca = tipoMarca;
     }
 
     public Long getId() {
@@ -37,6 +39,14 @@ public class Rubro {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getTipoMarca() {
+        return tipoMarca;
+    }
+
+    public void setTipoMarca(Integer tipoMarca) {
+        this.tipoMarca = tipoMarca;
     }
 
 }

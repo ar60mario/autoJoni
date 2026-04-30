@@ -1,28 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.bo;
 
 import com.ventas.dao.ProductoDao;
 import com.ventas.entities.Producto;
+import com.ventas.entities.ProductoIntercambio;
+import com.ventas.entities.ProductoTop;
 import com.ventas.entities.Rubro;
+import com.ventas.entities.SubRubro;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 
-/**
- *
- * @author Mario
- */
 public class ProductoBo {
 
     private final ProductoDao dao = new ProductoDao();
 
     public List<Producto> getAllProductos() throws Exception {
-        ProductoDao dao = new ProductoDao();
-        List<Producto> losProductos = new ArrayList<Producto>();
+//        ProductoDao dao = new ProductoDao();
+        List<Producto> losProductos = new ArrayList<>();
         try {
             losProductos = dao.getAllCigarrillos();
         } catch (HibernateException ex) {
@@ -32,8 +26,8 @@ public class ProductoBo {
     }
 
     public List<Producto> getAllProductosByRubro(Rubro rubro) throws Exception {
-        ProductoDao dao = new ProductoDao();
-        List<Producto> losProductos = new ArrayList<Producto>();
+//        ProductoDao dao = new ProductoDao();
+        List<Producto> losProductos = new ArrayList<>();
         try {
             losProductos = dao.getAllProductosByRubro(rubro);
         } catch (HibernateException ex) {
@@ -41,7 +35,17 @@ public class ProductoBo {
         }
         return losProductos;
     }
-    
+
+    public List<Producto> getProductosConPrecioPorPorcentaje(String filtro, Rubro rubro) throws Exception {
+        List<Producto> losProductos = new ArrayList<>();
+        try {
+            losProductos = dao.getProductosConPrecioPorPorcentaje(filtro, rubro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return losProductos;
+    }
+
     public Producto guardarProducto(Producto producto) throws Exception {
         try {
             dao.save(producto);
@@ -61,6 +65,36 @@ public class ProductoBo {
         return producto;
     }
 
+    public Producto getActivoByCodigoSubRubroAndRubro(Rubro ru, SubRubro su) throws Exception {
+        Producto producto = null;
+        try {
+            producto = dao.getActivoByCodigoSubRubroAndRubro(ru, su);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+    
+    public Producto getByRubroAndPrecioPorPorcentaje(Rubro rubro) throws Exception {
+        Producto producto = null;
+        try {
+            producto = dao.getByRubroAndPrecioPorPorcentaje(rubro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+
+    public Producto getProductoByDetalle(String detalle) throws Exception {
+        Producto producto = null;
+        try {
+            producto = dao.getProductoByDetalle(detalle);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return producto;
+    }
+
     public Producto getProductoLogistica() throws Exception {
         Producto producto = null;
         try {
@@ -70,7 +104,7 @@ public class ProductoBo {
         }
         return producto;
     }
-    
+
     public Producto getProductoPanificadoByCodigo(Integer codigo) throws Exception {
         Producto producto = null;
         try {
@@ -148,6 +182,33 @@ public class ProductoBo {
         }
     }
 
+    public void saveListaProductosAndProductoTop(ProductoIntercambio listaProductos) throws Exception {
+        if (listaProductos != null) {
+            List<Producto> productos = listaProductos.getProductos();
+            List<ProductoTop> prodTops = listaProductos.getProductosTop();
+            int i = 0;
+            for (Producto prod : productos) {
+                try {
+                    dao.save(prod);
+                    new ProductoTopBo().saveProductoTop(prodTops.get(i));
+                    i += 1;
+                } catch (HibernateException ex) {
+                    throw new Exception("Ha ocurrido un problema intentando guardar los PRODUCTOS.\nPor favor intente nuevamente mas tarde.");
+                }
+            }
+        }
+    }
+
+    public List<Producto> getProductosByFiltro2(String filtro) throws Exception {
+        List<Producto> productos = null;
+        try {
+            productos = dao.getProductosByFiltro2(filtro);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return productos;
+    }
+
     public List<Producto> getProductosByFiltro(String filtro) throws Exception {
         List<Producto> productos = null;
         try {
@@ -200,7 +261,7 @@ public class ProductoBo {
 
     public List<Producto> getAllProductosOrdByCodigo(String filtro) throws Exception {
         ProductoDao dao = new ProductoDao();
-        List<Producto> losProductos = new ArrayList<Producto>();
+        List<Producto> losProductos = new ArrayList<>();
 
         try {
             losProductos = dao.getAllOrdByCodigo(filtro);
@@ -212,7 +273,7 @@ public class ProductoBo {
 
     public List<Producto> getProductosDeTabacaleras(Integer desde) throws Exception {
         ProductoDao dao = new ProductoDao();
-        List<Producto> losProductos = new ArrayList<Producto>();
+        List<Producto> losProductos = new ArrayList<>();
 
         try {
             losProductos = dao.getProductosDeTabacaleras(desde);
@@ -221,10 +282,10 @@ public class ProductoBo {
         }
         return losProductos;
     }
-    
+
     public List<Producto> getAllProductosOrdByNombre(String filtro) throws Exception {
         ProductoDao dao = new ProductoDao();
-        List<Producto> losProductos = new ArrayList<Producto>();
+        List<Producto> losProductos = new ArrayList<>();
         try {
             losProductos = dao.getAllProductosOrdenado(filtro);
         } catch (HibernateException ex) {
@@ -235,7 +296,7 @@ public class ProductoBo {
 
     public List<Producto> getAllProductosOrdByRubro(String filtro) throws Exception {
         ProductoDao dao = new ProductoDao();
-        List<Producto> losProductos = new ArrayList<Producto>();
+        List<Producto> losProductos = new ArrayList<>();
 
         try {
             losProductos = dao.getAllOrdByRubro(filtro);

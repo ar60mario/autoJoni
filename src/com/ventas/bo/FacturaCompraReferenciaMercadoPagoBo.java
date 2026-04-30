@@ -15,12 +15,24 @@ public class FacturaCompraReferenciaMercadoPagoBo {
 
     private final FacturaCompraReferenciaMercadoPagoDao dao = new FacturaCompraReferenciaMercadoPagoDao();
 
-    public FacturaCompraReferenciaMercadoPago 
-        saveFacturaCompraReferenciaMercadoPago(FacturaCompraReferenciaMercadoPago fcrmp)
+    public FacturaCompraReferenciaMercadoPago
+            saveFacturaCompraReferenciaMercadoPago(FacturaCompraReferenciaMercadoPago fcrmp)
             throws Exception {
         FacturaCompraReferenciaMercadoPago fact = null;
         try {
             fact = (FacturaCompraReferenciaMercadoPago) dao.save(fcrmp);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago>
+            getFacturasMercadoPagoEntreFechas(Date de, Date al)
+            throws Exception {
+        List<FacturaCompraReferenciaMercadoPago> fact = null;
+        try {
+            fact = (List<FacturaCompraReferenciaMercadoPago>) dao.getFacturasMercadoPagoEntreFechas(de, al);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
@@ -55,6 +67,30 @@ public class FacturaCompraReferenciaMercadoPagoBo {
         try {
             fact = (List<FacturaCompraReferenciaMercadoPago>) dao
                     .getFacturasIvaVentasEntreFechas(de, al);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechasAndOperacion(Date de,
+            Date al, String operacion) throws Exception {
+        List<FacturaCompraReferenciaMercadoPago> fact;
+        try {
+            fact = (List<FacturaCompraReferenciaMercadoPago>) dao
+                    .getFacturasIvaVentasEntreFechasAndOperacion(de, al, operacion);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return fact;
+    }
+
+    public List<FacturaCompraReferenciaMercadoPago> getFacturasIvaVentasEntreFechasAndNombre(Date de,
+            Date al, String nombre) throws Exception {
+        List<FacturaCompraReferenciaMercadoPago> fact;
+        try {
+            fact = (List<FacturaCompraReferenciaMercadoPago>) dao
+                    .getFacturasIvaVentasEntreFechasAndNombre(de, al, nombre);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

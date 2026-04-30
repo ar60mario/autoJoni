@@ -10,10 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author argia
- */
+
 public class ArticulosConSaldoPendienteParaAsignarFrame extends javax.swing.JFrame {
 
     private List<ArticuloCompra> compras;

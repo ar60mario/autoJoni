@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ventas.dao;
 
 import com.ventas.entities.Producto;
 import com.ventas.entities.Rubro;
+import com.ventas.entities.SubRubro;
 import com.ventas.util.HibernateUtils;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -15,21 +11,51 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author Mario
- */
 public class ProductoDao extends GenericDao {
 
     public Producto getByCodigo(Integer codigo) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Producto.class);
         criteria.add(Restrictions.eq("codigo", codigo));
+        criteria.add(Restrictions.eq("inactivo", false));
         criteria.add(Restrictions.eq("panificado", false));
         Producto producto = (Producto) criteria.uniqueResult();
         return producto;
     }
-    
+
+    public Producto getActivoByCodigoSubRubroAndRubro(Rubro ru, SubRubro su) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.eq("rubro", ru));
+        criteria.add(Restrictions.eq("subRubro", su));
+        criteria.add(Restrictions.eq("inactivo", false));
+//        criteria.add(Restrictions.eq("panificado", false));
+        Producto producto = (Producto) criteria.uniqueResult();
+        return producto;
+    }
+
+    public Producto getByRubroAndPrecioPorPorcentaje(Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.eq("rubro", rubro));
+//        criteria.add(Restrictions.eqOrIsNull("precioPorPorcentaje", true));
+        criteria.add(Restrictions.eq("precioPorPorcentaje", true));
+        criteria.add(Restrictions.eq("inactivo", false));
+        criteria.add(Restrictions.eq("panificado", false));
+        Producto producto = (Producto) criteria.uniqueResult();
+        return producto;
+    }
+
+    public Producto getProductoByDetalle(String detalle) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.eq("detalle", detalle));
+        criteria.add(Restrictions.eq("inactivo", false));
+        criteria.add(Restrictions.eq("panificado", false));
+        Producto producto = (Producto) criteria.uniqueResult();
+        return producto;
+    }
+
     public Producto getProductoLogistica() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Producto.class);
@@ -47,13 +73,24 @@ public class ProductoDao extends GenericDao {
         List<Producto> productos = (List<Producto>) criteria.list();
         return productos;
     }
-    
+
     public List<Producto> getAllProductosByRubro(Rubro rubro) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Producto.class);
         criteria.add(Restrictions.eq("rubro", rubro));
         criteria.add(Restrictions.eq("inactivo", false));
         criteria.add(Restrictions.eq("panificado", false));
+        List<Producto> productos = (List<Producto>) criteria.list();
+        return productos;
+    }
+
+    public List<Producto> getProductosConPrecioPorPorcentaje(String filtro, Rubro rubro) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.eq("precioPorPorcentaje", true));
+        criteria.add(Restrictions.like("detalle", "%" + filtro + "%"));
+        criteria.add(Restrictions.eq("rubro", rubro));
+        criteria.addOrder(Order.asc("detalle"));
         List<Producto> productos = (List<Producto>) criteria.list();
         return productos;
     }
@@ -156,6 +193,17 @@ public class ProductoDao extends GenericDao {
         return productos;
     }
 
+    public List<Producto> getProductosByFiltro2(String filtro) {
+        List<Producto> productos;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.like("detalle", "%" + filtro + "%"));
+        criteria.add(Restrictions.eq("panificado", false));
+        criteria.add(Restrictions.eq("inactivo", false));
+        productos = (List<Producto>) criteria.list();
+        return productos;
+    }
+
     public List<Producto> getProductosByFiltro(String filtro) {
         List<Producto> productos = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -176,49 +224,50 @@ public class ProductoDao extends GenericDao {
 //        System.exit(0);
         List<Producto> productos = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        StringBuffer sb = new StringBuffer();
-        sb.append("from Producto prod ");
-        if (filtro.equals("")) {
-            sb.append("where ");
-        } else {
-            sb.append("where prod.detalle like :filtro and ");
-        }
-        sb.append("prod.rubro = rubro ");
-        sb.append("and prod.panificado = false ");
-        sb.append("and prod.inactivo = false ");
-        sb.append("order by prod.detalle asc");
-        Query query = session.createQuery(sb.toString());
-        if (!filtro.equals("")) {
-            query.setParameter("filtro", "%" + filtro + "%");
-        }
-        productos = (List<Producto>) query.list();
+        Criteria criteria = session.createCriteria(Producto.class);
+        criteria.add(Restrictions.eq("rubro", rubro));
+        criteria.add(Restrictions.eq("inactivo", true));
+        criteria.add(Restrictions.like("detalle", "%" + filtro + "%"));
+        criteria.addOrder(Order.asc("detalle"));
+        productos = (List<Producto>) criteria.list();
         return productos;
     }
 
+//    public List<Producto> getProductosByFiltroAndRubro(String filtro, Rubro rubro) {
+////        System.out.println(filtro.equals(""));
+////        System.exit(0);
+//        List<Producto> productos = null;
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        StringBuffer sb = new StringBuffer();
+//        sb.append("from Producto prod ");
+//        if (filtro.equals("")) {
+//            sb.append("where ");
+//        } else {
+//            sb.append("where prod.detalle like :filtro and ");
+//        }
+//        sb.append("prod.rubro = rubro ");
+//        sb.append("and prod.panificado = false ");
+//        sb.append("and prod.inactivo = false ");
+//        sb.append("order by prod.detalle asc");
+//        Query query = session.createQuery(sb.toString());
+//        if (!filtro.equals("")) {
+//            query.setParameter("filtro", "%" + filtro + "%");
+//        }
+//        productos = (List<Producto>) query.list();
+//        return productos;
+//    }
     public List<Producto> getProductosByFiltroAndRubroEliminados(String filtro, Rubro rubro) {
-//        System.out.println(filtro.equals(""));
-//        System.exit(0);
         List<Producto> productos = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        StringBuffer sb = new StringBuffer();
-        sb.append("from Producto prod ");
-        if (filtro.equals("")) {
-            sb.append("where ");
-        } else {
-            sb.append("where prod.detalle like :filtro and ");
+        Criteria criteria = session.createCriteria(Producto.class);
+        if (filtro != "") {
+            criteria.add(Restrictions.like("detalle", "%" + filtro + "%"));
         }
-        sb.append("prod.rubro = rubro ");
-        sb.append("and prod.panificado = false ");
-        sb.append("and prod.inactivo = true ");
-        sb.append("order by prod.detalle asc");
-        Query query = session.createQuery(sb.toString());
-        if (!filtro.equals("")) {
-            query.setParameter("filtro", "%" + filtro + "%");
-        }
-        productos = (List<Producto>) query.list();
+        criteria.add(Restrictions.eq("rubro", rubro));
+        productos = (List<Producto>) criteria.list();
         return productos;
     }
-    
+
     public List<Producto> getProductosPanificadosByFiltro(String filtro) {
         List<Producto> productos = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -282,7 +331,7 @@ public class ProductoDao extends GenericDao {
 
         return (List<Producto>) criteria.list();
     }
-    
+
     public List<Producto> getProductosDeTabacaleras(Integer desde) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Producto.class);
